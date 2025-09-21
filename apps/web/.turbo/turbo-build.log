@@ -6,24 +6,21 @@
    - Environments: .env.local
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 3.3s
+ ✓ Compiled successfully in 2.8s
    Linting and checking validity of types ...
    Collecting page data ...
+{"level":50,"time":"2025-09-21T15:06:03.424Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
 Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
-{"level":50,"time":"2025-09-21T14:57:31.821Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.834Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.842Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.848Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.844Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.859Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.901Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.910Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.933Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T14:57:31.941Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T15:06:03.507Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T15:06:03.511Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T15:06:03.537Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T15:06:03.661Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T15:06:03.767Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T15:06:03.789Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
    Generating static pages (0/20) ...
-Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
+{"level":50,"time":"2025-09-21T15:06:05.587Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
    Generating static pages (5/20) 
-{"level":50,"time":"2025-09-21T14:57:33.656Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
    Generating static pages (10/20) 
    Generating static pages (15/20) 
  ✓ Generating static pages (20/20)

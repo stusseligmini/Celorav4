@@ -19,17 +19,19 @@ export async function POST(request: NextRequest) {
       .from('wallets')
       .insert({
         user_id: session.user.id,
-        name,
-        currency: currency || 'USD',
-        balance: 0,
-        is_primary: isPrimary || false
+        address: `celora_${session.user.id.slice(0, 8)}_${Date.now()}`, // Generate a unique address
+        blockchain: 'solana', // Default to solana
+        balance: 0
       })
       .select()
       .single();
 
     if (error) {
       console.error('Error creating wallet:', error);
-      return NextResponse.json({ error: 'Failed to create wallet' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Failed to create wallet', 
+        details: error.message 
+      }, { status: 500 });
     }
 
     return NextResponse.json({ wallet: data });

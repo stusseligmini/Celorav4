@@ -32,22 +32,21 @@ export async function POST(request: NextRequest) {
         masked_pan: maskedPan,
         balance: 0,
         currency: currency || 'USD',
-        spending_limit: spendingLimit || 1000,
-        status: 'active',
-        pin_hash: pinHash
+        status: 'active'
       })
       .select()
       .single();
 
     if (error) {
       console.error('Error creating card:', error);
-      return NextResponse.json({ error: 'Failed to create card' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Failed to create card', 
+        details: error.message 
+      }, { status: 500 });
     }
 
-    // Remove sensitive data from response
-    const { pin_hash, ...cardData } = data;
-
-    return NextResponse.json({ card: cardData });
+    // Remove sensitive data from response (no pin_hash in actual schema)
+    return NextResponse.json({ card: data });
   } catch (error) {
     console.error('API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
@@ -64,10 +63,10 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }
 
-    // Get user's cards (excluding sensitive data)
+    // Get user's cards
     const { data, error } = await supabase
       .from('virtual_cards')
-      .select('id, user_id, masked_pan, balance, currency, spending_limit, status, created_at, updated_at')
+      .select('*')
       .eq('user_id', session.user.id)
       .order('created_at', { ascending: false });
 

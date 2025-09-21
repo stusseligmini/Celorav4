@@ -20,17 +20,17 @@ export async function POST(request: NextRequest) {
       .upsert({
         id: userId,
         email,
-        full_name: fullName,
-        phone,
-        is_verified: false,
-        kyc_status: 'pending'
+        full_name: fullName
       })
       .select()
       .single();
 
     if (error) {
       console.error('Error creating user profile:', error);
-      return NextResponse.json({ error: 'Failed to create profile' }, { status: 500 });
+      return NextResponse.json({ 
+        error: 'Failed to create profile', 
+        details: error.message 
+      }, { status: 500 });
     }
 
     return NextResponse.json({ profile: data });
