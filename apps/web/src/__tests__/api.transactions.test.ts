@@ -39,8 +39,6 @@ vi.mock('@celora/quantum', () => ({
   }))
 }));
 
-import { describe, it, expect, vi, beforeEach } from 'vitest';
-
 describe('Transaction API Logic', () => {
   beforeEach(() => {
     vi.clearAllMocks();

@@ -10,7 +10,7 @@ const nextConfig = {
   
   // Bundle optimization
   experimental: {
-    // optimizeCss: true, // Disabled temporarily due to critters dependency issue
+    optimizeCss: true, // Now enabled with critters dependency installed
     optimizePackageImports: ['framer-motion', '@supabase/supabase-js'],
   },
   

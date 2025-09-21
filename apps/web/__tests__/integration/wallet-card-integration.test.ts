@@ -111,8 +111,8 @@ describe('Wallet + Card Integration Tests', () => {
       expect(transactions.length).toBeGreaterThan(0);
       
       // Should include both the topup and purchase transactions
-      const topupTx = transactions.find(t => t.transaction_type === 'topup');
-      const purchaseTx = transactions.find(t => t.transaction_type === 'purchase');
+      const topupTx = transactions.find((t: any) => t.transaction_type === 'topup');
+      const purchaseTx = transactions.find((t: any) => t.transaction_type === 'purchase');
       
       expect(topupTx).toBeTruthy();
       expect(purchaseTx).toBeTruthy();
