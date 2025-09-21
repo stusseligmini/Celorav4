@@ -4,42 +4,16 @@ const nextConfig = {
     domains: ['supabase.com'],
   },
   
-  // Performance optimizations
+  // Basic performance optimizations
   compress: true,
   poweredByHeader: false,
   
-  // Bundle optimization
+  // Minimal experimental features for stability
   experimental: {
-    optimizeCss: true, // Now enabled with critters dependency installed
-    optimizePackageImports: ['framer-motion', '@supabase/supabase-js'],
+    optimizePackageImports: ['framer-motion'],
   },
   
-  // Webpack optimization
-  webpack: (config, { dev, isServer }) => {
-    // Production optimizations
-    if (!dev && !isServer) {
-      config.optimization.splitChunks = {
-        chunks: 'all',
-        cacheGroups: {
-          vendor: {
-            test: /[\\/]node_modules[\\/]/,
-            name: 'vendors',
-            chunks: 'all',
-          },
-          common: {
-            name: 'common',
-            minChunks: 2,
-            chunks: 'all',
-            enforce: true,
-          },
-        },
-      };
-    }
-    
-    return config;
-  },
-  
-  // Headers for caching
+  // Basic security headers
   async headers() {
     return [
       {
@@ -56,15 +30,6 @@ const nextConfig = {
           {
             key: 'X-XSS-Protection',
             value: '1; mode=block',
-          },
-        ],
-      },
-      {
-        source: '/api/(.*)',
-        headers: [
-          {
-            key: 'Cache-Control',
-            value: 'public, max-age=60, s-maxage=60',
           },
         ],
       },
