@@ -2,6 +2,8 @@ import './globals.css'
 import type { Metadata } from 'next'
 import { SupabaseProvider } from '../providers/SupabaseProvider'
 import { DebugPanel } from '../components/DebugPanel'
+import NotificationCenter from '../components/NotificationCenter'
+import PerformanceMonitor from '../components/PerformanceMonitor'
 
 export const metadata: Metadata = {
   title: 'Celora - Cyberpunk Fintech Platform',
@@ -24,8 +26,14 @@ export default function RootLayout({
           
           <div className="relative z-10">
             <SupabaseProvider>
+              {/* Notification Center */}
+              <div className="fixed top-4 right-4 z-50">
+                <NotificationCenter />
+              </div>
+              
               {children}
               <DebugPanel />
+              <PerformanceMonitor />
             </SupabaseProvider>
           </div>
         </div>
