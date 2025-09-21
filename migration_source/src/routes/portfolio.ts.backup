@@ -1,0 +1,444 @@
+import { Router, Request, Response } from 'express';
+import { PrismaClient } from '@prisma/client';
+import { z } from 'zod';
+
+const router = Router();
+const prisma = new PrismaClient();
+
+// Validation schemas
+const createPortfolioSchema = z.object({
+  name: z.string().min(1).max(100),
+  description: z.string().optional(),
+  isPublic: z.boolean().default(false)
+});
+
+const addAssetSchema = z.object({
+  symbol: z.string().min(1).max(20),
+  amount: z.number().positive(),
+  averageCost: z.number().positive(),
+  notes: z.string().optional()
+});
+
+// GET /api/portfolios - Get user's portfolios
+router.get('/', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    
+    const portfolios = await prisma.portfolio.findMany({
+      where: { userId },
+      include: {
+        assets: {
+          orderBy: { createdAt: 'desc' }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    }) as any;
+
+    // Calculate portfolio values
+    const portfoliosWithValues = await Promise.all(
+      portfolios.map(async (portfolio) => {
+        let totalValue = 0;
+        let totalCost = 0;
+        
+        for (const asset of portfolio.assets) {
+          const currentPrice = 0; // Default price since we don't have marketData relation
+          const value = asset.quantity * currentPrice;
+          const cost = asset.quantity * asset.averageCost;
+          
+          totalValue += value;
+          totalCost += cost;
+        }
+
+        const pnl = totalValue - totalCost;
+        const pnlPercentage = totalCost > 0 ? (pnl / totalCost) * 100 : 0;
+
+        return {
+          ...portfolio,
+          totalValue,
+          totalCost,
+          pnl,
+          pnlPercentage,
+          assetCount: portfolio.assets?.length || 0
+        };
+      })
+    );
+
+    res.json({
+      success: true,
+      data: portfoliosWithValues
+    });
+  } catch (error) {
+    console.error('Error fetching portfolios:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch portfolios'
+    });
+  }
+});
+
+// GET /api/portfolios/:id - Get specific portfolio
+router.get('/:id', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const portfolioId = req.params.id;
+
+    const portfolio = await prisma.portfolio.findFirst({
+      where: {
+        id: portfolioId,
+        userId
+      },
+      include: {
+        assets: true,
+        _count: {
+          assets: true
+        }
+      }
+    }) as any;
+
+    if (!portfolio) {
+      return res.status(404).json({
+        success: false,
+        error: 'Portfolio not found'
+      });
+    }
+
+    // Calculate detailed portfolio metrics
+    let totalValue = 0;
+    let totalCost = 0;
+    const assetBreakdown = [];
+
+    for (const asset of portfolio.assets) {
+      const currentPrice = 0; // Default price since we don't have marketData relation  
+      const value = asset.quantity * currentPrice;
+      const cost = asset.quantity * asset.averageCost;
+      const pnl = value - cost;
+      const pnlPercentage = cost > 0 ? (pnl / cost) * 100 : 0;
+
+      totalValue += value;
+      totalCost += cost;
+
+      assetBreakdown.push({
+        ...asset,
+        currentPrice,
+        value,
+        cost,
+        pnl,
+        pnlPercentage,
+        allocation: 0 // Will be calculated after totalValue is known
+      });
+    }
+
+    // Calculate allocations
+    assetBreakdown.forEach(asset => {
+      asset.allocation = totalValue > 0 ? (asset.value / totalValue) * 100 : 0;
+    });
+
+    const portfolioMetrics = {
+      ...portfolio,
+      totalValue,
+      totalCost,
+      pnl: totalValue - totalCost,
+      pnlPercentage: totalCost > 0 ? ((totalValue - totalCost) / totalCost) * 100 : 0,
+      assetCount: portfolio.assets.length,
+      assets: assetBreakdown
+    };
+
+    res.json({
+      success: true,
+      data: portfolioMetrics
+    });
+  } catch (error) {
+    console.error('Error fetching portfolio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to fetch portfolio'
+    });
+  }
+});
+
+// POST /api/portfolios - Create new portfolio
+router.post('/', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const validatedData = createPortfolioSchema.parse(req.body);
+
+    const portfolio = await prisma.portfolio.create({
+      data: {
+        ...validatedData,
+        userId
+      },
+      include: {
+        _count: {
+          select: { assets: true }
+        }
+      }
+    });
+
+    res.status(201).json({
+      success: true,
+      data: {
+        ...portfolio,
+        totalValue: 0,
+        totalCost: 0,
+        pnl: 0,
+        pnlPercentage: 0,
+        assetCount: 0
+      }
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors
+      });
+    }
+
+    console.error('Error creating portfolio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to create portfolio'
+    });
+  }
+});
+
+// POST /api/portfolios/:id/assets - Add asset to portfolio
+router.post('/:id/assets', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const portfolioId = req.params.id;
+    const validatedData = addAssetSchema.parse(req.body);
+
+    // Check if portfolio exists and belongs to user
+    const portfolio = await prisma.portfolio.findFirst({
+      where: {
+        id: portfolioId,
+        userId
+      }
+    });
+
+    if (!portfolio) {
+      return res.status(404).json({
+        success: false,
+        error: 'Portfolio not found'
+      });
+    }
+
+    // Check if asset already exists in portfolio
+    const existingAsset = await prisma.portfolioAsset.findFirst({
+      where: {
+        portfolioId,
+        symbol: validatedData.symbol.toUpperCase()
+      }
+    });
+
+    if (existingAsset) {
+      // Update existing asset (average the costs)
+      const totalAmount = existingAsset.quantity + validatedData.amount;
+      const totalCost = (existingAsset.quantity * existingAsset.averageCost) + 
+                       (validatedData.amount * validatedData.averageCost);
+      const newAverageCost = totalCost / totalAmount;
+
+      const updatedAsset = await prisma.portfolioAsset.update({
+        where: { id: existingAsset.id },
+        data: {
+          quantity: totalAmount,
+          amount: totalAmount,  // Keep both for backward compatibility
+          averageCost: newAverageCost,
+          notes: validatedData.notes || existingAsset.notes,
+          updatedAt: new Date()
+        }
+      });
+
+      return res.json({
+        success: true,
+        data: updatedAsset,
+        message: 'Asset updated successfully'
+      });
+    }
+
+    // Create new asset
+    const asset = await prisma.portfolioAsset.create({
+      data: {
+        symbol: validatedData.symbol.toUpperCase(),
+        portfolioId,
+        quantity: validatedData.amount,
+        amount: validatedData.amount, // Keep both for backward compatibility
+        averageCost: validatedData.averageCost,
+        notes: validatedData.notes
+      }
+    });
+
+    res.status(201).json({
+      success: true,
+      data: asset
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors
+      });
+    }
+
+    console.error('Error adding asset to portfolio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to add asset to portfolio'
+    });
+  }
+});
+
+// PUT /api/portfolios/:id - Update portfolio
+router.put('/:id', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const portfolioId = req.params.id;
+    const validatedData = createPortfolioSchema.partial().parse(req.body);
+
+    const portfolio = await prisma.portfolio.findFirst({
+      where: {
+        id: portfolioId,
+        userId
+      }
+    });
+
+    if (!portfolio) {
+      return res.status(404).json({
+        success: false,
+        error: 'Portfolio not found'
+      });
+    }
+
+    const updatedPortfolio = await prisma.portfolio.update({
+      where: { id: portfolioId },
+      data: {
+        ...validatedData,
+        updatedAt: new Date()
+      },
+      include: {
+        _count: {
+          select: { assets: true }
+        }
+      }
+    });
+
+    res.json({
+      success: true,
+      data: updatedPortfolio
+    });
+  } catch (error) {
+    if (error instanceof z.ZodError) {
+      return res.status(400).json({
+        success: false,
+        error: 'Validation failed',
+        details: error.errors
+      });
+    }
+
+    console.error('Error updating portfolio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to update portfolio'
+    });
+  }
+});
+
+// DELETE /api/portfolios/:id - Delete portfolio
+router.delete('/:id', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const portfolioId = req.params.id;
+
+    const portfolio = await prisma.portfolio.findFirst({
+      where: {
+        id: portfolioId,
+        userId
+      }
+    });
+
+    if (!portfolio) {
+      return res.status(404).json({
+        success: false,
+        error: 'Portfolio not found'
+      });
+    }
+
+    // Delete all assets first (cascade)
+    await prisma.portfolioAsset.deleteMany({
+      where: { portfolioId }
+    });
+
+    // Delete portfolio
+    await prisma.portfolio.delete({
+      where: { id: portfolioId }
+    });
+
+    res.json({
+      success: true,
+      message: 'Portfolio deleted successfully'
+    });
+  } catch (error) {
+    console.error('Error deleting portfolio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to delete portfolio'
+    });
+  }
+});
+
+// DELETE /api/portfolios/:id/assets/:assetId - Remove asset from portfolio
+router.delete('/:id/assets/:assetId', async (req: Request, res: Response) => {
+  try {
+    const userId = (req as any).user.id;
+    const portfolioId = req.params.id;
+    const assetId = req.params.assetId;
+
+    // Check if portfolio belongs to user
+    const portfolio = await prisma.portfolio.findFirst({
+      where: {
+        id: portfolioId,
+        userId
+      }
+    });
+
+    if (!portfolio) {
+      return res.status(404).json({
+        success: false,
+        error: 'Portfolio not found'
+      });
+    }
+
+    const asset = await prisma.portfolioAsset.findFirst({
+      where: {
+        id: assetId,
+        portfolioId
+      }
+    });
+
+    if (!asset) {
+      return res.status(404).json({
+        success: false,
+        error: 'Asset not found'
+      });
+    }
+
+    await prisma.portfolioAsset.delete({
+      where: { id: assetId }
+    });
+
+    res.json({
+      success: true,
+      message: 'Asset removed from portfolio successfully'
+    });
+  } catch (error) {
+    console.error('Error removing asset from portfolio:', error);
+    res.status(500).json({
+      success: false,
+      error: 'Failed to remove asset from portfolio'
+    });
+  }
+});
+
+export default router;

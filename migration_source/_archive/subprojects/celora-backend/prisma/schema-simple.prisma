@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  passwordHash    String
+  firstName       String
+  lastName        String
+  isActive        Boolean   @default(true)
+  kycStatus       String    @default("PENDING")
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  
+  wallets         Wallet[]
+  virtualCards    VirtualCard[]
+  transactions    Transaction[]
+  
+  @@map("users")
+}
+
+model Wallet {
+  id            String    @id @default(cuid())
+  userId        String
+  name          String?
+  address       String    @unique
+  balance       Decimal   @default(0.0) @db.Decimal(20, 8)
+  isActive      Boolean   @default(true)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+  
+  @@map("wallets")
+}
+
+model VirtualCard {
+  id            String    @id @default(cuid())
+  userId        String
+  name          String?
+  cardNumber    String    @unique
+  status        String    @default("PENDING")
+  balance       Decimal   @default(0.0) @db.Decimal(10, 2)
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions  Transaction[]
+  
+  @@map("virtual_cards")
+}
+
+model Transaction {
+  id            String    @id @default(cuid())
+  userId        String
+  walletId      String?
+  virtualCardId String?
+  type          String
+  status        String    @default("PENDING")
+  amount        Decimal   @db.Decimal(20, 8)
+  currency      String
+  hash          String?
+  description   String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet        Wallet?   @relation(fields: [walletId], references: [id], onDelete: SetNull)
+  virtualCard   VirtualCard? @relation(fields: [virtualCardId], references: [id], onDelete: SetNull)
+  
+  @@map("transactions")
+  @@index([userId, createdAt])
+}

@@ -1,0 +1,54 @@
+
+> @celora/web@1.0.0 build
+> next build
+
+ ⚠ Invalid next.config.js options detected: 
+ ⚠     Unrecognized key(s) in object: 'appDir' at "experimental"
+ ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+   ▲ Next.js 15.5.2
+   - Environments: .env.local
+   - Experiments (use with caution):
+     ✓ appDir
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 2.1s
+   Linting and checking validity of types ...
+   Collecting page data ...
+Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
+   Generating static pages (0/14) ...
+Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
+   Generating static pages (3/14) 
+   Generating static pages (6/14) 
+   Generating static pages (10/14) 
+ ✓ Generating static pages (14/14)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                 Size  First Load JS
+┌ ○ /                                     158 kB         305 kB
+├ ○ /_not-found                            985 B         103 kB
+├ ƒ /api/cards/[id]/fund                   147 B         102 kB
+├ ƒ /api/cards/[id]/risk                   147 B         102 kB
+├ ƒ /api/cards/[id]/status                 147 B         102 kB
+├ ƒ /api/cards/fund                        147 B         102 kB
+├ ƒ /api/health                            147 B         102 kB
+├ ƒ /api/transactions/create               147 B         102 kB
+├ ƒ /api/wallet                            147 B         102 kB
+├ ƒ /api/wallet/card                       147 B         102 kB
+├ ƒ /api/wallet/card/[cardId]              147 B         102 kB
+├ ƒ /api/wallet/verify-pin                 147 B         102 kB
+├ ○ /reset-password                        957 B         151 kB
+├ ○ /signin                                980 B         151 kB
+├ ○ /signup                              1.08 kB         151 kB
+└ ○ /update-password                     1.09 kB         151 kB
++ First Load JS shared by all             102 kB
+  ├ chunks/18-c9b14b5f87be4ab0.js        45.9 kB
+  ├ chunks/87c73c54-24122e7b92478d00.js  54.2 kB
+  └ other shared chunks (total)          1.99 kB
+
+
+ƒ Middleware                             34.3 kB
+
+○  (Static)   prerendered as static content
+ƒ  (Dynamic)  server-rendered on demand
+

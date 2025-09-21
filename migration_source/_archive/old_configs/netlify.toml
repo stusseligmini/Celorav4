@@ -1,0 +1,50 @@
+[build]
+  publish = "."
+  command = "echo 'No build process needed for static files'"
+
+[build.environment]
+  NODE_VERSION = "20.18.0"
+
+# Force HTTPS redirect
+[[redirects]]
+  from = "http://celora.net/*"
+  to = "https://celora.net/:splat"
+  status = 301
+  force = true
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; style-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://celora-platform.onrender.com https://api.mainnet-beta.solana.com wss://celora-platform.onrender.com;"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+# API proxy for CORS issues (optional)
+[[redirects]]
+  from = "/api/*"
+  to = "https://celora-platform.onrender.com/api/:splat"
+  status = 200
+  headers = {X-From = "Netlify"}
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000"
+
+[[headers]]
+  for = "*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=3600"

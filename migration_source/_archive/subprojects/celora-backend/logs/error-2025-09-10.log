@@ -1,0 +1,3155 @@
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 16:57:47 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 56604,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 96817152,
+      heapTotal: 61599744,
+      heapUsed: 32689536,
+      external: 2536266,
+      arrayBuffers: 18883
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 109174.406 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 16:57:47'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 17:13:52 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 15936,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 95817728,
+      heapTotal: 60928000,
+      heapUsed: 34413584,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 110139.781 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 17:13:52'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 17:24:09 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 63300,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94384128,
+      heapTotal: 61190144,
+      heapUsed: 34363880,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 110757.359 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 17:24:09'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 17:26:14 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 63880,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 96473088,
+      heapTotal: 61190144,
+      heapUsed: 34461312,
+      external: 2505549,
+      arrayBuffers: 18815
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 110881.812 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 17:26:14'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 18:52:16 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 66384,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 96804864,
+      heapTotal: 60928000,
+      heapUsed: 35574744,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 116044.546 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 18:52:16'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:00:37 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 21440,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 97566720,
+      heapTotal: 61190144,
+      heapUsed: 35453032,
+      external: 2505549,
+      arrayBuffers: 18815
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 116545.234 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:00:37'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:07:30 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 65368,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 100507648,
+      heapTotal: 60928000,
+      heapUsed: 35526800,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 116957.828 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:07:30'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:09:26 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 49040,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 97370112,
+      heapTotal: 61190144,
+      heapUsed: 35757848,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117074.046 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:09:26'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:10:13 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 62636,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 95821824,
+      heapTotal: 61190144,
+      heapUsed: 35665008,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117121.171 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:10:13'
+}
+{
+  error: C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18
+      new Sentry.Integrations.Http({ tracing: true }),
+                              ^
+  
+  TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18\n' +
+    '    new Sentry.Integrations.Http({ tracing: true }),\n' +
+    '                            ^\n' +
+    '\n' +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18\n' +
+    '    new Sentry.Integrations.Http({ tracing: true }),\n' +
+    '                            ^\n' +
+    '\n' +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:10:24 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 64168,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [ 'C:\\Program Files\\nodejs\\node.exe' ],
+    memoryUsage: {
+      rss: 94486528,
+      heapTotal: 60665856,
+      heapUsed: 34751296,
+      external: 2494105,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117132.625 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:10:24'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:11:24 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 1256,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 95539200,
+      heapTotal: 60928000,
+      heapUsed: 35613376,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117191.781 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:11:24'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:14:11 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 68140,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 95186944,
+      heapTotal: 60928000,
+      heapUsed: 35561840,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117358.953 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:14:11'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:18:18 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 66136,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94449664,
+      heapTotal: 60665856,
+      heapUsed: 34787376,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117606.359 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:18:18'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:19:15 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 65560,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94863360,
+      heapTotal: 60665856,
+      heapUsed: 34981920,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117663.234 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:19:15'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:21:20 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 69648,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94752768,
+      heapTotal: 60928000,
+      heapUsed: 34794480,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117788.593 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:21:20'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:23:04 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 71752,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94621696,
+      heapTotal: 60928000,
+      heapUsed: 34761416,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117892.218 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:23:04'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:23:51 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 66012,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94740480,
+      heapTotal: 60665856,
+      heapUsed: 34771736,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 117939.328 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:23:51'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:25:23 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 66156,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94453760,
+      heapTotal: 60665856,
+      heapUsed: 34756728,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 118031.218 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:25:23'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\middleware\index.js:8:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js:8:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:25:50 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 71976,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 94253056,
+      heapTotal: 60665856,
+      heapUsed: 34766992,
+      external: 2479185,
+      arrayBuffers: 18639
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 118058.015 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\middleware\\index.js',
+      function: null,
+      line: 8,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:25:50'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\security.js:7:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\security.js:7:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\security.js:7:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:28:43 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 70316,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 105975808,
+      heapTotal: 64073728,
+      heapUsed: 31108256,
+      external: 2582145,
+      arrayBuffers: 51407
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 118231.031 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\security.js',
+      function: null,
+      line: 7,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:28:43'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\services\emailService.js:3:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\services\\emailService.js:3:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\services\\emailService.js:3:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:29:38 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 70152,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 103763968,
+      heapTotal: 62500864,
+      heapUsed: 42049424,
+      external: 3520184,
+      arrayBuffers: 67956
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 118286 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\services\\emailService.js',
+      function: null,
+      line: 3,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:29:38'
+}
+{
+  error: TypeError: Cannot read properties of undefined (reading 'Http')
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\config\sentry.js:18:29)
+      at Module._compile (node:internal/modules/cjs/loader:1688:14)
+      at Object..js (node:internal/modules/cjs/loader:1820:10)
+      at Module.load (node:internal/modules/cjs/loader:1423:32)
+      at Function._load (node:internal/modules/cjs/loader:1246:12)
+      at TracingChannel.traceSync (node:diagnostics_channel:322:14)
+      at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)
+      at Module.require (node:internal/modules/cjs/loader:1445:12)
+      at require (node:internal/modules/helpers:135:16)
+      at Object.<anonymous> (C:\Users\volde\Desktop\celora\Celora_Project\celora-backend\src\services\emailService.js:3:25),
+  level: 'error',
+  message: "uncaughtException: Cannot read properties of undefined (reading 'Http')\n" +
+    "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\services\\emailService.js:3:25)',
+  stack: "TypeError: Cannot read properties of undefined (reading 'Http')\n" +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js:18:29)\n' +
+    '    at Module._compile (node:internal/modules/cjs/loader:1688:14)\n' +
+    '    at Object..js (node:internal/modules/cjs/loader:1820:10)\n' +
+    '    at Module.load (node:internal/modules/cjs/loader:1423:32)\n' +
+    '    at Function._load (node:internal/modules/cjs/loader:1246:12)\n' +
+    '    at TracingChannel.traceSync (node:diagnostics_channel:322:14)\n' +
+    '    at wrapModuleLoad (node:internal/modules/cjs/loader:235:24)\n' +
+    '    at Module.require (node:internal/modules/cjs/loader:1445:12)\n' +
+    '    at require (node:internal/modules/helpers:135:16)\n' +
+    '    at Object.<anonymous> (C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\services\\emailService.js:3:25)',
+  exception: true,
+  date: 'Wed Sep 10 2025 19:52:12 GMT+0200 (sentraleuropeisk sommertid)',
+  process: {
+    pid: 69948,
+    uid: null,
+    gid: null,
+    cwd: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend',
+    execPath: 'C:\\Program Files\\nodejs\\node.exe',
+    version: 'v22.18.0',
+    argv: [
+      'C:\\Program Files\\nodejs\\node.exe',
+      'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\server.js'
+    ],
+    memoryUsage: {
+      rss: 104910848,
+      heapTotal: 62763008,
+      heapUsed: 41421984,
+      external: 3546548,
+      arrayBuffers: 68132
+    }
+  },
+  os: { loadavg: [ 0, 0, 0 ], uptime: 119640.109 },
+  trace: [
+    {
+      column: 29,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\config\\sentry.js',
+      function: null,
+      line: 18,
+      method: null,
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module._compile',
+      line: 1688,
+      method: '_compile',
+      native: false
+    },
+    {
+      column: 10,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Object..js',
+      line: 1820,
+      method: '.js',
+      native: false
+    },
+    {
+      column: 32,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.load',
+      line: 1423,
+      method: 'load',
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Function._load',
+      line: 1246,
+      method: '_load',
+      native: false
+    },
+    {
+      column: 14,
+      file: 'node:diagnostics_channel',
+      function: 'TracingChannel.traceSync',
+      line: 322,
+      method: 'traceSync',
+      native: false
+    },
+    {
+      column: 24,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'wrapModuleLoad',
+      line: 235,
+      method: null,
+      native: false
+    },
+    {
+      column: 12,
+      file: 'node:internal/modules/cjs/loader',
+      function: 'Module.require',
+      line: 1445,
+      method: 'require',
+      native: false
+    },
+    {
+      column: 16,
+      file: 'node:internal/modules/helpers',
+      function: 'require',
+      line: 135,
+      method: null,
+      native: false
+    },
+    {
+      column: 25,
+      file: 'C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\src\\services\\emailService.js',
+      function: null,
+      line: 3,
+      method: null,
+      native: false
+    }
+  ],
+  service: 'celora-backend',
+  timestamp: '2025-09-10 19:52:12'
+}

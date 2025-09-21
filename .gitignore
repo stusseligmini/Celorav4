@@ -1,0 +1,9 @@
+node_modules
+.dist
+.build
+.next
+.env*
+coverage
+.idea
+.DS_Store
+pnpm-lock.yaml

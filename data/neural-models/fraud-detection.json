@@ -1,0 +1,42 @@
+{
+  "version": "1.0.0",
+  "architecture": "quantum-enhanced-cnn",
+  "layers": [
+    {
+      "type": "input",
+      "size": 8
+    },
+    {
+      "type": "dense",
+      "size": 16,
+      "activation": "relu"
+    },
+    {
+      "type": "quantum-layer",
+      "qubits": 4
+    },
+    {
+      "type": "dense",
+      "size": 8,
+      "activation": "tanh"
+    },
+    {
+      "type": "output",
+      "size": 1,
+      "activation": "sigmoid"
+    }
+  ],
+  "training": {
+    "algorithm": "quantum-gradient-descent",
+    "epochs": 1000,
+    "learningRate": 0.001,
+    "quantumCoherence": 0.95
+  },
+  "metrics": {
+    "accuracy": 0.97,
+    "precision": 0.95,
+    "recall": 0.96,
+    "quantumFidelity": 0.99
+  },
+  "lastUpdated": "2025-09-20T11:52:43.411Z"
+}

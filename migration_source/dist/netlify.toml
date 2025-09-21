@@ -1,0 +1,9 @@
+[build]
+publish = "./dist"
+command = "echo "Build completed""
+
+[[redirects]]
+from = "/api/*"
+to = "https://celora-backend.onrender.com/api/:splat"
+status = 200
+

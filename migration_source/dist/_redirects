@@ -1,0 +1,10 @@
+# Force HTTPS redirect
+http://celora.net/* https://celora.net/:splat 301!
+http://www.celora.net/* https://celora.net/:splat 301!
+https://www.celora.net/* https://celora.net/:splat 301!
+
+# API proxy
+/api/* https://celora-platform.onrender.com/api/:splat 200
+
+# SPA fallback
+/* /index.html 200

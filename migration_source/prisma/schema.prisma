@@ -1,0 +1,293 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id              String    @id @default(cuid())
+  email           String    @unique
+  username        String?   @unique
+  passwordHash    String?
+  
+  // Email verification
+  emailVerified               Boolean   @default(false)
+  emailVerificationToken      String?   @unique
+  emailVerificationExpires    DateTime?
+  verifiedAt                  DateTime?
+  
+  // Password reset
+  passwordResetToken          String?   @unique
+  passwordResetExpires        DateTime?
+  passwordChangedAt           DateTime?
+  
+  // Security and tokens
+  tokenVersion                Int       @default(0)
+  twoFactorSecret             String?
+  twoFactorEnabled            Boolean   @default(false)
+  twoFactorBackupCodes        String?
+  
+  // Login attempts and locking
+  loginAttempts               Int       @default(0)
+  lockedUntil                 DateTime?
+  
+  // Solana wallet
+  walletAddress               String?   @unique
+  publicKey                   String?
+  encryptedPrivateKey         String?
+  walletType                  String?
+  
+  // Profile
+  firstName                   String?
+  lastName                    String?
+  avatar                      String?
+  bio                         String?
+  
+  // Preferences and settings
+  notificationSettings        Json?
+  tradingSettings            Json?
+  language                   String    @default("en")
+  timezone                   String    @default("UTC")
+  currency                   String    @default("USD")
+  preferredCurrency          String    @default("USD")
+  theme                      String    @default("light")
+  
+  // Status and security
+  isActive                   Boolean   @default(true)
+  isVerified                 Boolean   @default(false)
+  role                       String    @default("USER")
+  
+  // Timestamps
+  lastLogin                  DateTime?
+  createdAt                  DateTime  @default(now())
+  updatedAt                  DateTime  @updatedAt
+  
+  // Relations
+  wallets                    Wallet[]
+  settings                   UserSettings?
+  transactions               Transaction[]
+  auditLog                   AuditLog[]
+  portfolios                 Portfolio[]
+  userSessions              UserSession[]
+
+  @@map("users")
+}
+
+model UserSettings {
+  id                         String    @id @default(cuid())
+  userId                     String    @unique
+  
+  // Spending and security limits
+  spendingLimit             Float   @default(1000.0)
+  dailyLimit                Float   @default(1000.0)
+  monthlyLimit              Float   @default(5000.0)
+  perTransactionLimit       Float @default(500.0)
+  
+  // Current balances and tracking
+  balance                   Float   @default(0.0)
+  dailySpent                Float   @default(0.0)
+  monthlySpent              Float   @default(0.0)
+  totalSpent                Float   @default(0.0)
+  
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+
+  user                      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_settings")
+}
+
+model Wallet {
+  id              String    @id @default(cuid())
+  userId          String
+  
+  // Wallet identification
+  address         String    @unique
+  publicKey       String?
+  
+  // Wallet properties
+  name            String?
+  type            String    @default("SOLANA") // SOLANA, BTC, ETH, etc
+  network         String    @default("mainnet") // mainnet, devnet, testnet
+  balance         Float   @default(0.0)
+  
+  // Status and settings
+  isActive        Boolean   @default(true)
+  isPrimary       Boolean   @default(false)
+  
+  // Timestamps
+  lastSyncedAt    DateTime?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  // Relations
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions    Transaction[]
+
+  @@index([userId])
+  @@index([address])
+  @@map("wallets")
+}
+
+model Transaction {
+  id              String      @id @default(cuid())
+  userId          String
+  walletId        String?
+  
+  // Transaction identification
+  signature       String?     @unique // Solana transaction signature
+  hash            String?     // General transaction hash
+  
+  // Transaction details
+  type            String      // SEND, RECEIVE, SWAP, STAKE, etc
+  status          String      @default("PENDING") // PENDING, CONFIRMED, FAILED, CANCELLED
+  amount          Float
+  fee             Float?    @default(0)
+  feeAmount       Float?
+  
+  // Addresses
+  fromAddress     String?
+  toAddress       String?
+  
+  // Blockchain details
+  blockHeight     Int?
+  confirmations   Int?        @default(0)
+  
+  // Additional metadata
+  memo            String?
+  metadata        Json?
+  
+  // Timestamps
+  blockTime       DateTime?
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  // Relations
+  user            User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet          Wallet?     @relation(fields: [walletId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([signature])
+  @@index([status])
+  @@index([type])
+  @@map("transactions")
+}
+
+model AuditLog {
+  id              String    @id @default(cuid())
+  userId          String?
+  
+  // Action details
+  action          String
+  resource        String?
+  resourceId      String?
+  
+  // Request details
+  method          String?
+  endpoint        String?
+  ipAddress       String?
+  userAgent       String?
+  
+  // Result
+  status          String    @default("SUCCESS") // SUCCESS, FAILURE, ERROR
+  details         Json?
+  error           String?
+  
+  // Timestamps
+  timestamp       DateTime  @default(now())
+
+  // Relations
+  user            User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  @@index([userId])
+  @@index([action])
+  @@index([timestamp])
+  @@map("audit_logs")
+}
+
+model MarketData {
+  id              String    @id @default(cuid())
+  symbol          String    @unique
+  name            String
+  price           Float
+  change24h       Float
+  volume24h       Float
+  marketCap       Float
+  rank            Int?
+  priceHistory    Json?
+  isActive        Boolean   @default(true)
+  lastUpdated     DateTime  @default(now())
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([symbol])
+  @@index([rank])
+  @@map("market_data")
+}
+
+model Portfolio {
+  id              String    @id @default(cuid())
+  userId          String
+  name            String
+  description     String?
+  isActive        Boolean   @default(true)
+  isDefault       Boolean   @default(false)
+  totalValue      Float     @default(0)
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  assets          PortfolioAsset[]
+
+  @@index([userId])
+  @@map("portfolios")
+}
+
+model PortfolioAsset {
+  id              String    @id @default(cuid())
+  portfolioId     String
+  symbol          String
+  quantity        Float
+  amount          Float     // alias for quantity for backward compatibility
+  averageCost     Float
+  currentPrice    Float     @default(0)
+  notes           String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  portfolio       Portfolio @relation(fields: [portfolioId], references: [id], onDelete: Cascade)
+
+  @@unique([portfolioId, symbol])
+  @@index([portfolioId])
+  @@map("portfolio_assets")
+}
+
+model UserSession {
+  id              String    @id @default(cuid())
+  userId          String
+  token           String    @unique
+  refreshToken    String?   @unique
+  expiresAt       DateTime
+  isActive        Boolean   @default(true)
+  ipAddress       String?
+  userAgent       String?
+  deviceInfo      String?
+  
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  user            User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@index([token])
+  @@index([refreshToken])
+  @@map("user_sessions")
+}

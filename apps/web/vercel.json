@@ -1,0 +1,62 @@
+{
+  "name": "celora-production",
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/next"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "/api/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/$1"
+    }
+  ],
+  "env": {
+    "NEXT_PUBLIC_APP_URL": "@celora-app-url",
+    "NEXT_PUBLIC_SUPABASE_URL": "@celora-supabase-url",
+    "NEXT_PUBLIC_SUPABASE_ANON_KEY": "@celora-supabase-anon-key",
+    "SUPABASE_SERVICE_ROLE_KEY": "@celora-supabase-service-key",
+    "NEXTAUTH_SECRET": "@celora-nextauth-secret",
+    "KMS_MASTER_KEY_ID": "@celora-kms-master-key-id",
+    "ENCRYPTION_KEY_ROTATION_DAYS": "30",
+    "ENABLE_VIRTUAL_CARDS": "true",
+    "ENABLE_CRYPTO_WALLETS": "true",
+    "ENABLE_CROSS_PLATFORM_TRANSFERS": "true",
+    "ENABLE_RISK_SCORING": "true",
+    "ENABLE_PIN_PROTECTION": "true",
+    "ENABLE_AUDIT_LOGGING": "true",
+    "LOG_LEVEL": "info",
+    "RATE_LIMIT_REQUESTS_PER_MINUTE": "100",
+    "RATE_LIMIT_WINDOW_MS": "60000"
+  },
+  "functions": {
+    "app/api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "*"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization"
+        }
+      ]
+    }
+  ]
+}

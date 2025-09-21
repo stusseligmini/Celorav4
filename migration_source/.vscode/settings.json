@@ -1,0 +1,17 @@
+{
+    "python.defaultInterpreterPath": "C:/Users/volde/Desktop/celora/Celora_Project/.venv/Scripts/python.exe",
+    "jupyter.defaultKernel": "python3",
+    "jupyter.kernels.filter": [],
+    "python.terminal.activateEnvironment": true,
+    "python.terminal.activateEnvInCurrentTerminal": true,
+    "files.associations": {
+        "*.ipynb": "jupyter-notebook"
+    },
+    "python.analysis.extraPaths": [
+        "C:/Users/volde/Desktop/celora/Celora_Project/.venv/Lib/site-packages"
+    ],
+    "python.linting.enabled": true,
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": false,
+    "git.ignoreLimitWarning": true
+}

@@ -1,0 +1,229 @@
+
+> @celora/infrastructure@0.1.0 test
+> vitest
+
+[33mThe CJS build of Vite's Node API is deprecated. See https://vite.dev/guide/troubleshooting.html#vite-cjs-node-api-deprecated for more details.[39m
+
+[1m[7m[34m DEV [39m[27m[22m [34mv2.1.9 [39m[90mC:/Users/volde/Desktop/CeloraV2/packages/infrastructure[39m
+
+ [32m✓[39m src/__tests__/transaction.logic.test.ts [2m([22m[2m4 tests[22m[2m)[22m[90m 4[2mms[22m[39m
+ [31m❯[39m src/__tests__/env.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[90m 12[2mms[22m[39m
+[31m   [31m×[31m loadEnv[2m > [22mvalidates feature flags format[90m 6[2mms[22m[31m[39m
+[31m     → the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string[39m
+ [32m✓[39m src/__tests__/crypto.test.ts [2m([22m[2m1 test[22m[2m)[22m[90m 15[2mms[22m[39m
+{"level":50,"time":"2025-09-20T15:46:02.461Z","error":{"message":"Database error"},"message":"Failed to create virtual card"}
+{"level":50,"time":"2025-09-20T15:46:02.465Z","error":{"message":"Update failed"},"message":"Failed to update card balance"}
+ [32m✓[39m src/__tests__/supabaseService.test.ts [2m([22m[2m8 tests[22m[2m)[22m[90m 21[2mms[22m[39m
+{"level":50,"time":"2025-09-20T15:46:02.740Z","error":{"message":"TypeError: fetch failed","details":"TypeError: fetch failed\n    at node:internal/deps/undici/undici:13510:13\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at SupabaseService.updateCardStatus (C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\dist\\supabaseService.js:212:31)\n    at C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\src\\__tests__\\supabaseService.cardOperations.test.ts:52:22\n    at file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1262:5)","hint":"","code":""},"message":"Failed to update card status"}
+{"level":50,"time":"2025-09-20T15:46:02.746Z","error":{"message":"TypeError: fetch failed","details":"TypeError: fetch failed\n    at node:internal/deps/undici/undici:13510:13\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at SupabaseService.updateCardStatus (C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\dist\\supabaseService.js:212:31)\n    at C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\src\\__tests__\\supabaseService.cardOperations.test.ts:75:22\n    at file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1262:5)","hint":"","code":""},"message":"Failed to update card status"}
+{"level":50,"time":"2025-09-20T15:46:02.748Z","error":{"message":"TypeError: fetch failed","details":"TypeError: fetch failed\n    at node:internal/deps/undici/undici:13510:13\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at SupabaseService.updateCardStatus (C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\dist\\supabaseService.js:212:31)\n    at C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\src\\__tests__\\supabaseService.cardOperations.test.ts:85:22\n    at file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1262:5)","hint":"","code":""},"message":"Failed to update card status"}
+ [31m❯[39m src/__tests__/supabaseService.cardOperations.test.ts [2m([22m[2m6 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[90m 104[2mms[22m[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mupdateCardStatus[2m > [22mshould successfully update card status[90m 88[2mms[22m[31m[39m
+[31m     → expected false to be true // Object.is equality[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return low risk for new cards with no transactions[90m 5[2mms[22m[31m[39m
+[31m     → expected "spy" to be called with arguments: [ 'transactions' ][90m
+
+Received: 
+
+[31m[90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould calculate risk based on transaction activity[90m 2[2mms[22m[31m[39m
+[31m     → expected 0.1 to be greater than 0.1[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return fallback risk score on error[90m 2[2mms[22m[31m[39m
+[31m     → expected 0.1 to be 0.5 // Object.is equality[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 5 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/env.test.ts[2m > [22mloadEnv[2m > [22mvalidates feature flags format
+[31m[1mAssertionError[22m: the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string[39m
+[36m [2m❯[22m src/__tests__/env.test.ts:[2m63:19[22m[39m
+    [90m 61| [39m    [35mconst[39m flags [33m=[39m env[33m.[39m[33mFEATURE_FLAGS[39m[33m;[39m
+    [90m 62| [39m
+    [90m 63| [39m    [34mexpect[39m(flags)[33m.[39m[34mtoContain[39m([32m'flag1:true'[39m)[33m;[39m
+    [90m   | [39m                  [31m^[39m
+    [90m 64| [39m    [34mexpect[39m(flags)[33m.[39m[34mtoContain[39m([32m'flag2:false'[39m)[33m;[39m
+    [90m 65| [39m    [34mexpect[39m(flags)[33m.[39m[34mtoContain[39m([32m'flag3:true'[39m)[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/5]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mupdateCardStatus[2m > [22mshould successfully update card status
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m54:22[22m[39m
+    [90m 52| [39m      [35mconst[39m result [33m=[39m [35mawait[39m service[33m.[39m[34mupdateCardStatus[39m([32m'card-123'[39m[33m,[39m [32m'user-[39m…
+    [90m 53| [39m
+    [90m 54| [39m      [34mexpect[39m(result)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                     [31m^[39m
+    [90m 55| [39m      [34mexpect[39m(mockSupabaseClient[33m.[39m[35mfrom[39m)[33m.[39m[34mtoHaveBeenCalledWith[39m([32m'virtual_ca[39m…
+    [90m 56| [39m      [34mexpect[39m(mockUpdate)[33m.[39m[34mtoHaveBeenCalledWith[39m({
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/5]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return low risk for new cards with no transactions
+[31m[1mAssertionError[22m: expected "spy" to be called with arguments: [ 'transactions' ][90m
+
+Received: 
+
+[31m[90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m111:39[22m[39m
+    [90m109| [39m
+    [90m110| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBe[39m([34m0.1[39m)[33m;[39m
+    [90m111| [39m      [34mexpect[39m(mockSupabaseClient[33m.[39m[35mfrom[39m)[33m.[39m[34mtoHaveBeenCalledWith[39m([32m'transactio[39m…
+    [90m   | [39m                                      [31m^[39m
+    [90m112| [39m    })[33m;[39m
+    [90m113| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/5]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould calculate risk based on transaction activity
+[31m[1mAssertionError[22m: expected 0.1 to be greater than 0.1[39m
+[2m Test Files [22m [1m[31m2 failed[39m[22m[2m | [22m[1m[32m3 passed[39m[22m[90m (5)[39m
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m138:25[22m[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m18 passed[39m[22m[90m (23)[39m
+[2m   Start at [22m 17:46:01
+[2m   Duration [22m 1.56s[2m (transform 745ms, setup 0ms, collect 1.07s, tests 156ms, environment 1ms, prepare 1.10s)[22m
+
+    [90m136| [39m      [35mconst[39m riskScore [33m=[39m [35mawait[39m service[33m.[39m[34mgetCardRiskScore[39m([32m'card-123'[39m[33m,[39m [32m'us[39m…
+    [90m137| [39m
+[1m[7m[31m FAIL [39m[27m[22m [31mTests failed. Watching for file changes...[39m
+    [90m138| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBeGreaterThan[39m([34m0.1[39m)[33m;[39m
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+    [90m   | [39m                        [31m^[39m
+    [90m139| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBeLessThanOrEqual[39m([34m0.95[39m)[33m;[39m
+    [90m140| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/5]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return fallback risk score on error
+[31m[1mAssertionError[22m: expected 0.1 to be 0.5 // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0.5[39m
+[31m+ 0.1[39m
+
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m157:25[22m[39m
+    [90m155| [39m      [35mconst[39m riskScore [33m=[39m [35mawait[39m service[33m.[39m[34mgetCardRiskScore[39m([32m'card-123'[39m[33m,[39m [32m'us[39m…
+    [90m156| [39m
+    [90m157| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBe[39m([34m0.5[39m)[33m;[39m
+    [90m   | [39m                        [31m^[39m
+    [90m158| [39m    })[33m;[39m
+    [90m159| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[5/5]⎯[22m[39m
+
+c[3J[1m[7m[34m RERUN [39m[27m[22m [34m[2mdist/index.js [22m[34mx1 [34m[39m
+
+ [31m❯[39m src/__tests__/env.test.ts [2m([22m[2m4 tests[22m[2m | [22m[31m1 failed[39m[2m)[22m[90m 12[2mms[22m[39m
+[31m   [31m×[31m loadEnv[2m > [22mvalidates feature flags format[90m 6[2mms[22m[31m[39m
+[31m     → the given combination of arguments (undefined and string) is invalid for this assertion. You can use an array, a map, an object, a set, a string, or a weakset instead of a string[39m
+{"level":50,"time":"2025-09-20T15:46:03.331Z","error":{"message":"TypeError: fetch failed","details":"TypeError: fetch failed\n    at node:internal/deps/undici/undici:13510:13\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at SupabaseService.updateCardStatus (C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\dist\\supabaseService.js:212:31)\n    at C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\src\\__tests__\\supabaseService.cardOperations.test.ts:52:22\n    at file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1262:5)","hint":"","code":""},"message":"Failed to update card status"}
+{"level":50,"time":"2025-09-20T15:46:03.337Z","error":{"message":"TypeError: fetch failed","details":"TypeError: fetch failed\n    at node:internal/deps/undici/undici:13510:13\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at SupabaseService.updateCardStatus (C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\dist\\supabaseService.js:212:31)\n    at C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\src\\__tests__\\supabaseService.cardOperations.test.ts:75:22\n    at file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1262:5)","hint":"","code":""},"message":"Failed to update card status"}
+{"level":50,"time":"2025-09-20T15:46:03.339Z","error":{"message":"TypeError: fetch failed","details":"TypeError: fetch failed\n    at node:internal/deps/undici/undici:13510:13\n    at processTicksAndRejections (node:internal/process/task_queues:105:5)\n    at SupabaseService.updateCardStatus (C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\dist\\supabaseService.js:212:31)\n    at C:\\Users\\volde\\Desktop\\CeloraV2\\packages\\infrastructure\\src\\__tests__\\supabaseService.cardOperations.test.ts:85:22\n    at file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:533:5\n    at runTest (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1056:11)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runSuite (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1205:15)\n    at runFiles (file:///C:/Users/volde/Desktop/CeloraV2/node_modules/@vitest/runner/dist/index.js:1262:5)","hint":"","code":""},"message":"Failed to update card status"}
+ [31m❯[39m src/__tests__/supabaseService.cardOperations.test.ts [2m([22m[2m6 tests[22m[2m | [22m[31m4 failed[39m[2m)[22m[90m 62[2mms[22m[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mupdateCardStatus[2m > [22mshould successfully update card status[90m 48[2mms[22m[31m[39m
+[31m     → expected false to be true // Object.is equality[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return low risk for new cards with no transactions[90m 4[2mms[22m[31m[39m
+[31m     → expected "spy" to be called with arguments: [ 'transactions' ][90m
+
+Received: 
+
+[31m[90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould calculate risk based on transaction activity[90m 2[2mms[22m[31m[39m
+[31m     → expected 0.1 to be greater than 0.1[39m
+[31m   [31m×[31m SupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return fallback risk score on error[90m 2[2mms[22m[31m[39m
+[31m     → expected 0.1 to be 0.5 // Object.is equality[39m
+
+[31m⎯⎯⎯⎯⎯⎯⎯[1m[7m Failed Tests 4 [27m[22m⎯⎯⎯⎯⎯⎯⎯[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mupdateCardStatus[2m > [22mshould successfully update card status
+[31m[1mAssertionError[22m: expected false to be true // Object.is equality[39m
+
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- true[39m
+[31m+ false[39m
+
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m54:22[22m[39m
+    [90m 52| [39m      [35mconst[39m result [33m=[39m [35mawait[39m service[33m.[39m[34mupdateCardStatus[39m([32m'card-123'[39m[33m,[39m [32m'user-[39m…
+    [90m 53| [39m
+    [90m 54| [39m      [34mexpect[39m(result)[33m.[39m[34mtoBe[39m([35mtrue[39m)[33m;[39m
+    [90m   | [39m                     [31m^[39m
+    [90m 55| [39m      [34mexpect[39m(mockSupabaseClient[33m.[39m[35mfrom[39m)[33m.[39m[34mtoHaveBeenCalledWith[39m([32m'virtual_ca[39m…
+    [90m 56| [39m      [34mexpect[39m(mockUpdate)[33m.[39m[34mtoHaveBeenCalledWith[39m({
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return low risk for new cards with no transactions
+[31m[1mAssertionError[22m: expected "spy" to be called with arguments: [ 'transactions' ][90m
+
+Received: 
+
+[31m[90m
+
+Number of calls: [1m0[22m
+[31m[39m
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m111:39[22m[39m
+    [90m109| [39m
+    [90m110| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBe[39m([34m0.1[39m)[33m;[39m
+    [90m111| [39m      [34mexpect[39m(mockSupabaseClient[33m.[39m[35mfrom[39m)[33m.[39m[34mtoHaveBeenCalledWith[39m([32m'transactio[39m…
+    [90m   | [39m                                      [31m^[39m
+    [90m112| [39m    })[33m;[39m
+    [90m113| [39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould calculate risk based on transaction activity
+[31m[1mAssertionError[22m: expected 0.1 to be greater than 0.1[39m
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m138:25[22m[39m
+    [90m136| [39m      [35mconst[39m riskScore [33m=[39m [35mawait[39m service[33m.[39m[34mgetCardRiskScore[39m([32m'card-123'[39m[33m,[39m [32m'us[39m…
+    [90m137| [39m
+[2m Test Files [22m [1m[31m2 failed[39m[22m[90m (2)[39m
+    [90m138| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBeGreaterThan[39m([34m0.1[39m)[33m;[39m
+[2m      Tests [22m [1m[31m5 failed[39m[22m[2m | [22m[1m[32m5 passed[39m[22m[90m (10)[39m
+[2m   Start at [22m 17:46:03
+    [90m   | [39m                        [31m^[39m
+    [90m139| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBeLessThanOrEqual[39m([34m0.95[39m)[33m;[39m
+[2m   Duration [22m 155ms
+
+    [90m140| [39m    })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/4]⎯[22m[39m
+
+[31m[1m[7m FAIL [27m[22m[39m src/__tests__/supabaseService.cardOperations.test.ts[2m > [22mSupabaseService - Card Status Operations[2m > [22mgetCardRiskScore[2m > [22mshould return fallback risk score on error
+[1m[7m[31m FAIL [39m[27m[22m [31mTests failed. Watching for file changes...[39m
+[31m[1mAssertionError[22m: expected 0.1 to be 0.5 // Object.is equality[39m
+
+       [2mpress [22m[1mh[22m[2m to show help[22m[2m, [22m[2mpress [22m[1mq[22m[2m to quit[22m
+[32m- Expected[39m
+[31m+ Received[39m
+
+[32m- 0.5[39m
+[31m+ 0.1[39m
+
+[36m [2m❯[22m src/__tests__/supabaseService.cardOperations.test.ts:[2m157:25[22m[39m
+    [90m155| [39m      [35mconst[39m riskScore [33m=[39m [35mawait[39m service[33m.[39m[34mgetCardRiskScore[39m([32m'card-123'[39m[33m,[39m [32m'us[39m…
+    [90m156| [39m
+    [90m157| [39m      [34mexpect[39m(riskScore)[33m.[39m[34mtoBe[39m([34m0.5[39m)[33m;[39m
+    [90m   | [39m                        [31m^[39m
+    [90m158| [39m    })[33m;[39m
+    [90m159| [39m  })[33m;[39m
+
+[31m[2m⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[4/4]⎯[22m[39m
+

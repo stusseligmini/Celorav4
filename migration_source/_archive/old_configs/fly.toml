@@ -1,0 +1,23 @@
+# fly.toml app configuration file generated for celora-backend on 2025-09-09T14:30:00Z
+app = "celora-backend"
+primary_region = "ams"
+
+[build]
+
+[http_service]
+  internal_port = 8000
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 1
+  processes = ["app"]
+
+[[vm]]
+  cpu_kind = "shared"
+  cpus = 1
+  memory_mb = 256
+
+[env]
+  PORT = "8000"
+  ENVIRONMENT = "production"
+  PYTHON_VERSION = "3.11"

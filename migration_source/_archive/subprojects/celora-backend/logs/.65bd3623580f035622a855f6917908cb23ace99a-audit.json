@@ -1,0 +1,20 @@
+{
+    "keep": {
+        "days": true,
+        "amount": 90
+    },
+    "auditLog": "C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\logs\\.65bd3623580f035622a855f6917908cb23ace99a-audit.json",
+    "files": [
+        {
+            "date": 1757343728488,
+            "name": "C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\logs\\security-audit-2025-09-08.log",
+            "hash": "2c4d26bdabac7d72db87da08441a4ce04d13a1aa6fe3ee940d7b0af1403f36f2"
+        },
+        {
+            "date": 1757516265980,
+            "name": "C:\\Users\\volde\\Desktop\\celora\\Celora_Project\\celora-backend\\logs\\security-audit-2025-09-10.log",
+            "hash": "98808b7a65ffd228d1467add8932756774d76233cb61381162d578e3b4f14715"
+        }
+    ],
+    "hashType": "sha256"
+}

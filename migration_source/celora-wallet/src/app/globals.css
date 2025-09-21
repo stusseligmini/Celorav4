@@ -1,0 +1,25 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f8fafc;
+  --foreground: #0f172a;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f172a;
+    --foreground: #f1f5f9;
+  }
+}
+
+body {
+  background: linear-gradient(135deg, #134e4a 0%, #0f766e 30%, #115e59 70%, #042f2e 100%);
+  color: var(--foreground);
+  font-family: 'Inter', 'Segoe UI', system-ui, sans-serif;
+  min-height: 100vh;
+}
+
+/* Beautiful deep teal gradient exactly like your image */
+.bg-gradient-celora {
+  background: linear-gradient(135deg, #134e4a 0%, #0f766e 50%, #14b8a6 100%);
+}

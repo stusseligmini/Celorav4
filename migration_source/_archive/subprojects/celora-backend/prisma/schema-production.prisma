@@ -1,0 +1,157 @@
+// Celora Production Database Schema - PostgreSQL
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// User model with KYC and security features
+model User {
+  id           String   @id @default(uuid())
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  phone        String?
+  
+  // KYC and verification
+  kycStatus    KycStatus @default(PENDING)
+  isActive     Boolean   @default(true)
+  isAdmin      Boolean   @default(false)
+  
+  // Timestamps
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  lastLoginAt  DateTime?
+  
+  // Relations
+  wallets      Wallet[]
+  virtualCards VirtualCard[]
+  transactions Transaction[]
+  
+  @@map("users")
+}
+
+// Crypto/Fiat wallets
+model Wallet {
+  id       String      @id @default(uuid())
+  userId   String
+  name     String
+  type     WalletType
+  address  String?     // Blockchain address for crypto wallets
+  balance  Float       @default(0)
+  currency String      // SOL, BTC, ETH, USD, EUR, etc.
+  isActive Boolean     @default(true)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  
+  @@map("wallets")
+}
+
+// Virtual debit/credit cards
+model VirtualCard {
+  id            String     @id @default(uuid())
+  userId        String
+  name          String
+  type          CardType
+  cardNumber    String     @unique
+  cvv           String
+  expiryDate    String
+  balance       Float      @default(0)
+  spendingLimit Float
+  status        CardStatus @default(ACTIVE)
+  isActive      Boolean    @default(true)
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  transactions Transaction[]
+  
+  @@map("virtual_cards")
+}
+
+// All financial transactions
+model Transaction {
+  id             String            @id @default(uuid())
+  userId         String
+  walletId       String?
+  virtualCardId  String?
+  
+  type           TransactionType
+  amount         Float             // Positive for credits, negative for debits
+  currency       String
+  status         TransactionStatus @default(PENDING)
+  description    String
+  merchantName   String?           // For card payments
+  
+  // Additional data as JSON
+  metadata       Json?
+  
+  // Timestamps
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relations
+  user        User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  wallet      Wallet?      @relation(fields: [walletId], references: [id], onDelete: SetNull)
+  virtualCard VirtualCard? @relation(fields: [virtualCardId], references: [id], onDelete: SetNull)
+  
+  @@map("transactions")
+}
+
+// Enums
+enum KycStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  UNDER_REVIEW
+}
+
+enum WalletType {
+  SOLANA
+  BITCOIN
+  ETHEREUM
+  FIAT
+}
+
+enum CardType {
+  DEBIT
+  CREDIT
+  PREPAID
+}
+
+enum CardStatus {
+  ACTIVE
+  FROZEN
+  CANCELLED
+  EXPIRED
+}
+
+enum TransactionType {
+  DEPOSIT
+  WITHDRAWAL
+  TRANSFER
+  CARD_PAYMENT
+  CARD_LOAD
+  QR_PAYMENT
+}
+
+enum TransactionStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  CANCELLED
+}

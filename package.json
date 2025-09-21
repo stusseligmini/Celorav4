@@ -1,0 +1,44 @@
+{
+  "name": "celora-v2-monorepo",
+  "private": true,
+  "packageManager": "npm@10.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "turbo run build",
+    "dev": "turbo run dev",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "typecheck": "turbo run typecheck",
+    "quantum-init": "node ops/quantum-init.js",
+    "audit:quantum": "node scripts/audit-quantum-crypto.js",
+    "test:crypto-primitives": "vitest packages/quantum/src/**/*.test.ts",
+    "validate:kyber-dilithium": "node scripts/validate-post-quantum.js",
+    "ai:evolve-fraud-detection": "node scripts/evolve-neural-models.js --type=fraud",
+    "ai:optimize-scaling-models": "node scripts/evolve-neural-models.js --type=scaling",
+    "benchmark:neural-performance": "node benchmark/neural-benchmark.js",
+    "deploy:neural-models": "node scripts/deploy-models.js",
+    "test:quantum": "vitest packages/quantum/**/*.test.ts",
+    "test:load-rpc-failover": "k6 run tests/load/rpc-failover.js",
+    "test:stress-funding-bridge": "k6 run tests/stress/funding-bridge.js",
+    "security:audit-card-encryption": "node security/audit-card-crypto.js",
+    "security:test-funding-isolation": "node security/test-funding-isolation.js",
+    "deploy:staging": "node ops/deploy-staging.js",
+    "deploy:production": "node ops/deploy-production.js",
+    "verify:quantum-signatures": "node ops/verify-quantum.js",
+    "verify:rpc-resilience": "node ops/verify-rpc.js",
+    "verify:neural-accuracy": "node ops/verify-neural.js",
+    "verify:funding-reconciliation": "node ops/verify-funding.js",
+    "models:publish-to-registry": "node ops/publish-models.js",
+    "monitoring:setup-model-drift-detection": "node ops/setup-monitoring.js --type=drift",
+    "monitoring:setup-performance-regression": "node ops/setup-monitoring.js --type=regression"
+  },
+  "devDependencies": {
+    "turbo": "^2.0.6",
+    "typescript": "^5.4.0",
+    "@types/node": "^22.0.0",
+    "vitest": "^2.0.0"
+  }
+}

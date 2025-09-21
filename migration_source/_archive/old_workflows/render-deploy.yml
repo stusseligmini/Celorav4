@@ -1,0 +1,10 @@
+name: Deprecated - Render deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  noop:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "This workflow is deprecated and kept for history. Use deploy-supabase.yml instead."

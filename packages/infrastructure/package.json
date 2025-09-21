@@ -1,0 +1,57 @@
+{
+  "name": "@celora/infrastructure",
+  "version": "0.1.0",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js",
+      "import": "./dist/index.js"
+    },
+    "./client": {
+      "types": "./dist/client.d.ts",
+      "require": "./dist/client.js",
+      "import": "./dist/client.js"
+    },
+    "./env": {
+      "types": "./dist/env.d.ts",
+      "require": "./dist/env.js",
+      "import": "./dist/env.js"
+    },
+    "./logger": {
+      "types": "./dist/logger.d.ts",
+      "require": "./dist/logger.js",
+      "import": "./dist/logger.js"
+    },
+    "./kms": {
+      "types": "./dist/kmsService.d.ts",
+      "require": "./dist/kmsService.js",
+      "import": "./dist/kmsService.js"
+    },
+    "./monitoring": {
+      "types": "./dist/monitoring.d.ts",
+      "require": "./dist/monitoring.js",
+      "import": "./dist/monitoring.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "dev": "tsc -p tsconfig.json -w",
+    "lint": "echo 'add linter'",
+    "test": "vitest",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "migrate": "node dist/migrate.js"
+  },
+  "dependencies": {
+    "@solana/web3.js": "^1.98.4",
+    "@supabase/supabase-js": "^2.47.7",
+    "cross-fetch": "^4.0.0",
+    "pg": "^8.16.3",
+    "pino": "^9.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.15.5"
+  }
+}

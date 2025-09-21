@@ -1,0 +1,11 @@
+{
+  "keyId": "master-cel-mfs7lkyc-xn0f8",
+  "algorithm": "kyber1024",
+  "created": "2025-09-20T11:52:43.413Z",
+  "rotationSchedule": "monthly",
+  "backupLocations": [
+    "vault-primary",
+    "vault-secondary",
+    "hsm-backup"
+  ]
+}
