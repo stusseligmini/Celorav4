@@ -379,7 +379,7 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+      <div className="cyber-card w-full max-w-md mx-4 glow-cyan-strong">
         <div className="p-6">
           {/* Progress bar */}
           <div className="mb-6">

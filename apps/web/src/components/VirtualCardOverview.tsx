@@ -214,11 +214,11 @@ export function VirtualCardOverview() {
 
   if (loading) {
     return (
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="cyber-card p-6">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded mb-4"></div>
-          <div className="h-32 bg-gray-200 rounded-lg mb-4"></div>
-          <div className="h-6 bg-gray-200 rounded w-3/4"></div>
+          <div className="h-8 bg-gray-700 rounded mb-4"></div>
+          <div className="h-32 bg-gray-700 rounded-lg mb-4"></div>
+          <div className="h-6 bg-gray-700 rounded w-3/4"></div>
         </div>
       </div>
     );
@@ -226,20 +226,20 @@ export function VirtualCardOverview() {
 
   if (!user) {
     return (
-      <div className="bg-white rounded-lg shadow p-6">
-        <h2 className="text-xl font-semibold mb-4">Virtual Cards</h2>
-        <p className="text-gray-600">Please sign in to view your virtual cards.</p>
+      <div className="cyber-card p-6">
+        <h2 className="text-xl font-semibold mb-4 text-cyan-300">Virtual Cards</h2>
+        <p className="text-gray-300">Please sign in to view your virtual cards.</p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white rounded-lg shadow p-6">
+    <div className="cyber-card p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold">Virtual Cards</h2>
+        <h2 className="text-xl font-semibold text-cyan-300">Virtual Cards</h2>
         <button
           onClick={handleCreateCard}
-          className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="btn-cyan"
         >
           Add Card
         </button>
@@ -247,7 +247,7 @@ export function VirtualCardOverview() {
 
       {cards.length === 0 ? (
         <div className="text-center py-8">
-          <div className="text-gray-400 text-4xl mb-4">💳</div>
+          <div className="text-cyan-400 text-4xl mb-4">💳</div>
           <p className="text-gray-600 mb-4">No virtual cards yet</p>
           <button
             onClick={handleCreateCard}

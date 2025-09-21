@@ -66,17 +66,17 @@ export function AuthModal({ isOpen, onClose, defaultTab = 'signin' }: AuthModalP
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md mx-4">
+    <div className="fixed inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+      <div className="cyber-card w-full max-w-md mx-4 glow-cyan">
         <div className="p-6">
           {/* Header */}
           <div className="flex justify-between items-center mb-6">
-            <h2 className="text-2xl font-bold text-gray-900">
+            <h2 className="text-2xl font-bold text-cyan-300">
               {activeTab === 'signin' ? 'Sign In' : 'Create Account'}
             </h2>
             <button
               onClick={onClose}
-              className="text-gray-400 hover:text-gray-600"
+              className="text-gray-400 hover:text-cyan-400"
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -85,12 +85,12 @@ export function AuthModal({ isOpen, onClose, defaultTab = 'signin' }: AuthModalP
           </div>
 
           {/* Tab Navigation */}
-          <div className="flex mb-6 bg-gray-100 rounded-lg p-1">
+          <div className="flex mb-6 bg-gray-800 rounded-lg p-1 border border-gray-700">
             <button
               className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'signin'
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-cyan-600 text-gray-900 shadow-sm glow-cyan'
+                  : 'text-gray-300 hover:text-cyan-300'
               }`}
               onClick={() => switchTab('signin')}
             >
@@ -99,8 +99,8 @@ export function AuthModal({ isOpen, onClose, defaultTab = 'signin' }: AuthModalP
             <button
               className={`flex-1 py-2 px-4 rounded-md text-sm font-medium transition-colors ${
                 activeTab === 'signup'
-                  ? 'bg-white text-blue-600 shadow-sm'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'bg-cyan-600 text-gray-900 shadow-sm glow-cyan'
+                  : 'text-gray-300 hover:text-cyan-300'
               }`}
               onClick={() => switchTab('signup')}
             >
@@ -110,14 +110,14 @@ export function AuthModal({ isOpen, onClose, defaultTab = 'signin' }: AuthModalP
 
           {/* Error/Success Messages */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="mb-4 p-3 bg-red-900 border border-red-700 rounded-md">
+              <p className="text-sm text-red-300">{error}</p>
             </div>
           )}
           
           {message && (
-            <div className="mb-4 p-3 bg-green-50 border border-green-200 rounded-md">
-              <p className="text-sm text-green-600">{message}</p>
+            <div className="mb-4 p-3 bg-green-900 border border-green-700 rounded-md">
+              <p className="text-sm text-green-300">{message}</p>
             </div>
           )}
 
@@ -125,7 +125,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = 'signin' }: AuthModalP
           <form onSubmit={handleSubmit} className="space-y-4">
             {activeTab === 'signup' && (
               <div>
-                <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
+                <label htmlFor="fullName" className="block text-sm font-medium text-cyan-300 mb-1">
                   Full Name
                 </label>
                 <input
@@ -133,7 +133,7 @@ export function AuthModal({ isOpen, onClose, defaultTab = 'signin' }: AuthModalP
                   id="fullName"
                   value={fullName}
                   onChange={(e) => setFullName(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                  className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100"
                   placeholder="Enter your full name"
                   required
                 />
