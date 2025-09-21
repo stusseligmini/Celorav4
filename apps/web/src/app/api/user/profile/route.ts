@@ -16,7 +16,7 @@ export async function POST(request: NextRequest) {
 
     // Create or update user profile
     const { data, error } = await supabase
-      .from('user_profiles')
+      .from('profiles')
       .upsert({
         id: userId,
         email,

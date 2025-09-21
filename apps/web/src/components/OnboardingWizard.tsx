@@ -163,41 +163,41 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
         return (
           <div className="space-y-4">
             <div className="text-center mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Welcome to Celora!</h3>
-              <p className="text-gray-600">Let's set up your profile</p>
+              <h3 className="text-lg font-bold text-cyan-300 font-mono neon-text">INITIALIZE USER PROFILE</h3>
+              <p className="text-gray-400 font-mono">ENTER PERSONAL DATA</p>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Full Name
+              <label className="block text-sm font-medium text-cyan-300 mb-1 font-mono">
+                FULL NAME
               </label>
               <input
                 type="text"
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100 placeholder-gray-400 font-mono"
                 placeholder="Enter your full name"
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number (Optional)
+              <label className="block text-sm font-medium text-cyan-300 mb-1 font-mono">
+                PHONE NUMBER (OPTIONAL)
               </label>
               <input
                 type="tel"
                 value={phone}
                 onChange={(e) => setPhone(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100 placeholder-gray-400 font-mono"
                 placeholder="+1 (555) 123-4567"
               />
             </div>
 
             <button
               onClick={handleStep1Submit}
-              className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+              className="w-full btn-cyan font-mono tracking-wide"
             >
-              Continue
+              CONTINUE PROTOCOL
             </button>
           </div>
         );
@@ -206,26 +206,26 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
         return (
           <div className="space-y-4">
             <div className="text-center mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Create Your Wallet</h3>
-              <p className="text-gray-600">Set up your digital wallet for crypto and fiat currencies</p>
+              <h3 className="text-lg font-bold text-cyan-300 font-mono neon-text">CREATE WALLET MODULE</h3>
+              <p className="text-gray-400 font-mono">CONFIGURE DIGITAL VAULT</p>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Wallet Name
+              <label className="block text-sm font-medium text-cyan-300 mb-1 font-mono">
+                WALLET IDENTIFIER
               </label>
               <input
                 type="text"
                 value={walletName}
                 onChange={(e) => setWalletName(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100 placeholder-gray-400 font-mono"
                 placeholder="My Wallet"
               />
             </div>
 
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-              <h4 className="font-medium text-blue-900 mb-2">Your wallet will support:</h4>
-              <ul className="text-sm text-blue-800 space-y-1">
+            <div className="cyber-card p-4 glow-cyan border border-cyan-500/30">
+              <h4 className="font-bold text-cyan-300 mb-2 font-mono">WALLET CAPABILITIES:</h4>
+              <ul className="text-sm text-cyan-200 space-y-1 font-mono">
                 <li>• USD and other fiat currencies</li>
                 <li>• Bitcoin, Ethereum, and major cryptocurrencies</li>
                 <li>• Secure key management with encryption</li>
@@ -236,15 +236,15 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
             <div className="flex space-x-3">
               <button
                 onClick={prevStep}
-                className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors"
+                className="flex-1 btn-outline-cyan font-mono"
               >
-                Back
+                BACK
               </button>
               <button
                 onClick={handleStep2Submit}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                className="flex-1 btn-cyan font-mono"
               >
-                Continue
+                CONTINUE
               </button>
             </div>
           </div>
@@ -254,56 +254,56 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
         return (
           <div className="space-y-4">
             <div className="text-center mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Secure Your Virtual Card</h3>
-              <p className="text-gray-600">Set a 4-digit PIN for your virtual card transactions</p>
+              <h3 className="text-lg font-bold text-cyan-300 font-mono neon-text">SECURITY PROTOCOL</h3>
+              <p className="text-gray-400 font-mono">SET VIRTUAL CARD PIN</p>
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                4-Digit PIN
+              <label className="block text-sm font-medium text-cyan-300 mb-1 font-mono">
+                4-DIGIT SECURITY PIN
               </label>
               <input
                 type="password"
                 value={cardPin}
                 onChange={(e) => setCardPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-center text-2xl tracking-widest"
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100 text-center text-2xl tracking-widest font-mono glow-cyan"
                 placeholder="••••"
                 maxLength={4}
               />
             </div>
             
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Confirm PIN
+              <label className="block text-sm font-medium text-cyan-300 mb-1 font-mono">
+                CONFIRM SECURITY PIN
               </label>
               <input
                 type="password"
                 value={confirmPin}
                 onChange={(e) => setPinConfirm(e.target.value.replace(/\D/g, '').slice(0, 4))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500 text-center text-2xl tracking-widest"
+                className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100 text-center text-2xl tracking-widest font-mono glow-cyan"
                 placeholder="••••"
                 maxLength={4}
               />
             </div>
 
-            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-              <p className="text-sm text-yellow-800">
-                <strong>Security Note:</strong> Your PIN will be required for all card transactions and sensitive operations.
+            <div className="cyber-card p-4 border border-yellow-500/30 bg-yellow-900/20">
+              <p className="text-sm text-yellow-300 font-mono">
+                <strong>SECURITY ALERT:</strong> PIN required for all transactions and sensitive operations.
               </p>
             </div>
 
             <div className="flex space-x-3">
               <button
                 onClick={prevStep}
-                className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors"
+                className="flex-1 btn-outline-cyan font-mono"
               >
-                Back
+                BACK
               </button>
               <button
                 onClick={handleStep3Submit}
-                className="flex-1 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                className="flex-1 btn-cyan font-mono"
               >
-                Continue
+                CONTINUE
               </button>
             </div>
           </div>
@@ -313,32 +313,32 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
         return (
           <div className="space-y-4">
             <div className="text-center mb-6">
-              <h3 className="text-lg font-semibold text-gray-900">Ready to Launch!</h3>
-              <p className="text-gray-600">Review your setup and complete onboarding</p>
+              <h3 className="text-lg font-bold text-cyan-300 font-mono neon-text">READY TO LAUNCH!</h3>
+              <p className="text-gray-400 font-mono">REVIEW SETUP AND COMPLETE ONBOARDING</p>
             </div>
             
-            <div className="bg-gray-50 rounded-lg p-4 space-y-3">
+            <div className="cyber-card p-4 space-y-3 border border-cyan-500/30">
               <div className="flex justify-between">
-                <span className="text-sm font-medium text-gray-600">Name:</span>
-                <span className="text-sm text-gray-900">{fullName}</span>
+                <span className="text-sm font-medium text-cyan-300 font-mono">Name:</span>
+                <span className="text-sm text-gray-100 font-mono">{fullName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm font-medium text-gray-600">Email:</span>
-                <span className="text-sm text-gray-900">{user?.email}</span>
+                <span className="text-sm font-medium text-cyan-300 font-mono">Email:</span>
+                <span className="text-sm text-gray-100 font-mono">{user?.email}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm font-medium text-gray-600">Wallet:</span>
-                <span className="text-sm text-gray-900">{walletName}</span>
+                <span className="text-sm font-medium text-cyan-300 font-mono">Wallet:</span>
+                <span className="text-sm text-gray-100 font-mono">{walletName}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-sm font-medium text-gray-600">Virtual Card:</span>
-                <span className="text-sm text-gray-900">PIN Protected</span>
+                <span className="text-sm font-medium text-cyan-300 font-mono">Virtual Card:</span>
+                <span className="text-sm text-gray-100 font-mono">PIN Protected</span>
               </div>
             </div>
 
-            <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-              <h4 className="font-medium text-green-900 mb-2">What's included:</h4>
-              <ul className="text-sm text-green-800 space-y-1">
+            <div className="cyber-card p-4 border border-green-500/30 bg-green-900/20">
+              <h4 className="font-bold text-green-300 mb-2 font-mono">What's included:</h4>
+              <ul className="text-sm text-green-300 space-y-1 font-mono">
                 <li>• $100 welcome bonus added to your card</li>
                 <li>• Full access to all Celora features</li>
                 <li>• Real-time transaction monitoring</li>
@@ -349,23 +349,23 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
             <div className="flex space-x-3">
               <button
                 onClick={prevStep}
-                className="flex-1 bg-gray-200 text-gray-800 py-2 px-4 rounded-md hover:bg-gray-300 transition-colors"
+                className="flex-1 btn-outline-cyan font-mono"
                 disabled={loading}
               >
-                Back
+                BACK
               </button>
               <button
                 onClick={handleFinalSetup}
                 disabled={loading}
-                className="flex-1 bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors disabled:opacity-50"
+                className="flex-1 btn-cyan font-mono glow-cyan-strong"
               >
                 {loading ? (
                   <div className="flex items-center justify-center">
-                    <div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"></div>
-                    Setting up...
+                    <div className="w-4 h-4 border-2 border-black border-t-transparent rounded-full animate-spin mr-2"></div>
+                    INITIALIZING...
                   </div>
                 ) : (
-                  'Complete Setup'
+                  'COMPLETE SETUP'
                 )}
               </button>
             </div>
@@ -384,16 +384,16 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
           {/* Progress bar */}
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
-              <span className="text-sm font-medium text-gray-600">
+              <span className="text-sm font-medium text-cyan-300 font-mono">
                 Step {currentStep} of {totalSteps}
               </span>
-              <span className="text-sm text-gray-500">
+              <span className="text-sm text-cyan-400 font-mono">
                 {Math.round((currentStep / totalSteps) * 100)}%
               </span>
             </div>
-            <div className="w-full bg-gray-200 rounded-full h-2">
+            <div className="w-full bg-gray-800 rounded-full h-2 border border-gray-600">
               <div
-                className="bg-blue-600 h-2 rounded-full transition-all duration-300"
+                className="bg-cyan-400 h-2 rounded-full transition-all duration-300 glow-cyan"
                 style={{ width: `${(currentStep / totalSteps) * 100}%` }}
               ></div>
             </div>
@@ -401,8 +401,8 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
 
           {/* Error message */}
           {error && (
-            <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-              <p className="text-sm text-red-600">{error}</p>
+            <div className="mb-4 p-3 bg-red-900/50 border border-red-700 rounded-md cyber-card">
+              <p className="text-sm text-red-300 font-mono">{error}</p>
             </div>
           )}
 
