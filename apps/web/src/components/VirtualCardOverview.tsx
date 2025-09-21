@@ -214,11 +214,11 @@ export function VirtualCardOverview() {
 
   if (loading) {
     return (
-      <div className="cyber-card p-6">
+      <div className="cyber-card p-6 glow-cyan">
         <div className="animate-pulse">
-          <div className="h-8 bg-gray-700 rounded mb-4"></div>
-          <div className="h-32 bg-gray-700 rounded-lg mb-4"></div>
-          <div className="h-6 bg-gray-700 rounded w-3/4"></div>
+          <div className="h-8 bg-gray-800 rounded mb-4 border border-cyan-500/30"></div>
+          <div className="h-32 bg-gray-800 rounded-lg mb-4 border border-cyan-500/20"></div>
+          <div className="h-6 bg-gray-800 rounded w-3/4 border border-cyan-500/20"></div>
         </div>
       </div>
     );
@@ -226,34 +226,34 @@ export function VirtualCardOverview() {
 
   if (!user) {
     return (
-      <div className="cyber-card p-6">
-        <h2 className="text-xl font-semibold mb-4 text-cyan-300">Virtual Cards</h2>
+      <div className="cyber-card p-6 glow-cyan">
+        <h2 className="text-xl font-bold mb-4 text-cyan-300 neon-text font-mono">VIRTUAL CARDS</h2>
         <p className="text-gray-300">Please sign in to view your virtual cards.</p>
       </div>
     );
   }
 
   return (
-    <div className="cyber-card p-6">
+    <div className="cyber-card p-6 glow-cyan">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-xl font-semibold text-cyan-300">Virtual Cards</h2>
+        <h2 className="text-xl font-bold text-cyan-300 neon-text font-mono tracking-wider">VIRTUAL CARDS</h2>
         <button
           onClick={handleCreateCard}
-          className="btn-cyan"
+          className="btn-cyan font-mono tracking-wide"
         >
-          Add Card
+          + ADD CARD
         </button>
       </div>
 
       {cards.length === 0 ? (
         <div className="text-center py-8">
-          <div className="text-cyan-400 text-4xl mb-4">💳</div>
-          <p className="text-gray-600 mb-4">No virtual cards yet</p>
+          <div className="text-cyan-400 text-6xl mb-4">💳</div>
+          <p className="text-gray-400 mb-4 font-mono">NO VIRTUAL CARDS YET</p>
           <button
             onClick={handleCreateCard}
-            className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+            className="btn-cyan font-mono tracking-wide"
           >
-            Create Your First Card
+            CREATE YOUR FIRST CARD
           </button>
         </div>
       ) : (
@@ -264,12 +264,12 @@ export function VirtualCardOverview() {
             return (
               <div
                 key={card.id}
-                className={`border rounded-lg p-4 transition-all duration-200 ${
+                className={`border-2 rounded-lg p-4 transition-all duration-300 glow-cyan ${
                   card.status === 'active'
-                    ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg'
+                    ? 'bg-gradient-to-r from-cyan-600/20 to-cyan-400/20 text-white shadow-lg border-cyan-400'
                     : card.status === 'suspended'
-                    ? 'bg-gradient-to-r from-gray-400 to-gray-500 text-white'
-                    : 'bg-gray-100 border-gray-300'
+                    ? 'bg-gradient-to-r from-gray-600/20 to-gray-500/20 text-white border-gray-400'
+                    : 'bg-gray-900/50 border-gray-600'
                 } ${cardState.isUpdating ? 'opacity-75 animate-pulse' : ''}`}
               >
                 <div className="flex justify-between items-start mb-4">

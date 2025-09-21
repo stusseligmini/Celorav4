@@ -2,41 +2,53 @@
 > @celora/web@1.0.0 build
 > next build
 
- ⚠ Invalid next.config.js options detected: 
- ⚠     Unrecognized key(s) in object: 'appDir' at "experimental"
- ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
    ▲ Next.js 15.5.2
    - Environments: .env.local
-   - Experiments (use with caution):
-     ✓ appDir
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 2.1s
+ ✓ Compiled successfully in 3.9s
    Linting and checking validity of types ...
    Collecting page data ...
 Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
-   Generating static pages (0/14) ...
+{"level":50,"time":"2025-09-21T14:50:48.430Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.444Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.448Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.453Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.474Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.480Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.474Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.536Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.534Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+{"level":50,"time":"2025-09-21T14:50:48.567Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+   Generating static pages (0/20) ...
 Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
-   Generating static pages (3/14) 
-   Generating static pages (6/14) 
-   Generating static pages (10/14) 
- ✓ Generating static pages (14/14)
+   Generating static pages (5/20) 
+{"level":50,"time":"2025-09-21T14:50:50.180Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
+   Generating static pages (10/20) 
+   Generating static pages (15/20) 
+ ✓ Generating static pages (20/20)
    Finalizing page optimization ...
    Collecting build traces ...
 
 Route (app)                                 Size  First Load JS
-┌ ○ /                                     158 kB         305 kB
+┌ ○ /                                     159 kB         306 kB
 ├ ○ /_not-found                            985 B         103 kB
-├ ƒ /api/cards/[id]/fund                   147 B         102 kB
-├ ƒ /api/cards/[id]/risk                   147 B         102 kB
-├ ƒ /api/cards/[id]/status                 147 B         102 kB
-├ ƒ /api/cards/fund                        147 B         102 kB
-├ ƒ /api/health                            147 B         102 kB
-├ ƒ /api/transactions/create               147 B         102 kB
-├ ƒ /api/wallet                            147 B         102 kB
-├ ƒ /api/wallet/card                       147 B         102 kB
-├ ƒ /api/wallet/card/[cardId]              147 B         102 kB
-├ ƒ /api/wallet/verify-pin                 147 B         102 kB
+├ ƒ /api/cards                             160 B         102 kB
+├ ƒ /api/cards/[id]/fund                   160 B         102 kB
+├ ƒ /api/cards/[id]/risk                   160 B         102 kB
+├ ƒ /api/cards/[id]/status                 160 B         102 kB
+├ ƒ /api/cards/fund                        160 B         102 kB
+├ ƒ /api/cross-platform/cashout            160 B         102 kB
+├ ƒ /api/cross-platform/recent             160 B         102 kB
+├ ƒ /api/cross-platform/topup              160 B         102 kB
+├ ƒ /api/health                            160 B         102 kB
+├ ƒ /api/transactions/create               160 B         102 kB
+├ ƒ /api/user/profile                      160 B         102 kB
+├ ƒ /api/wallet                            160 B         102 kB
+├ ƒ /api/wallet/card                       160 B         102 kB
+├ ƒ /api/wallet/card/[cardId]              160 B         102 kB
+├ ƒ /api/wallet/verify-pin                 160 B         102 kB
+├ ƒ /api/wallets                           160 B         102 kB
 ├ ○ /reset-password                        957 B         151 kB
 ├ ○ /signin                                980 B         151 kB
 ├ ○ /signup                              1.08 kB         151 kB
@@ -47,7 +59,7 @@ Route (app)                                 Size  First Load JS
   └ other shared chunks (total)          1.99 kB
 
 
-ƒ Middleware                             34.3 kB
+ƒ Middleware                             34.1 kB
 
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand

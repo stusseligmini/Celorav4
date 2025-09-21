@@ -3,14 +3,16 @@
 @tailwind utilities;
 
 :root {
-  --background: #0d1117;
-  --foreground: #e6edf3;
-  --cyan-primary: #00d9ff;
-  --cyan-secondary: #00bcd4;
-  --cyan-accent: #26c6da;
-  --dark-surface: #161b22;
-  --dark-card: #21262d;
-  --dark-border: #30363d;
+  --background: #000000;
+  --foreground: #ffffff;
+  --cyan-primary: #00ffff;
+  --cyan-secondary: #00e5ff;
+  --cyan-accent: #40e0d0;
+  --dark-surface: #0a0a0a;
+  --dark-card: #111111;
+  --dark-border: #333333;
+  --neon-cyan: #00ffff;
+  --neon-glow: rgba(0, 255, 255, 0.5);
 }
 
 body {
@@ -20,87 +22,141 @@ body {
   min-height: 100vh;
 }
 
-/* Cyberpunk Cyan Theme */
+/* Cyberpunk Neon Theme */
 .bg-primary {
-  background: linear-gradient(135deg, #0d1117 0%, #161b22 100%);
+  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #001122 100%);
 }
 
 .bg-card {
   background: var(--dark-card);
   border: 1px solid var(--dark-border);
+  backdrop-filter: blur(15px);
+  background: rgba(17, 17, 17, 0.8);
 }
 
 .text-cyan {
-  color: var(--cyan-primary);
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px var(--neon-glow);
 }
 
 .bg-cyan {
-  background: var(--cyan-primary);
+  background: var(--neon-cyan);
+  box-shadow: 0 0 20px var(--neon-glow);
 }
 
 .border-cyan {
-  border-color: var(--cyan-primary);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 5px var(--neon-glow);
 }
 
 .hover-cyan:hover {
-  background: var(--cyan-primary);
-  color: #0d1117;
+  background: var(--neon-cyan);
+  color: #000000;
+  box-shadow: 0 0 30px var(--neon-glow);
 }
 
-/* Glow effects */
+/* Neon glow effects */
 .glow-cyan {
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.3);
+  border: 1px solid var(--neon-cyan);
 }
 
 .glow-cyan-strong {
-  box-shadow: 0 0 30px rgba(0, 217, 255, 0.6);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(0, 255, 255, 0.1);
+  border: 2px solid var(--neon-cyan);
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from {
+    box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 255, 255, 0.4);
+  }
+  to {
+    box-shadow: 0 0 50px rgba(0, 255, 255, 1), 0 0 100px rgba(0, 255, 255, 0.6);
+  }
 }
 
 /* Card styles */
 .cyber-card {
-  background: var(--dark-card);
-  border: 1px solid var(--dark-border);
-  border-radius: 12px;
-  backdrop-filter: blur(10px);
+  background: rgba(17, 17, 17, 0.9);
+  border: 1px solid var(--neon-cyan);
+  border-radius: 16px;
+  backdrop-filter: blur(20px);
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.05);
 }
 
 .cyber-card:hover {
-  border-color: var(--cyan-primary);
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.2);
+  border-color: var(--neon-cyan);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.1);
+  transform: translateY(-2px);
+  transition: all 0.3s ease;
 }
 
 /* Button styles */
 .btn-cyan {
-  background: linear-gradient(135deg, var(--cyan-primary), var(--cyan-secondary));
-  color: #0d1117;
-  font-weight: 600;
+  background: linear-gradient(135deg, var(--neon-cyan), var(--cyan-secondary));
+  color: #000000;
+  font-weight: 700;
   padding: 12px 24px;
-  border-radius: 8px;
-  border: none;
+  border-radius: 12px;
+  border: 2px solid var(--neon-cyan);
   cursor: pointer;
   transition: all 0.3s ease;
+  text-shadow: none;
+  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
 }
 
 .btn-cyan:hover {
-  box-shadow: 0 0 25px rgba(0, 217, 255, 0.4);
-  transform: translateY(-2px);
+  box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 255, 255, 0.3);
+  transform: translateY(-3px);
+  background: var(--neon-cyan);
 }
 
 .btn-outline-cyan {
   background: transparent;
-  color: var(--cyan-primary);
-  border: 2px solid var(--cyan-primary);
+  color: var(--neon-cyan);
+  border: 2px solid var(--neon-cyan);
   font-weight: 600;
   padding: 10px 22px;
-  border-radius: 8px;
+  border-radius: 12px;
   cursor: pointer;
   transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
 }
 
 .btn-outline-cyan:hover {
-  background: var(--cyan-primary);
-  color: #0d1117;
-  box-shadow: 0 0 20px rgba(0, 217, 255, 0.3);
+  background: var(--neon-cyan);
+  color: #000000;
+  box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
+  text-shadow: none;
+}
+
+/* Neon text effects */
+.neon-text {
+  text-shadow: 
+    0 0 5px rgba(0, 255, 255, 0.8),
+    0 0 10px rgba(0, 255, 255, 0.8),
+    0 0 15px rgba(0, 255, 255, 0.8),
+    0 0 20px rgba(0, 255, 255, 0.8);
+  animation: neon-flicker 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes neon-flicker {
+  from {
+    text-shadow: 
+      0 0 5px rgba(0, 255, 255, 0.8),
+      0 0 10px rgba(0, 255, 255, 0.8),
+      0 0 15px rgba(0, 255, 255, 0.8),
+      0 0 20px rgba(0, 255, 255, 0.8);
+  }
+  to {
+    text-shadow: 
+      0 0 2px rgba(0, 255, 255, 0.6),
+      0 0 8px rgba(0, 255, 255, 0.6),
+      0 0 12px rgba(0, 255, 255, 0.6),
+      0 0 16px rgba(0, 255, 255, 0.6);
+  }
 }
 
 @layer utilities {
