@@ -17,10 +17,10 @@ export default function HomePage() {
   // Show loading state
   if (loading) {
     return (
-      <div className="min-h-screen bg-primary flex items-center justify-center">
+      <div className="min-h-screen bg-slate-900 flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-6 glow-cyan-strong"></div>
-          <p className="text-cyan-100 font-mono text-xl tracking-wider">INITIALIZING CELORA...</p>
+          <div className="w-16 h-16 border-4 border-cyan-400 border-t-transparent rounded-full animate-spin mx-auto mb-6"></div>
+          <p className="text-gray-300 text-xl">Loading Celora Platform...</p>
           <div className="flex justify-center space-x-1 mt-4">
             <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse"></div>
             <div className="w-2 h-2 bg-cyan-400 rounded-full animate-pulse" style={{animationDelay: '0.2s'}}></div>
@@ -35,62 +35,80 @@ export default function HomePage() {
   if (!user) {
     return (
       <>
-        <div className="min-h-screen bg-gradient-to-br from-black via-gray-900 to-gray-800 relative overflow-hidden">
-          {/* Cyberpunk background overlay */}
-          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-cyan-950/20 to-cyan-900/30"></div>
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,255,0.1),transparent_70%)]"></div>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black relative overflow-hidden">
+          {/* Subtle gradient overlays */}
+          <div className="absolute inset-0 bg-gradient-to-br from-transparent via-cyan-950/10 to-cyan-900/20"></div>
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,255,0.05),transparent_70%)]"></div>
           
-          <div className="relative z-10 max-w-4xl mx-auto px-4 py-16 text-center">
-            <div className="mb-12">
-              <h1 className="text-7xl font-bold text-white mb-6 tracking-wider">
-                Welcome to <span className="text-cyan-400 glow-cyan-strong neon-text">Celora</span>
+          <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 text-center">
+            <div className="mb-16">
+              <h1 className="text-6xl font-light text-white mb-8 tracking-tight">
+                Welcome to <span className="text-cyan-400 font-medium">Celora</span>
               </h1>
-              <p className="text-2xl text-cyan-200 mb-8 font-light">
-                The cyberpunk fintech & crypto OS you can actually build on
+              <p className="text-xl text-gray-300 mb-12 font-light max-w-3xl mx-auto leading-relaxed">
+                Advanced financial technology platform for virtual cards, cryptocurrency management, and real-time analytics
               </p>
-              <div className="text-lg text-gray-200 space-y-3 mb-12 font-mono">
+              <div className="text-base text-gray-400 space-y-4 mb-16 max-w-2xl mx-auto">
                 <p className="flex items-center justify-center gap-3">
-                  <span className="text-cyan-400">●</span> Unified virtual cards & crypto wallets
+                  <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
+                  Enterprise-grade virtual card management
                 </p>
                 <p className="flex items-center justify-center gap-3">
-                  <span className="text-cyan-400">●</span> Built-in security with KMS & encryption
+                  <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
+                  Multi-chain cryptocurrency wallets with institutional security
                 </p>
                 <p className="flex items-center justify-center gap-3">
-                  <span className="text-cyan-400">●</span> Real-time updates & cross-platform transfers
+                  <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
+                  Real-time transaction monitoring and fraud detection
                 </p>
                 <p className="flex items-center justify-center gap-3">
-                  <span className="text-cyan-400">●</span> Ready for scale, analytics, and compliance
+                  <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
+                  Advanced analytics dashboard with compliance reporting
                 </p>
               </div>
             </div>
 
-            <div className="space-y-4 mb-12">
+            <div className="space-y-6 mb-16">
               <button
                 onClick={() => setShowAuthModal(true)}
-                className="btn-cyan text-xl px-12 py-5 glow-cyan-strong font-bold tracking-wide"
+                className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium px-10 py-4 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-cyan-500/25"
               >
-                ENTER THE MATRIX
+                Get Started
               </button>
-              <p className="text-sm text-cyan-300 font-mono">
-                No credit card required • 2-minute setup • Full cyberpunk experience
+              <p className="text-sm text-gray-500">
+                No setup fees • Enterprise security • Full platform access
               </p>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-16">
-              <div className="cyber-card p-8 glow-cyan">
-                <div className="text-5xl mb-6 text-cyan-400">💳</div>
-                <h3 className="font-bold text-xl text-cyan-300 mb-4 font-mono">VIRTUAL CARDS</h3>
-                <p className="text-gray-300 leading-relaxed">Secure card issuance with PIN protection and real-time controls</p>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
+              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 hover:border-cyan-500/30 transition-all duration-200">
+                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 mx-auto">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
+                  </svg>
+                </div>
+                <h3 className="font-semibold text-xl text-white mb-4">Virtual Cards</h3>
+                <p className="text-gray-400 leading-relaxed">Issue and manage virtual payment cards with real-time spending controls and advanced security features</p>
               </div>
-              <div className="cyber-card p-8 glow-cyan">
-                <div className="text-5xl mb-6 text-cyan-400">🪙</div>
-                <h3 className="font-bold text-xl text-cyan-300 mb-4 font-mono">CRYPTO WALLETS</h3>
-                <p className="text-gray-300 leading-relaxed">Multi-currency support with secure key management</p>
+              
+              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 hover:border-cyan-500/30 transition-all duration-200">
+                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 mx-auto">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                  </svg>
+                </div>
+                <h3 className="font-semibold text-xl text-white mb-4">Crypto Wallets</h3>
+                <p className="text-gray-400 leading-relaxed">Multi-chain cryptocurrency management with institutional-grade security and seamless trading capabilities</p>
               </div>
-              <div className="cyber-card p-8 glow-cyan">
-                <div className="text-5xl mb-6 text-cyan-400">🔄</div>
-                <h3 className="font-bold text-xl text-cyan-300 mb-4 font-mono">CROSS-PLATFORM</h3>
-                <p className="text-gray-300 leading-relaxed">Seamless transfers between traditional and crypto assets</p>
+              
+              <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 hover:border-cyan-500/30 transition-all duration-200">
+                <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 mx-auto">
+                  <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                </div>
+                <h3 className="font-semibold text-xl text-white mb-4">Analytics Platform</h3>
+                <p className="text-gray-400 leading-relaxed">Comprehensive financial analytics with real-time insights, compliance reporting, and performance metrics</p>
               </div>
             </div>
           </div>
@@ -109,19 +127,19 @@ export default function HomePage() {
   if (user && !hasCompletedOnboarding) {
     return (
       <>
-        <div className="min-h-screen bg-primary flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-white mb-4 font-mono tracking-wider">
-              WELCOME TO <span className="text-cyan-400 neon-text">CELORA</span>, {user.email?.split('@')[0]?.toUpperCase()}!
+        <div className="min-h-screen bg-slate-900 flex items-center justify-center">
+          <div className="text-center max-w-lg mx-auto px-6">
+            <h1 className="text-3xl font-light text-white mb-4">
+              Welcome to <span className="text-cyan-400 font-medium">Celora</span>, {user.email?.split('@')[0]}!
             </h1>
-            <p className="text-cyan-200 mb-8 font-mono">
-              INITIALIZING CYBERPUNK FINTECH INTERFACE...
+            <p className="text-gray-400 mb-8">
+              Let's set up your financial platform and get you started
             </p>
             <button
               onClick={() => setShowOnboarding(true)}
-              className="btn-cyan font-mono tracking-wide"
+              className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium px-8 py-3 rounded-lg transition-all duration-200"
             >
-              BEGIN SETUP PROTOCOL
+              Complete Setup
             </button>
           </div>
         </div>
@@ -139,16 +157,16 @@ export default function HomePage() {
 
   // Show main dashboard for authenticated users
   return (
-    <main className="min-h-screen bg-primary">
+    <main className="min-h-screen bg-slate-900">
       <DashboardHeader />
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="mb-8">
-          <h1 className="text-4xl font-bold text-white font-mono tracking-wider">
-            <span className="text-cyan-400 neon-text">CELORA</span> COMMAND CENTER
+          <h1 className="text-4xl font-light text-white">
+            <span className="text-cyan-400 font-medium">Celora</span> Dashboard
           </h1>
-          <p className="mt-2 text-cyan-200 font-mono">
-            Virtual Cards & Wallet Management • Cyberpunk Financial OS
+          <p className="mt-2 text-gray-400">
+            Financial platform overview and account management
           </p>
         </div>
 

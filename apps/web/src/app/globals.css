@@ -3,160 +3,121 @@
 @tailwind utilities;
 
 :root {
-  --background: #000000;
+  --background: #0f172a;
   --foreground: #ffffff;
-  --cyan-primary: #00ffff;
-  --cyan-secondary: #00e5ff;
-  --cyan-accent: #40e0d0;
-  --dark-surface: #0a0a0a;
-  --dark-card: #111111;
-  --dark-border: #333333;
-  --neon-cyan: #00ffff;
-  --neon-glow: rgba(0, 255, 255, 0.5);
+  --cyan-primary: #06b6d4;
+  --cyan-secondary: #0891b2;
+  --cyan-accent: #22d3ee;
+  --dark-surface: #1e293b;
+  --dark-card: #334155;
+  --dark-border: #475569;
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   min-height: 100vh;
+  line-height: 1.6;
 }
 
-/* Cyberpunk Neon Theme */
+/* Modern professional theme */
 .bg-primary {
-  background: linear-gradient(135deg, #000000 0%, #0a0a0a 50%, #001122 100%);
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
 }
 
 .bg-card {
-  background: var(--dark-card);
-  border: 1px solid var(--dark-border);
-  backdrop-filter: blur(15px);
-  background: rgba(17, 17, 17, 0.8);
+  background: rgba(51, 65, 85, 0.8);
+  border: 1px solid rgba(71, 85, 105, 0.5);
+  backdrop-filter: blur(10px);
+  border-radius: 12px;
 }
 
-.text-cyan {
-  color: var(--neon-cyan);
-  text-shadow: 0 0 10px var(--neon-glow);
+/* Subtle accent colors */
+.text-accent {
+  color: var(--cyan-primary);
 }
 
-.bg-cyan {
-  background: var(--neon-cyan);
-  box-shadow: 0 0 20px var(--neon-glow);
+.bg-accent {
+  background: var(--cyan-primary);
 }
 
-.border-cyan {
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 5px var(--neon-glow);
+.border-accent {
+  border-color: var(--cyan-primary);
 }
 
-.hover-cyan:hover {
-  background: var(--neon-cyan);
-  color: #000000;
-  box-shadow: 0 0 30px var(--neon-glow);
+/* Card styles with subtle effects */
+.modern-card {
+  background: rgba(51, 65, 85, 0.6);
+  border: 1px solid rgba(71, 85, 105, 0.4);
+  border-radius: 12px;
+  backdrop-filter: blur(8px);
+  transition: all 0.2s ease;
 }
 
-/* Neon glow effects */
-.glow-cyan {
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.6), 0 0 60px rgba(0, 255, 255, 0.3);
-  border: 1px solid var(--neon-cyan);
+.modern-card:hover {
+  border-color: rgba(6, 182, 212, 0.4);
+  background: rgba(51, 65, 85, 0.8);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
 }
 
-.glow-cyan-strong {
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 255, 255, 0.4), inset 0 0 20px rgba(0, 255, 255, 0.1);
-  border: 2px solid var(--neon-cyan);
-  animation: pulse-glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes pulse-glow {
-  from {
-    box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 255, 255, 0.4);
-  }
-  to {
-    box-shadow: 0 0 50px rgba(0, 255, 255, 1), 0 0 100px rgba(0, 255, 255, 0.6);
-  }
-}
-
-/* Card styles */
-.cyber-card {
-  background: rgba(17, 17, 17, 0.9);
-  border: 1px solid var(--neon-cyan);
-  border-radius: 16px;
-  backdrop-filter: blur(20px);
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.2), inset 0 0 20px rgba(0, 255, 255, 0.05);
-}
-
-.cyber-card:hover {
-  border-color: var(--neon-cyan);
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.5), inset 0 0 30px rgba(0, 255, 255, 0.1);
-  transform: translateY(-2px);
-  transition: all 0.3s ease;
-}
-
-/* Button styles */
-.btn-cyan {
-  background: linear-gradient(135deg, var(--neon-cyan), var(--cyan-secondary));
-  color: #000000;
-  font-weight: 700;
+/* Button styles - clean and professional */
+.btn-primary {
+  background: linear-gradient(135deg, #06b6d4, #0891b2);
+  color: white;
+  font-weight: 500;
   padding: 12px 24px;
-  border-radius: 12px;
-  border: 2px solid var(--neon-cyan);
+  border-radius: 8px;
+  border: none;
   cursor: pointer;
-  transition: all 0.3s ease;
-  text-shadow: none;
-  box-shadow: 0 0 20px rgba(0, 255, 255, 0.4);
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px rgba(6, 182, 212, 0.2);
 }
 
-.btn-cyan:hover {
-  box-shadow: 0 0 40px rgba(0, 255, 255, 0.8), 0 0 80px rgba(0, 255, 255, 0.3);
-  transform: translateY(-3px);
-  background: var(--neon-cyan);
+.btn-primary:hover {
+  background: linear-gradient(135deg, #0891b2, #0e7490);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
 }
 
-.btn-outline-cyan {
+.btn-outline {
   background: transparent;
-  color: var(--neon-cyan);
-  border: 2px solid var(--neon-cyan);
-  font-weight: 600;
-  padding: 10px 22px;
-  border-radius: 12px;
+  color: var(--cyan-primary);
+  border: 1px solid var(--cyan-primary);
+  font-weight: 500;
+  padding: 10px 20px;
+  border-radius: 8px;
   cursor: pointer;
-  transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
-  text-shadow: 0 0 5px rgba(0, 255, 255, 0.5);
+  transition: all 0.2s ease;
 }
 
-.btn-outline-cyan:hover {
-  background: var(--neon-cyan);
-  color: #000000;
-  box-shadow: 0 0 30px rgba(0, 255, 255, 0.6);
-  text-shadow: none;
+.btn-outline:hover {
+  background: var(--cyan-primary);
+  color: white;
+  transform: translateY(-1px);
 }
 
-/* Neon text effects */
-.neon-text {
-  text-shadow: 
-    0 0 5px rgba(0, 255, 255, 0.8),
-    0 0 10px rgba(0, 255, 255, 0.8),
-    0 0 15px rgba(0, 255, 255, 0.8),
-    0 0 20px rgba(0, 255, 255, 0.8);
-  animation: neon-flicker 1.5s ease-in-out infinite alternate;
+/* Minimal glow effects for accents only */
+.subtle-glow {
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
 }
 
-@keyframes neon-flicker {
-  from {
-    text-shadow: 
-      0 0 5px rgba(0, 255, 255, 0.8),
-      0 0 10px rgba(0, 255, 255, 0.8),
-      0 0 15px rgba(0, 255, 255, 0.8),
-      0 0 20px rgba(0, 255, 255, 0.8);
-  }
-  to {
-    text-shadow: 
-      0 0 2px rgba(0, 255, 255, 0.6),
-      0 0 8px rgba(0, 255, 255, 0.6),
-      0 0 12px rgba(0, 255, 255, 0.6),
-      0 0 16px rgba(0, 255, 255, 0.6);
-  }
+.subtle-glow:hover {
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+}
+
+/* Remove all neon and flicker effects */
+.accent-text {
+  color: var(--cyan-primary);
+}
+
+/* Clean gradient backgrounds */
+.gradient-bg {
+  background: linear-gradient(135deg, 
+    rgba(15, 23, 42, 0.95) 0%, 
+    rgba(30, 41, 59, 0.95) 50%, 
+    rgba(51, 65, 85, 0.95) 100%);
 }
 
 @layer utilities {
