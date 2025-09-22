@@ -1,4 +1,4 @@
-import './globals.css'
+ import './globals.css'
 import type { Metadata } from 'next'
 import { SupabaseProvider } from '../providers/SupabaseProvider'
 import { DebugPanel } from '../components/DebugPanel'
