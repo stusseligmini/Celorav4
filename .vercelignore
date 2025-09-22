@@ -1,0 +1,12 @@
+# Ignore everything except the web app
+packages/
+secure/
+data/
+ops/
+config/
+README.md
+turbo.json
+tsconfig.base.json
+
+# Only deploy apps/web
+!apps/web/
