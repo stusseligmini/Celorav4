@@ -1,6 +1,6 @@
 'use client';
 
-import { useSupabase } from './SupabaseProvider';
+import { useSupabase } from '../providers/SupabaseProvider';
 
 export function DashboardHeader() {
   const { user, loading } = useSupabase();
