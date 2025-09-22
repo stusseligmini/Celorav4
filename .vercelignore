@@ -1,12 +1,25 @@
-# Ignore everything except the web app
+# Ignore development and build artifacts
 packages/
 secure/
 data/
 ops/
 config/
-README.md
+apps/
+migration_source/
+benchmark/
+scripts/
+tests/
+security/
+legacy-import/
+database/
+supabase/
+.turbo/
 turbo.json
 tsconfig.base.json
-
-# Only deploy apps/web
-!apps/web/
+*.log
+fix-api-files.js
+*DEMO.md
+*CHANGELOG.md
+*STATUS.md
+*READY.md
+*DEPLOYMENT*.md

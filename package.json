@@ -1,44 +1,62 @@
 {
-  "name": "celora-v2-monorepo",
+  "name": "@celora/web",
+  "version": "1.0.0",
   "private": true,
-  "packageManager": "npm@10.0.0",
-  "workspaces": [
-    "apps/*",
-    "packages/*"
-  ],
   "scripts": {
-    "build": "turbo run build",
-    "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "test": "turbo run test",
-    "typecheck": "turbo run typecheck",
-    "quantum-init": "node ops/quantum-init.js",
-    "audit:quantum": "node scripts/audit-quantum-crypto.js",
-    "test:crypto-primitives": "vitest packages/quantum/src/**/*.test.ts",
-    "validate:kyber-dilithium": "node scripts/validate-post-quantum.js",
-    "ai:evolve-fraud-detection": "node scripts/evolve-neural-models.js --type=fraud",
-    "ai:optimize-scaling-models": "node scripts/evolve-neural-models.js --type=scaling",
-    "benchmark:neural-performance": "node benchmark/neural-benchmark.js",
-    "deploy:neural-models": "node scripts/deploy-models.js",
-    "test:quantum": "vitest packages/quantum/**/*.test.ts",
-    "test:load-rpc-failover": "k6 run tests/load/rpc-failover.js",
-    "test:stress-funding-bridge": "k6 run tests/stress/funding-bridge.js",
-    "security:audit-card-encryption": "node security/audit-card-crypto.js",
-    "security:test-funding-isolation": "node security/test-funding-isolation.js",
-    "deploy:staging": "node ops/deploy-staging.js",
-    "deploy:production": "node ops/deploy-production.js",
-    "verify:quantum-signatures": "node ops/verify-quantum.js",
-    "verify:rpc-resilience": "node ops/verify-rpc.js",
-    "verify:neural-accuracy": "node ops/verify-neural.js",
-    "verify:funding-reconciliation": "node ops/verify-funding.js",
-    "models:publish-to-registry": "node ops/publish-models.js",
-    "monitoring:setup-model-drift-detection": "node ops/setup-monitoring.js --type=drift",
-    "monitoring:setup-performance-regression": "node ops/setup-monitoring.js --type=regression"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint",
+    "typecheck": "tsc --noEmit",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:integration": "jest --testPathPattern=integration"
+  },
+  "dependencies": {
+    "@supabase/auth-helpers-nextjs": "^0.10.0",
+    "@supabase/ssr": "^0.7.0",
+    "@supabase/supabase-js": "^2.57.4",
+    "@types/bcryptjs": "^2.4.6",
+    "@vercel/speed-insights": "^1.2.0",
+    "bcryptjs": "^3.0.2",
+    "clsx": "^2.1.1",
+    "framer-motion": "^12.23.18",
+    "lucide-react": "^0.544.0",
+    "next": "15.5.3",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "recharts": "^2.15.4"
   },
   "devDependencies": {
-    "turbo": "^2.0.6",
-    "typescript": "^5.4.0",
+    "@testing-library/jest-dom": "^6.4.8",
+    "@testing-library/react": "^16.0.0",
+    "@types/jest": "^29.5.14",
     "@types/node": "^22.0.0",
-    "vitest": "^2.0.0"
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "autoprefixer": "^10.4.19",
+    "eslint": "^9",
+    "eslint-config-next": "15.5.2",
+    "jest": "^29.7.0",
+    "jest-environment-node": "^29.7.0",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.1",
+    "ts-jest": "^29.4.4",
+    "typescript": "^5.4.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=8.0.0"
+  },
+  "jest": {
+    "preset": "ts-jest",
+    "testEnvironment": "node",
+    "testMatch": [
+      "**/__tests__/**/*.test.ts",
+      "**/__tests__/**/*.test.tsx"
+    ],
+    "moduleNameMapping": {
+      "^@/(.*)$": "<rootDir>/src/$1"
+    }
   }
 }
