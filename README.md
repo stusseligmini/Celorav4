@@ -35,116 +35,30 @@ Celora V2 is a next-generation fintech platform built with modern web technologi
 - **Build System**: Optimized for Vercel deployment
 - **Security**: Row Level Security (RLS) and encrypted data storage
 
-### Project Structure
-```
-CeloraV2/
-├── src/
-│   ├── app/                 # Next.js App Router
-│   │   ├── (auth)/         # Authentication pages
-│   │   ├── api/            # API routes
-│   │   └── analytics/      # Analytics dashboard
-│   ├── components/         # React components
-│   │   ├── AnalyticsDashboard.tsx
-│   │   ├── VirtualCardOverview.tsx
-│   │   ├── WalletOverview.tsx
-│   │   └── TransactionHistory.tsx
-│   └── providers/          # React context providers
-├── package.json            # Dependencies and scripts
-├── next.config.js          # Next.js configuration
-├── tailwind.config.ts      # Tailwind CSS configuration
-└── tsconfig.json          # TypeScript configuration
-```
+
 
 Experience the full platform with:
 - Professional fintech interface
 - Virtual card management system
 - Cryptocurrency wallet integration
-- Real-time analytics dashboard
 
-## � Development
-
-### Available Scripts
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run start` - Start production server
-- `npm run lint` - Run ESLint
-- `npm run typecheck` - TypeScript type checking
-
-### Environment Variables
-```env
-# Required - Supabase Configuration
-NEXT_PUBLIC_SUPABASE_URL=your_supabase_url
-NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
-SUPABASE_SERVICE_ROLE_KEY=your_service_role_key
-
-# Optional - Feature Flags
-ENABLE_VIRTUAL_CARDS=true
-ENABLE_CRYPTO_WALLETS=true
-ENABLE_CROSS_PLATFORM_TRANSFERS=true
-ENABLE_RISK_SCORING=true
-ENABLE_PIN_PROTECTION=true
-ENABLE_AUDIT_LOGGING=true
-
-# Production Settings
-NODE_ENV=production
-NEXT_PUBLIC_APP_URL=https://your-domain.com
-```
-
-## 🔐 Security Features
 
 ### Authentication & Authorization
-- **Supabase Auth** - Email/password and social authentication
-- **Session Management** - Secure session handling with automatic refresh
-- **Role-Based Access** - User permissions and access control
+ Email/password and social authentication
+- Secure session handling with automatic refresh
+- - User permissions and access control
 
 ### Data Security
-- **Row Level Security** - Database-level access controls
-- **Data Encryption** - Encrypted sensitive data storage
-- **Audit Trails** - Comprehensive activity logging
-- **Fraud Detection** - Real-time transaction monitoring
+-- Database-level access controls
+ - Encrypted sensitive data storage
+ Comprehensive activity logging
+ Real-time transaction monitoring
 
 ### Compliance
-- **GDPR Compliance** - Data privacy and user rights
-- **Financial Regulations** - KYC/AML compliance features
-- **Security Audits** - Regular security assessments
+ Data privacy and user rights
+ KYC/AML compliance features
+ Regular security assessments
 
-## � Performance
-
-### Optimization Features
-- **Bundle Size**: 101kB optimized production build
-- **Static Generation**: Pre-rendered pages for optimal performance
-- **Image Optimization**: Next.js automatic image optimization
-- **Caching**: Intelligent caching strategies
-
-### Monitoring
-- **Real-time Analytics** - Application performance monitoring
-- **Error Tracking** - Comprehensive error logging and reporting
-- **Performance Metrics** - Core web vitals and user experience tracking
-
-## � Deployment
-
-### Vercel (Recommended)
-The application is optimized for Vercel deployment:
-
-1. Connect your GitHub repository to Vercel
-2. Configure environment variables in Vercel dashboard
-3. Deploy automatically on every push to main branch
-
-### Environment Configuration
-- **Root Directory**: Leave empty (auto-detected)
-- **Framework**: Next.js (auto-detected)
-- **Build Command**: `npm run build`
-- **Output Directory**: `.next`
-
-## 🤝 Contributing
-
-We welcome contributions! Please see our contributing guidelines:
-
-1. Fork the repository
-2. Create a feature branch: `git checkout -b feature/amazing-feature`
-3. Commit your changes: `git commit -m 'Add amazing feature'`
-4. Push to the branch: `git push origin feature/amazing-feature`
-5. Open a Pull Request
 
 ## 📝 License
 
