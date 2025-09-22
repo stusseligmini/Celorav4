@@ -4,59 +4,38 @@
 
    ▲ Next.js 15.5.2
    - Environments: .env.local
+   - Experiments (use with caution):
+     · optimizePackageImports
 
    Creating an optimized production build ...
- ✓ Compiled successfully in 2.8s
+ ✓ Compiled successfully in 989ms
    Linting and checking validity of types ...
    Collecting page data ...
-{"level":50,"time":"2025-09-21T15:06:03.424Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
-{"level":50,"time":"2025-09-21T15:06:03.507Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T15:06:03.511Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T15:06:03.537Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T15:06:03.661Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T15:06:03.767Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-{"level":50,"time":"2025-09-21T15:06:03.789Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-   Generating static pages (0/20) ...
-{"level":50,"time":"2025-09-21T15:06:05.587Z","error":"ENOENT: no such file or directory, open 'C:\\Users\\volde\\Desktop\\CeloraV2\\apps\\web\\secure\\quantum-vault\\master-keys.json'","message":"Failed to load master key metadata"}
-   Generating static pages (5/20) 
-Missing SUPABASE_SERVICE_ROLE_KEY for funding API route
-   Generating static pages (10/20) 
-   Generating static pages (15/20) 
- ✓ Generating static pages (20/20)
+   Generating static pages (0/7) ...
+   Generating static pages (1/7) 
+   Generating static pages (3/7) 
+   Generating static pages (5/7) 
+ ✓ Generating static pages (7/7)
    Finalizing page optimization ...
    Collecting build traces ...
 
-Route (app)                                 Size  First Load JS
-┌ ○ /                                     159 kB         306 kB
-├ ○ /_not-found                            985 B         103 kB
-├ ƒ /api/cards                             160 B         102 kB
-├ ƒ /api/cards/[id]/fund                   160 B         102 kB
-├ ƒ /api/cards/[id]/risk                   160 B         102 kB
-├ ƒ /api/cards/[id]/status                 160 B         102 kB
-├ ƒ /api/cards/fund                        160 B         102 kB
-├ ƒ /api/cross-platform/cashout            160 B         102 kB
-├ ƒ /api/cross-platform/recent             160 B         102 kB
-├ ƒ /api/cross-platform/topup              160 B         102 kB
-├ ƒ /api/health                            160 B         102 kB
-├ ƒ /api/transactions/create               160 B         102 kB
-├ ƒ /api/user/profile                      160 B         102 kB
-├ ƒ /api/wallet                            160 B         102 kB
-├ ƒ /api/wallet/card                       160 B         102 kB
-├ ƒ /api/wallet/card/[cardId]              160 B         102 kB
-├ ƒ /api/wallet/verify-pin                 160 B         102 kB
-├ ƒ /api/wallets                           160 B         102 kB
-├ ○ /reset-password                        957 B         151 kB
-├ ○ /signin                                980 B         151 kB
-├ ○ /signup                              1.08 kB         151 kB
-└ ○ /update-password                     1.09 kB         151 kB
-+ First Load JS shared by all             102 kB
-  ├ chunks/18-c9b14b5f87be4ab0.js        45.9 kB
-  ├ chunks/87c73c54-24122e7b92478d00.js  54.2 kB
-  └ other shared chunks (total)          1.99 kB
+Route (app)                                  Size  First Load JS
+┌ ƒ /api/analytics/spending                 135 B         101 kB
+├ ƒ /api/crypto/holdings                    135 B         101 kB
+├ ƒ /api/crypto/solana                      135 B         101 kB
+├ ƒ /api/market/crypto                      135 B         101 kB
+└ ƒ /api/notifications                      135 B         101 kB
++ First Load JS shared by all              101 kB
+  ├ chunks/87c73c54-24122e7b92478d00.js   54.2 kB
+  ├ chunks/956-521608b4cf0a4048.js        45.1 kB
+  └ other shared chunks (total)           1.84 kB
 
-
-ƒ Middleware                             34.1 kB
+Route (pages)                                Size  First Load JS
+─ ○ /404                                  2.27 kB        97.1 kB
++ First Load JS shared by all             94.8 kB
+  ├ chunks/framework-ea3d558b313aa702.js  57.6 kB
+  ├ chunks/main-2b997ea6b5a3be55.js       34.9 kB
+  └ other shared chunks (total)           2.23 kB
 
 ○  (Static)   prerendered as static content
 ƒ  (Dynamic)  server-rendered on demand
