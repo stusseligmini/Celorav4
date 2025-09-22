@@ -1,11 +1,5 @@
 # 🌊 Celora V2 - Professional Fintech Platform
 
-[![Deployment Status](https://img.shields.io/badge/deployment-ready-brightgreen)](https://celora-platformv2-celora.vercel.app)
-[![Next.js](https://img.shields.io/badge/Next.js-15.5.3-black)](https://nextjs.org/)
-[![React](https://img.shields.io/badge/React-19.1.1-blue)](https://reactjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.4.0-blue)](https://www.typescriptlang.org/)
-[![Supabase](https://img.shields.io/badge/Supabase-Database-green)](https://supabase.com/)
-
 > Advanced financial technology platform for virtual cards, cryptocurrency management, and real-time analytics
 
 ## 🎯 Overview
@@ -60,48 +54,6 @@ CeloraV2/
 ├── tailwind.config.ts      # Tailwind CSS configuration
 └── tsconfig.json          # TypeScript configuration
 ```
-
-## 🚀 Quick Start
-
-### Prerequisites
-- Node.js 20+ 
-- npm 8+
-- Supabase account
-
-### Installation
-
-1. **Clone the repository**
-   ```bash
-   git clone https://github.com/stusseligmini/Celorav4.git
-   cd CeloraV2
-   ```
-
-2. **Install dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Environment setup**
-   Create `.env.local` with your Supabase credentials:
-   ```env
-   NEXT_PUBLIC_SUPABASE_URL=https://your-project.supabase.co
-   NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
-   SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
-   ```
-
-4. **Start development server**
-   ```bash
-   npm run dev
-   ```
-
-5. **Build for production**
-   ```bash
-   npm run build
-   ```
-
-## 🌐 Live Demo
-
-**Production URL**: [https://celora-platformv2-celora.vercel.app](https://celora-platformv2-celora.vercel.app)
 
 Experience the full platform with:
 - Professional fintech interface
@@ -198,14 +150,5 @@ We welcome contributions! Please see our contributing guidelines:
 
 This project is proprietary and confidential. All rights reserved.
 
-## 📞 Support
-
-For support and questions:
-- **Issues**: [GitHub Issues](https://github.com/stusseligmini/Celorav4/issues)
-- **Documentation**: [Project Wiki](https://github.com/stusseligmini/Celorav4/wiki)
-
----
-
-**Built with ❤️ using Next.js, React, TypeScript, and Supabase**
 
 *Celora V2 - The future of financial technology*
