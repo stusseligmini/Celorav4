@@ -2,7 +2,8 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSupabase } from '../providers/SupabaseProvider';
-import { SupabaseService } from '@celora/infrastructure/client';
+// Temporarily disabled for Vercel deployment - TODO: Replace with Supabase direct calls
+// import { SupabaseService } from '@celora/infrastructure/client';
 
 interface OnboardingWizardProps {
   isOpen: boolean;
@@ -22,17 +23,6 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
   const [confirmPin, setPinConfirm] = useState('');
   
   const { user } = useSupabase();
-  const [supabaseService, setSupabaseService] = useState<SupabaseService | null>(null);
-
-  useEffect(() => {
-    if (user) {
-      const service = new SupabaseService(
-        process.env.NEXT_PUBLIC_SUPABASE_URL,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-      );
-      setSupabaseService(service);
-    }
-  }, [user]);
 
   if (!isOpen) return null;
 
@@ -82,7 +72,7 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
   };
 
   const handleFinalSetup = async () => {
-    if (!user || !supabaseService) {
+    if (!user) {
       setError('User not authenticated');
       return;
     }
@@ -138,16 +128,16 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
         throw new Error('Failed to create virtual card');
       }
 
-      // 4. Add some demo funds
-      const card = await cardResponse.json();
-      if (card.id) {
-        await supabaseService.addFunds({
-          cardId: card.id,
-          amount: 100,
-          currency: 'USD',
-          sourceType: 'welcome_bonus'
-        });
-      }
+      // 4. Add some demo funds - TODO: Implement with Supabase direct calls
+      // const card = await cardResponse.json();
+      // if (card.id) {
+      //   await supabaseService.addFunds({
+      //     cardId: card.id,
+      //     amount: 100,
+      //     currency: 'USD',
+      //     sourceType: 'welcome_bonus'
+      //   });
+      // }
 
       onComplete();
     } catch (err: any) {
