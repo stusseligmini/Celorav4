@@ -1,9 +1,47 @@
-node_modules
-.dist
-.build
-.next
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build outputs
+.next/
+.turbo/
+dist/
+.build/
+
+# Environment variables
 .env*
-coverage
-.idea
+!.env.example
+
+# Testing
+coverage/
+.nyc_output
+
+# IDE/Editor
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
 .DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+
+# Temporary files
+*.tmp
+*.temp
+
+# Package manager
 pnpm-lock.yaml
+yarn.lock
+
+# Misc
+.cache/
+.parcel-cache/
