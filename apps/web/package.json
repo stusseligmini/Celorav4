@@ -56,8 +56,7 @@
       "**/__tests__/**/*.test.tsx"
     ],
     "moduleNameMapping": {
-      "^@/(.*)$": "<rootDir>/src/$1",
-      "^@celora/(.*)$": "<rootDir>/../../packages/$1/src"
+      "^@/(.*)$": "<rootDir>/src/$1"
     }
   }
 }
