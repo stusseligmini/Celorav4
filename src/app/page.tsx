@@ -1,78 +1,184 @@
-﻿export default function HomePage() {
+﻿'use client';
+
+import { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { WalletOverview } from '../components/WalletOverview';
+import { VirtualCardOverview } from '../components/VirtualCardOverview';
+import { TransactionHistory } from '../components/TransactionHistory';
+import NotificationCenter from '../components/NotificationCenter';
+
+export default function HomePage() {
+  const [activeTab, setActiveTab] = useState<'overview' | 'cards' | 'wallet' | 'transactions'>('overview');
+  const [notifications, setNotifications] = useState([]);
+
+  useEffect(() => {
+    // Fetch notifications
+    fetch('/api/notifications')
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          setNotifications(data.notifications);
+        }
+      })
+      .catch(console.error);
+  }, []);
+
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black relative overflow-hidden">
-      <div className="absolute inset-0 bg-gradient-to-br from-transparent via-cyan-950/10 to-cyan-900/20"></div>
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(0,255,255,0.05),transparent_70%)]"></div>
-      
-      <div className="relative z-10 max-w-6xl mx-auto px-6 py-24 text-center">
-        <div className="mb-16">
-          <h1 className="text-6xl font-light text-white mb-8 tracking-tight">
-            Welcome to <span className="text-cyan-400 font-medium">Celora</span>
-          </h1>
-          <p className="text-xl text-gray-300 mb-12 font-light max-w-3xl mx-auto leading-relaxed">
-            Advanced financial technology platform for virtual cards, cryptocurrency management, and real-time analytics
-          </p>
-          <div className="text-base text-gray-400 space-y-4 mb-16 max-w-2xl mx-auto">
-            <p className="flex items-center justify-center gap-3">
-              <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
-              Enterprise-grade virtual card management
-            </p>
-            <p className="flex items-center justify-center gap-3">
-              <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
-              Multi-chain cryptocurrency wallets with institutional security
-            </p>
-            <p className="flex items-center justify-center gap-3">
-              <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
-              Real-time transaction monitoring and fraud detection
-            </p>
-            <p className="flex items-center justify-center gap-3">
-              <span className="w-2 h-2 bg-cyan-400 rounded-full"></span> 
-              Advanced analytics dashboard with compliance reporting
-            </p>
+    <div className="min-h-screen bg-black text-white">
+      {/* Top Navigation */}
+      <nav className="bg-gray-900/50 backdrop-blur border-b border-cyan-400/20 sticky top-0 z-50">
+        <div className="max-w-7xl mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center space-x-8">
+              <h1 className="text-2xl font-mono font-bold text-cyan-400">CELORA</h1>
+              <div className="hidden md:flex space-x-6">
+                <button
+                  onClick={() => setActiveTab('overview')}
+                  className={`px-4 py-2 text-sm font-mono transition-colors ${
+                    activeTab === 'overview' 
+                      ? 'text-cyan-400 bg-cyan-400/10 rounded-md' 
+                      : 'text-gray-400 hover:text-cyan-400'
+                  }`}
+                >
+                  OVERVIEW
+                </button>
+                <button
+                  onClick={() => setActiveTab('cards')}
+                  className={`px-4 py-2 text-sm font-mono transition-colors ${
+                    activeTab === 'cards' 
+                      ? 'text-cyan-400 bg-cyan-400/10 rounded-md' 
+                      : 'text-gray-400 hover:text-cyan-400'
+                  }`}
+                >
+                  CARDS
+                </button>
+                <button
+                  onClick={() => setActiveTab('wallet')}
+                  className={`px-4 py-2 text-sm font-mono transition-colors ${
+                    activeTab === 'wallet' 
+                      ? 'text-cyan-400 bg-cyan-400/10 rounded-md' 
+                      : 'text-gray-400 hover:text-cyan-400'
+                  }`}
+                >
+                  WALLET
+                </button>
+                <button
+                  onClick={() => setActiveTab('transactions')}
+                  className={`px-4 py-2 text-sm font-mono transition-colors ${
+                    activeTab === 'transactions' 
+                      ? 'text-cyan-400 bg-cyan-400/10 rounded-md' 
+                      : 'text-gray-400 hover:text-cyan-400'
+                  }`}
+                >
+                  TRANSACTIONS
+                </button>
+                <Link href="/analytics" className="px-4 py-2 text-sm font-mono text-gray-400 hover:text-cyan-400 transition-colors">
+                  ANALYTICS
+                </Link>
+              </div>
+            </div>
+            
+            <div className="flex items-center space-x-4">
+              {/* Notification Bell */}
+              <div className="relative">
+                <button className="text-gray-400 hover:text-cyan-400 transition-colors">
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
+                  </svg>
+                </button>
+                {notifications.length > 0 && (
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                    {notifications.length}
+                  </span>
+                )}
+              </div>
+              
+              {/* User Avatar */}
+              <div className="w-8 h-8 bg-cyan-400/20 rounded-full flex items-center justify-center">
+                <span className="text-cyan-400 text-sm font-mono">U</span>
+              </div>
+            </div>
           </div>
         </div>
+      </nav>
 
-        <div className="space-y-6 mb-16">
-          <button className="bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-medium px-10 py-4 rounded-lg text-lg transition-all duration-200 shadow-lg hover:shadow-cyan-500/25">
-            Get Started
-          </button>
-          <p className="text-sm text-gray-500">
-            No setup fees  Enterprise security  Full platform access
-          </p>
-        </div>
+      {/* Main Content */}
+      <main className="max-w-7xl mx-auto px-6 py-8">
+        {/* Overview Tab */}
+        {activeTab === 'overview' && (
+          <div className="space-y-8">
+            {/* Welcome Section */}
+            <div className="bg-gradient-to-r from-cyan-400/10 to-blue-500/10 border border-cyan-400/20 rounded-lg p-6">
+              <h2 className="text-2xl font-mono font-bold text-cyan-400 mb-2">
+                WELCOME TO CELORA
+              </h2>
+              <p className="text-gray-400">
+                Your complete financial technology platform for virtual cards, crypto management, and analytics.
+              </p>
+            </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-20">
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 hover:border-cyan-500/30 transition-all duration-200">
-            <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 mx-auto">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z" />
-              </svg>
+            {/* Quick Stats */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
+                <div className="text-cyan-400 text-sm font-mono">TOTAL BALANCE</div>
+                <div className="text-2xl font-bold text-white mt-1">$12,450.00</div>
+                <div className="text-green-400 text-sm mt-1">+2.5% today</div>
+              </div>
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
+                <div className="text-cyan-400 text-sm font-mono">ACTIVE CARDS</div>
+                <div className="text-2xl font-bold text-white mt-1">3</div>
+                <div className="text-gray-400 text-sm mt-1">2 virtual, 1 physical</div>
+              </div>
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
+                <div className="text-cyan-400 text-sm font-mono">CRYPTO HOLDINGS</div>
+                <div className="text-2xl font-bold text-white mt-1">$8,920.00</div>
+                <div className="text-green-400 text-sm mt-1">+12.3% this week</div>
+              </div>
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
+                <div className="text-cyan-400 text-sm font-mono">MONTHLY SPENDING</div>
+                <div className="text-2xl font-bold text-white mt-1">$2,180.00</div>
+                <div className="text-yellow-400 text-sm mt-1">73% of budget</div>
+              </div>
             </div>
-            <h3 className="font-semibold text-xl text-white mb-4">Virtual Cards</h3>
-            <p className="text-gray-400 leading-relaxed">Issue and manage virtual payment cards with real-time spending controls and advanced security features</p>
-          </div>
-          
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 hover:border-cyan-500/30 transition-all duration-200">
-            <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 mx-auto">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
-              </svg>
+
+            {/* Recent Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
+                <h3 className="text-cyan-400 font-mono font-bold mb-4">RECENT TRANSACTIONS</h3>
+                <div className="space-y-3">
+                  {[
+                    { desc: 'Amazon Purchase', amount: '-$129.99', time: '2 mins ago', type: 'card' },
+                    { desc: 'BTC Buy Order', amount: '-$500.00', time: '1 hour ago', type: 'crypto' },
+                    { desc: 'Salary Deposit', amount: '+$3,500.00', time: '1 day ago', type: 'deposit' },
+                    { desc: 'Netflix Subscription', amount: '-$15.99', time: '2 days ago', type: 'card' }
+                  ].map((tx, i) => (
+                    <div key={i} className="flex items-center justify-between py-2 border-b border-gray-700/30">
+                      <div>
+                        <div className="font-medium text-white">{tx.desc}</div>
+                        <div className="text-sm text-gray-400">{tx.time}</div>
+                      </div>
+                      <div className={`font-mono ${tx.amount.startsWith('+') ? 'text-green-400' : 'text-white'}`}>
+                        {tx.amount}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <NotificationCenter />
             </div>
-            <h3 className="font-semibold text-xl text-white mb-4">Crypto Wallets</h3>
-            <p className="text-gray-400 leading-relaxed">Multi-chain cryptocurrency management with institutional-grade security and seamless trading capabilities</p>
           </div>
-          
-          <div className="bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 rounded-xl p-8 hover:border-cyan-500/30 transition-all duration-200">
-            <div className="w-16 h-16 bg-gradient-to-br from-cyan-500 to-blue-600 rounded-lg flex items-center justify-center mb-6 mx-auto">
-              <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-              </svg>
-            </div>
-            <h3 className="font-semibold text-xl text-white mb-4">Analytics Platform</h3>
-            <p className="text-gray-400 leading-relaxed">Comprehensive financial analytics with real-time insights, compliance reporting, and performance metrics</p>
-          </div>
-        </div>
-      </div>
+        )}
+
+        {/* Cards Tab */}
+        {activeTab === 'cards' && <VirtualCardOverview />}
+
+        {/* Wallet Tab */}
+        {activeTab === 'wallet' && <WalletOverview />}
+
+        {/* Transactions Tab */}
+        {activeTab === 'transactions' && <TransactionHistory />}
+      </main>
     </div>
   );
 }
