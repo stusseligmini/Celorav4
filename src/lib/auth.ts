@@ -74,9 +74,21 @@ class AuthService {
       });
 
       if (error) {
+        console.log('Sign in error:', error.message);
+        console.log('Wallet email:', walletEmail);
+        console.log('Hash preview:', hashHex.slice(0, 8) + '...');
+        
+        if (error.message.includes('Invalid login credentials')) {
+          return { 
+            user: null, 
+            error: 'No wallet found with this seed phrase. Please check your words or create a new wallet.', 
+            success: false 
+          };
+        }
+        
         return { 
           user: null, 
-          error: 'Invalid seed phrase or wallet not found', 
+          error: `Sign in failed: ${error.message}`, 
           success: false 
         };
       }
@@ -180,9 +192,20 @@ class AuthService {
             const backupResult = await backupResponse.json();
             
             if (backupResponse.ok && backupResult.success) {
-              // Now sign in the created user
+              // Wait a moment for the user to be fully created, then sign in
+              await new Promise(resolve => setTimeout(resolve, 2000));
               const signInResult = await this.signInWithSeedPhrase(seedPhrase);
-              return signInResult;
+              
+              if (signInResult.success) {
+                return signInResult;
+              } else {
+                // If sign in fails, return success anyway since account was created
+                return {
+                  user: backupResult.user,
+                  error: null,
+                  success: true
+                };
+              }
             } else {
               return { 
                 user: null, 

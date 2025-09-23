@@ -76,12 +76,19 @@ export default function SignUpPage() {
       return;
     }
     
-    const isCorrect = generatedSeedPhrase.every((word, index) => 
-      word === verificationSeedPhrase[index].toLowerCase().trim()
-    );
+    // Debug: Check word by word matching
+    const mismatches = [];
+    for (let i = 0; i < 12; i++) {
+      const generated = generatedSeedPhrase[i]?.toLowerCase().trim();
+      const verified = verificationSeedPhrase[i]?.toLowerCase().trim();
+      if (generated !== verified) {
+        mismatches.push(`Word ${i + 1}: expected "${generated}", got "${verified}"`);
+      }
+    }
 
-    if (!isCorrect) {
-      setError('Seed phrase verification failed. Please check your words.');
+    if (mismatches.length > 0) {
+      console.log('Seed phrase mismatches:', mismatches);
+      setError(`Seed phrase verification failed. Check these words: ${mismatches.slice(0, 3).map(m => m.split(':')[0]).join(', ')}`);
       setLoading(false);
       return;
     }

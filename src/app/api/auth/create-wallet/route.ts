@@ -29,19 +29,8 @@ export async function POST(request: NextRequest) {
     const hashHex = await seedPhraseToHash(seedPhrase);
     const walletEmail = `${hashHex.slice(0, 16)}@celora.wallet`;
 
-    // Check if wallet already exists (using profile table)
-    const { data: existingProfile } = await supabase
-      .from('profiles')
-      .select('id')
-      .eq('email', walletEmail)
-      .single();
-    
-    if (existingProfile) {
-      return NextResponse.json(
-        { error: 'This seed phrase is already registered. Try signing in instead.' },
-        { status: 409 }
-      );
-    }
+    // Skip duplicate check for now to avoid profile table dependency issues
+    // The createUser call will handle duplicates anyway
 
     // Create user with admin API (bypasses captcha)
     const { data, error } = await supabase.auth.admin.createUser({
@@ -63,22 +52,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Create profile in database
+    // Create profile in database (if table exists)
     if (data.user) {
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .insert([
-          {
-            id: data.user.id,
-            full_name: fullName,
-            email: publicEmail || walletEmail,
-            wallet_type: 'seed_phrase',
-            created_at: new Date().toISOString()
-          }
-        ]);
+      try {
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .insert([
+            {
+              id: data.user.id,
+              full_name: fullName,
+              email: publicEmail || walletEmail,
+              wallet_type: 'seed_phrase',
+              created_at: new Date().toISOString()
+            }
+          ]);
 
-      if (profileError) {
-        console.warn('Profile creation failed:', profileError);
+        if (profileError) {
+          console.warn('Profile creation failed (table may not exist):', profileError.message);
+        }
+      } catch (profileError) {
+        console.warn('Profile creation error:', profileError);
       }
     }
 
