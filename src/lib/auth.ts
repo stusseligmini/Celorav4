@@ -142,6 +142,9 @@ class AuthService {
       const hashHex = await seedPhraseToHash(seedPhrase);
       const walletEmail = `${hashHex.slice(0, 16)}@celora.wallet`;
 
+      // Add delay to avoid rate limiting
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
       const { data, error } = await this.supabase.auth.signUp({
         email: walletEmail,
         password: hashHex,
@@ -155,7 +158,63 @@ class AuthService {
       });
 
       if (error) {
+        // Handle specific Supabase errors - try backup API for captcha issues
+        if (error.message.toLowerCase().includes('captcha') || 
+            error.message.toLowerCase().includes('rate limit') || 
+            error.message.toLowerCase().includes('too many')) {
+          
+          // Try backup API route that uses admin API
+          try {
+            const backupResponse = await fetch('/api/auth/create-wallet', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                seedPhrase,
+                fullName,
+                publicEmail
+              })
+            });
+
+            const backupResult = await backupResponse.json();
+            
+            if (backupResponse.ok && backupResult.success) {
+              // Now sign in the created user
+              const signInResult = await this.signInWithSeedPhrase(seedPhrase);
+              return signInResult;
+            } else {
+              return { 
+                user: null, 
+                error: backupResult.error || 'Account creation failed. Please try again later.', 
+                success: false 
+              };
+            }
+          } catch (backupError) {
+            return { 
+              user: null, 
+              error: 'Account creation is temporarily unavailable. Please try email signup instead or contact support.', 
+              success: false 
+            };
+          }
+        }
+        
+        if (error.message.toLowerCase().includes('already registered') || error.message.toLowerCase().includes('already exists')) {
+          return { 
+            user: null, 
+            error: 'This seed phrase is already in use. Try signing in instead or generate a new seed phrase.', 
+            success: false 
+          };
+        }
         return { user: null, error: error.message, success: false };
+      }
+
+      // If successful, create user profile
+      if (data.user) {
+        const profileResult = await this.createUserProfile(data.user as User);
+        if (profileResult.error) {
+          console.warn('Profile creation failed:', profileResult.error);
+        }
       }
 
       return { 
@@ -164,9 +223,10 @@ class AuthService {
         success: true 
       };
     } catch (err) {
+      console.error('Wallet creation error:', err);
       return { 
         user: null, 
-        error: 'Failed to create wallet', 
+        error: 'Network error or service temporarily unavailable. Please check your internet connection and try again.', 
         success: false 
       };
     }

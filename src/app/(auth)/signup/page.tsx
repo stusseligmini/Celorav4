@@ -63,7 +63,7 @@ export default function SignUpPage() {
     setStep('verify');
   };
 
-  const handleVerifyAndRegister = async (e: React.FormEvent) => {
+  const handleVerifyAndRegister = async (e: React.FormEvent, retryAttempt = 0) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -86,17 +86,34 @@ export default function SignUpPage() {
       return;
     }
 
-    const result = await authService.createWalletWithSeedPhrase(
-      generatedSeedPhrase,
-      fullName,
-      email || undefined
-    );
-    
-    if (result.success) {
-      setSuccess('Wallet created successfully! You can now sign in with your seed phrase.');
-      setTimeout(() => router.push('/signin'), 3000);
-    } else {
-      setError(result.error);
+    try {
+      const result = await authService.createWalletWithSeedPhrase(
+        generatedSeedPhrase,
+        fullName,
+        email || undefined
+      );
+      
+      if (result.success) {
+        setSuccess('🎉 Wallet created successfully! Redirecting to sign in...');
+        setTimeout(() => router.push('/signin'), 2000);
+      } else {
+        // Handle specific error cases with retry logic
+        if (result.error?.includes('rate-limited') || result.error?.includes('captcha')) {
+          if (retryAttempt < 2) {
+            setError(`${result.error} Retrying in 3 seconds... (Attempt ${retryAttempt + 1}/3)`);
+            setTimeout(() => {
+              handleVerifyAndRegister(e, retryAttempt + 1);
+            }, 3000);
+            return;
+          } else {
+            setError('Unable to create wallet after multiple attempts. Please try again later or use email signup instead.');
+          }
+        } else {
+          setError(result.error);
+        }
+      }
+    } catch (err) {
+      setError('Network error occurred. Please check your connection and try again.');
     }
     
     setLoading(false);
@@ -166,9 +183,47 @@ Account: ${fullName}`;
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-md"
+                className="mb-4 p-4 bg-red-500/20 border border-red-500/50 rounded-md"
               >
-                <p className="text-red-400 text-sm">{error}</p>
+                <div className="flex items-start space-x-3">
+                  <span className="text-red-400 text-lg">⚠️</span>
+                  <div className="flex-1">
+                    <p className="text-red-400 text-sm font-medium mb-2">{error}</p>
+                    {(error.includes('rate-limited') || error.includes('captcha') || error.includes('Too many')) && (
+                      <div className="space-y-2">
+                        <p className="text-red-300 text-xs">
+                          This usually happens when there are too many signup attempts. You can:
+                        </p>
+                        <ul className="text-red-300 text-xs space-y-1 ml-4">
+                          <li>• Wait a few minutes and try again</li>
+                          <li>• Use email signup instead (more reliable)</li>
+                          <li>• Generate a new seed phrase</li>
+                        </ul>
+                        <div className="flex space-x-2 mt-3">
+                          <button
+                            onClick={() => {
+                              setAccountType('email');
+                              setStep('create');
+                              setError(null);
+                            }}
+                            className="text-xs bg-blue-600 hover:bg-blue-500 text-white px-3 py-1 rounded transition-colors"
+                          >
+                            Use Email Instead
+                          </button>
+                          <button
+                            onClick={() => {
+                              generateNewSeedPhrase();
+                              setError(null);
+                            }}
+                            className="text-xs bg-gray-600 hover:bg-gray-500 text-white px-3 py-1 rounded transition-colors"
+                          >
+                            New Seed Phrase
+                          </button>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </motion.div>
             </AnimatePresence>
           )}
