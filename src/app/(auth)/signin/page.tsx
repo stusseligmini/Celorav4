@@ -50,7 +50,7 @@ export default function SignInPage() {
     setLoading(false);
   };
 
-  const handleSeedPhraseSubmit = async (e: React.FormEvent) => {
+  const handleSeedPhraseSubmit = async (e: React.FormEvent, retryAttempt = 0) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
@@ -62,12 +62,32 @@ export default function SignInPage() {
       return;
     }
 
+    console.log('🚀 Attempting sign in with seed phrase...');
     const result = await authService.signInWithSeedPhrase(seedPhrase);
     
     if (result.success) {
+      console.log('✅ Sign in successful, redirecting...');
       router.push('/');
     } else {
-      setError(result.error);
+      console.log('❌ Sign in failed:', result.error);
+      
+      // Handle captcha errors with retry logic
+      if (result.error?.includes('captcha') || 
+          result.error?.includes('rate limit') || 
+          result.error?.includes('security measures')) {
+        
+        if (retryAttempt < 2) {
+          setError(`${result.error} Retrying in 3 seconds... (Attempt ${retryAttempt + 1}/3)`);
+          setTimeout(() => {
+            handleSeedPhraseSubmit(e, retryAttempt + 1);
+          }, 3000);
+          return;
+        } else {
+          setError('Sign in blocked by security measures. Please wait 5 minutes and try again, or contact support if the issue persists.');
+        }
+      } else {
+        setError(result.error);
+      }
     }
     
     setLoading(false);

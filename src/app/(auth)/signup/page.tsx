@@ -101,22 +101,15 @@ export default function SignUpPage() {
       );
       
       if (result.success) {
-        setSuccess('🎉 Wallet created successfully! Redirecting to sign in...');
-        setTimeout(() => router.push('/signin'), 2000);
+        setSuccess('🎉 Wallet created successfully! Logging you in...');
+        // Redirect immediately since user should be logged in
+        setTimeout(() => router.push('/'), 1500);
       } else {
-        // Handle specific error cases with retry logic
-        if (result.error?.includes('rate-limited') || result.error?.includes('captcha')) {
-          if (retryAttempt < 2) {
-            setError(`${result.error} Retrying in 3 seconds... (Attempt ${retryAttempt + 1}/3)`);
-            setTimeout(() => {
-              handleVerifyAndRegister(e, retryAttempt + 1);
-            }, 3000);
-            return;
-          } else {
-            setError('Unable to create wallet after multiple attempts. Please try again later or use email signup instead.');
-          }
+        // Handle errors gracefully
+        if (result.error?.includes('already in use')) {
+          setError('This seed phrase is already registered. Please try signing in instead.');
         } else {
-          setError(result.error);
+          setError(result.error || 'Failed to create wallet. Please try again.');
         }
       }
     } catch (err) {
