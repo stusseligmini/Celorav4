@@ -39,15 +39,15 @@ class AuthService {
       if (error) {
         console.log('❌ Email sign in error:', error.message);
         
-        // Handle captcha errors during sign-in
+        // Handle rate limit/captcha errors more gracefully
         if (error.message.toLowerCase().includes('captcha') || 
             error.message.toLowerCase().includes('rate limit') || 
             error.message.toLowerCase().includes('too many')) {
           
-          console.log('🔄 Captcha detected during email sign-in...');
+          console.log('🔄 Rate limit detected...');
           return { 
             user: null, 
-            error: 'Too many sign-in attempts. Please wait a few minutes and try again.', 
+            error: 'Authentication rate limit. Please try creating a new account instead, or wait 60 seconds and try again.', 
             success: false 
           };
         }
@@ -55,7 +55,7 @@ class AuthService {
         if (error.message.includes('Invalid login credentials')) {
           return { 
             user: null, 
-            error: 'Invalid email or password. Please check your credentials and try again.', 
+            error: 'Email or password is incorrect. If you don\'t have an account yet, click "CREATE WALLET" below.', 
             success: false 
           };
         }

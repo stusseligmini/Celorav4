@@ -34,17 +34,57 @@ export default function SignInPage() {
     }
   }, [seedPhrase, showSuggestions]);
 
+  const clearAndRetry = async () => {
+    setError(null);
+    setEmail('');
+    setPassword('');
+    
+    // Clear any cached auth state
+    try {
+      await authService.signOut();
+    } catch (e) {
+      // Ignore errors during signout
+    }
+    
+    // Clear localStorage
+    localStorage.clear();
+    
+    // Reload page to reset everything
+    window.location.reload();
+  };
+
   const handleEmailSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
     
-    const result = await authService.signInWithEmail(email, password);
-    
-    if (result.success) {
-      router.push('/');
-    } else {
-      setError(result.error);
+    try {
+      // Try admin signin first (bypasses rate limits)
+      const adminResponse = await fetch('/api/auth/admin-signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password }),
+      });
+      
+      if (adminResponse.ok) {
+        const result = await adminResponse.json();
+        if (result.success) {
+          router.push('/');
+          return;
+        }
+      }
+
+      // Fallback to regular signin
+      const result = await authService.signInWithEmail(email, password);
+      
+      if (result.success) {
+        router.push('/');
+      } else {
+        setError(result.error);
+      }
+    } catch (error) {
+      console.error('Signin error:', error);
+      setError('An unexpected error occurred');
     }
     
     setLoading(false);
@@ -181,7 +221,15 @@ export default function SignInPage() {
 
           {error && (
             <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-md">
-              <p className="text-red-400 text-sm">{error}</p>
+              <p className="text-red-400 text-sm mb-2">{error}</p>
+              {error.includes('rate limit') || error.includes('too many') ? (
+                <button
+                  onClick={clearAndRetry}
+                  className="text-xs text-cyan-400 hover:text-cyan-300 underline"
+                >
+                  Clear Cache & Retry
+                </button>
+              ) : null}
             </div>
           )}
 
@@ -221,6 +269,58 @@ export default function SignInPage() {
               >
                 {loading ? 'SIGNING IN...' : 'SIGN IN'}
               </button>
+              
+              {/* Quick Register Button */}
+              <div className="text-center mt-4">
+                <p className="text-gray-400 text-sm">Don't have an account?</p>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    if (!email || !password) {
+                      setError('Please enter email and password first');
+                      return;
+                    }
+                    
+                    setLoading(true);
+                    setError(null);
+                    
+                    try {
+                      const response = await fetch('/api/auth/admin-create-user', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ email, password }),
+                      });
+                      
+                      const result = await response.json();
+                      
+                      if (result.success) {
+                        setError(null);
+                        // Auto-signin after creation
+                        const signinResponse = await fetch('/api/auth/admin-signin', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ email, password }),
+                        });
+                        
+                        if (signinResponse.ok) {
+                          router.push('/');
+                        } else {
+                          setError('Account created! Please try signing in now.');
+                        }
+                      } else {
+                        setError(result.error);
+                      }
+                    } catch (error) {
+                      setError('Failed to create account');
+                    }
+                    
+                    setLoading(false);
+                  }}
+                  className="text-cyan-400 hover:text-cyan-300 text-sm underline mt-1"
+                >
+                  Create Account Instantly
+                </button>
+              </div>
             </motion.form>
           )}
 
