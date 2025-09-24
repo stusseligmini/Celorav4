@@ -2,29 +2,87 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { WalletOverview } from '../components/WalletOverview';
 import { VirtualCardOverview } from '../components/VirtualCardOverview';
 import { TransactionHistory } from '../components/TransactionHistory';
 import NotificationCenter from '../components/NotificationCenter';
+import WelcomeScreen from '../components/WelcomeScreen';
+import { useAuthFlow } from '../hooks/useAuthFlow';
 
 export default function HomePage() {
+  const router = useRouter();
   const [activeTab, setActiveTab] = useState<'overview' | 'cards' | 'wallet' | 'transactions'>('overview');
   const [notifications, setNotifications] = useState([]);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const authFlow = useAuthFlow();
+
+  // Redirect to signin if not authenticated
+  useEffect(() => {
+    if (!authFlow.loading && !authFlow.user) {
+      router.push('/signin');
+      return;
+    }
+  }, [authFlow.loading, authFlow.user, router]);
+
+  // Show welcome screen for new users (including seed phrase setup)
+  useEffect(() => {
+    if ((authFlow.needsSeedPhrase || authFlow.isNewUser) && !authFlow.loading) {
+      setShowWelcome(true);
+    }
+  }, [authFlow.needsSeedPhrase, authFlow.isNewUser, authFlow.loading]);
 
   useEffect(() => {
     // Fetch notifications
-    fetch('/api/notifications')
-      .then(res => res.json())
-      .then(data => {
-        if (data.success) {
-          setNotifications(data.notifications);
-        }
-      })
-      .catch(console.error);
-  }, []);
+    if (authFlow.user) {
+      fetch('/api/notifications')
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            setNotifications(data.notifications);
+          }
+        })
+        .catch(console.error);
+    }
+  }, [authFlow.user]);
+
+  const handleSeedPhraseComplete = () => {
+    setShowWelcome(false);
+  };
+
+  const handleSeedPhraseSkip = () => {
+    setShowWelcome(false);
+  };
+
+  // Show loading while checking auth
+  if (authFlow.loading) {
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
+          <p className="text-cyan-400 font-mono">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Don't render if not authenticated (will redirect)
+  if (!authFlow.user) {
+    return null;
+  }
 
   return (
     <div className="min-h-screen bg-black text-white">
+      {/* Welcome Screen with Seed Phrase Setup */}
+      {showWelcome && (
+        <WelcomeScreen
+          userName={authFlow.user?.user_metadata?.full_name || ''}
+          onComplete={handleSeedPhraseComplete}
+          onSkip={handleSeedPhraseSkip}
+          isNewUser={authFlow.isNewUser}
+        />
+      )}
+
       {/* Top Navigation */}
       <nav className="bg-gray-900/50 backdrop-blur border-b border-cyan-400/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">

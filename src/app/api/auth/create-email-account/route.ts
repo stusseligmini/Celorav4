@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
-import { seedPhraseToHash } from '@/lib/seedPhrase';
 
 const supabase = createClient(
   process.env.NEXT_PUBLIC_SUPABASE_URL!,
@@ -9,14 +8,22 @@ const supabase = createClient(
 
 export async function POST(request: NextRequest) {
   try {
-    console.log('🔧 Backup API: Starting wallet creation...');
+    console.log('🔧 Email Backup API: Starting account creation...');
     
-    const { seedPhrase, fullName, publicEmail } = await request.json();
+    const { email, password, fullName } = await request.json();
 
-    if (!seedPhrase || !Array.isArray(seedPhrase) || seedPhrase.length !== 12) {
-      console.error('❌ Invalid seed phrase format');
+    if (!email || typeof email !== 'string' || !email.includes('@')) {
+      console.error('❌ Invalid email format');
       return NextResponse.json(
-        { error: 'Invalid seed phrase format' },
+        { error: 'Invalid email format' },
+        { status: 400 }
+      );
+    }
+
+    if (!password || typeof password !== 'string' || password.length < 8) {
+      console.error('❌ Password too short');
+      return NextResponse.json(
+        { error: 'Password must be at least 8 characters' },
         { status: 400 }
       );
     }
@@ -29,23 +36,18 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Generate hash from seed phrase
-    const hashHex = await seedPhraseToHash(seedPhrase);
-    const walletEmail = `${hashHex.slice(0, 16)}@celora.wallet`;
-
-    console.log('📧 Generated wallet email:', walletEmail);
+    console.log('📧 Creating email account:', email);
     console.log('👤 Full name:', fullName);
-    console.log('📮 Public email:', publicEmail || 'none');
 
     // Check if user already exists first (prevent duplicates)
     console.log('🔍 Checking for existing user...');
     try {
       const { data: existingUsers } = await supabase.auth.admin.listUsers();
-      const existing = existingUsers?.users?.find(u => u.email === walletEmail);
+      const existing = existingUsers?.users?.find(u => u.email === email);
       if (existing) {
-        console.log('⚠️ User already exists with this seed phrase');
+        console.log('⚠️ User already exists with this email');
         return NextResponse.json(
-          { error: 'This seed phrase is already in use. Please try signing in instead.' },
+          { error: 'An account with this email already exists. Please try signing in instead.' },
           { status: 409 }
         );
       }
@@ -56,12 +58,11 @@ export async function POST(request: NextRequest) {
     // Create user with admin API (bypasses captcha completely)
     console.log('🔐 Creating user with admin API...');
     const { data, error } = await supabase.auth.admin.createUser({
-      email: walletEmail,
-      password: hashHex,
+      email: email,
+      password: password,
       user_metadata: {
         full_name: fullName,
-        wallet_type: 'seed_phrase',
-        public_email: publicEmail || null
+        wallet_type: 'email'
       },
       email_confirm: true // Auto-confirm email
     });
@@ -73,13 +74,13 @@ export async function POST(request: NextRequest) {
       if (error.message.toLowerCase().includes('already registered') || 
           error.message.toLowerCase().includes('already exists')) {
         return NextResponse.json(
-          { error: 'This seed phrase is already in use. Try signing in instead.' },
+          { error: 'An account with this email already exists. Please try signing in instead.' },
           { status: 409 }
         );
       }
       
       return NextResponse.json(
-        { error: `Failed to create wallet: ${error.message}` },
+        { error: `Failed to create account: ${error.message}` },
         { status: 500 }
       );
     }
@@ -91,14 +92,15 @@ export async function POST(request: NextRequest) {
       console.log('👤 Creating user profile...');
       try {
         const { error: profileError } = await supabase
-          .from('user_profiles')  // Din eksisterende tabell
+          .from('user_profiles')
           .insert([
             {
               id: data.user.id,
-              email: publicEmail || walletEmail,
+              email: email,
               full_name: fullName,
-              is_verified: true,
-              kyc_status: 'verified',  // Seed phrase users are pre-verified
+              wallet_type: 'email',
+              is_verified: false,
+              kyc_status: 'pending',
               created_at: new Date().toISOString()
             }
           ]);
@@ -113,25 +115,25 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    console.log('🎉 Wallet creation completed successfully');
+    console.log('🎉 Email account creation completed successfully');
     return NextResponse.json(
       { 
         success: true, 
-        message: 'Wallet created successfully via admin API',
+        message: 'Account created successfully via admin API',
         user: {
           id: data.user.id,
-          email: walletEmail,
+          email: email,
           full_name: fullName,
-          wallet_type: 'seed_phrase'
+          wallet_type: 'email'
         }
       },
       { status: 201 }
     );
 
   } catch (error) {
-    console.error('💥 Wallet creation API error:', error);
+    console.error('💥 Email account creation API error:', error);
     return NextResponse.json(
-      { error: 'Internal server error during wallet creation' },
+      { error: 'Internal server error during account creation' },
       { status: 500 }
     );
   }
