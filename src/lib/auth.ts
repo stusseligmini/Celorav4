@@ -154,51 +154,64 @@ class AuthService {
         console.log('❌ Sign in error:', error.message);
         
         // Handle captcha errors during sign-in by using a different approach
-        if (error.message.toLowerCase().includes('captcha') || 
-            error.message.toLowerCase().includes('rate limit') || 
-            error.message.toLowerCase().includes('too many')) {
-          
-          console.log('🔄 Captcha detected during sign-in, trying alternative method...');
-          
-          // Try to use the admin API to verify the user exists and then set session
-          try {
-            const verifyResponse = await fetch('/api/auth/verify-wallet', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-              },
-              body: JSON.stringify({
-                seedPhrase,
-                walletEmail,
-                hashHex
-              })
-            });
-
-            const verifyResult = await verifyResponse.json();
-            
-            if (verifyResponse.ok && verifyResult.success) {
-              console.log('✅ Alternative verification successful');
-              return {
-                user: verifyResult.user,
-                error: null,
-                success: true
-              };
-            } else {
-              console.log('❌ Alternative verification failed');
-              return { 
-                user: null, 
-                error: 'Sign in blocked by security measures. Please wait a few minutes and try again.', 
-                success: false 
-              };
+          if (error.message.toLowerCase().includes('captcha') || 
+              error.message.toLowerCase().includes('rate limit') || 
+              error.message.toLowerCase().includes('too many')) {
+            console.log('🔄 Captcha detected during sign-in, trying server-side login...');
+            // 1) Try server-side login directly with wallet email/hash
+            try {
+              const res = await fetch('/api/auth/server-login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: walletEmail, password: hashHex })
+              });
+              if (res.ok) {
+                const body = await res.json();
+                if (body?.session?.access_token) {
+                  const { error: setErr } = await this.supabase.auth.setSession({
+                    access_token: body.session.access_token,
+                    refresh_token: body.session.refresh_token
+                  });
+                  if (!setErr) {
+                    const { data: { user } } = await this.supabase.auth.getUser();
+                    return { user: user as User, error: null, success: true };
+                  }
+                }
+              }
+            } catch (serverErr) {
+              console.log('ℹ️ Server-side seed phrase login failed, falling back:', serverErr);
             }
-          } catch (verifyError) {
-            console.error('❌ Alternative verification error:', verifyError);
-            return { 
-              user: null, 
-              error: 'Sign in temporarily unavailable due to security measures. Please try again in a few minutes.', 
-              success: false 
-            };
-          }
+
+            console.log('🔁 Falling back to verify-wallet flow...');
+            // 2) Fallback: use admin API to verify existence and provide action link
+            try {
+              const verifyResponse = await fetch('/api/auth/verify-wallet', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ seedPhrase, walletEmail, hashHex })
+              });
+
+              const verifyResult = await verifyResponse.json();
+            
+              if (verifyResponse.ok && verifyResult.success) {
+                console.log('✅ Alternative verification successful');
+                return {
+                  user: verifyResult.user,
+                  error: null,
+                  success: true
+                };
+              } else {
+                console.log('❌ Alternative verification failed:', verifyResult.error || 'Unknown error');
+                return {
+                  user: null,
+                  error: verifyResult.error || 'Failed to authenticate with seed phrase',
+                  success: false
+                };
+              }
+            } catch (verifyErr) {
+              console.log('❌ Alternative verification error:', verifyErr);
+              return { user: null, error: 'Failed to authenticate with seed phrase', success: false };
+            }
         }
         
         if (error.message.includes('Invalid login credentials')) {
