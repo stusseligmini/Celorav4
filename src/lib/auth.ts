@@ -30,7 +30,46 @@ class AuthService {
   async signInWithEmail(email: string, password: string): Promise<AuthResponse> {
     try {
       console.log('🔐 Starting email sign in...');
-      // 1) Try server-side login first to avoid rate limits entirely
+      
+      // Try admin login first (completely bypasses rate limits)
+      console.log('🚀 Attempting admin login (rate-limit free)...');
+      try {
+        const res = await fetch('/api/auth/admin-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        
+        const body = await res.json();
+        console.log('📡 Admin login response status:', res.status);
+        
+        if (res.ok && body?.session?.access_token) {
+          console.log('✅ Got admin session, adopting on client...');
+          const { error: setErr } = await this.supabase.auth.setSession({
+            access_token: body.session.access_token,
+            refresh_token: body.session.refresh_token
+          });
+          if (!setErr) {
+            const { data: { user } } = await this.supabase.auth.getUser();
+            console.log('✅ Admin login successful');
+            return { user: user as User, error: null, success: true };
+          } else {
+            console.log('⚠️ Failed to set session on client:', setErr);
+          }
+        } else if (!res.ok) {
+          console.log('❌ Admin login failed:', body.error);
+          return { 
+            user: null, 
+            error: body.error || 'Invalid email or password. If you don\'t have an account yet, click "CREATE WALLET" below.', 
+            success: false 
+          };
+        }
+      } catch (adminErr) {
+        console.log('🔥 Admin login error, falling back to server-login:', adminErr);
+      }
+
+      // Fallback to server-side login
+      console.log('🔄 Falling back to server-side login...');
       try {
         const res = await fetch('/api/auth/server-login', {
           method: 'POST',
