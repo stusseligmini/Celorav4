@@ -30,21 +30,66 @@ class AuthService {
   async signInWithEmail(email: string, password: string): Promise<AuthResponse> {
     try {
       console.log('🔐 Starting email sign in...');
-      
-      const { data, error } = await this.supabase.auth.signInWithPassword({
-        email,
-        password
-      });
+      // 1) Try server-side login first to avoid rate limits entirely
+      try {
+        const res = await fetch('/api/auth/server-login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password })
+        });
+        if (res.ok) {
+          const body = await res.json();
+          if (body?.session?.access_token) {
+            const { error: setErr } = await this.supabase.auth.setSession({
+              access_token: body.session.access_token,
+              refresh_token: body.session.refresh_token
+            });
+            if (!setErr) {
+              const { data: { user } } = await this.supabase.auth.getUser();
+              console.log('✅ Server-first login successful');
+              return { user: user as User, error: null, success: true };
+            }
+          }
+        }
+      } catch (serverFirstErr) {
+        console.log('ℹ️ Server-first login attempt failed, falling back to client:', serverFirstErr);
+      }
+
+      // 2) Fallback to client sign-in
+      const { data, error } = await this.supabase.auth.signInWithPassword({ email, password });
 
       if (error) {
-        console.log('❌ Email sign in error:', error.message);
+        console.log('❌ Email sign in error (client):', error.message);
         
         // Handle rate limit/captcha errors more gracefully
         if (error.message.toLowerCase().includes('captcha') || 
             error.message.toLowerCase().includes('rate limit') || 
             error.message.toLowerCase().includes('too many')) {
-          
-          console.log('🔄 Rate limit detected...');
+          console.log('🔄 Rate limit detected, attempting server-side login...');
+          // Try server-side login to mitigate rate limit
+          try {
+            const res = await fetch('/api/auth/server-login', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ email, password })
+            });
+            if (res.ok) {
+              const body = await res.json();
+              if (body?.session?.access_token) {
+                // Adopt the session on the client
+                const { error: setErr } = await this.supabase.auth.setSession({
+                  access_token: body.session.access_token,
+                  refresh_token: body.session.refresh_token
+                });
+                if (!setErr) {
+                  const { data: { user } } = await this.supabase.auth.getUser();
+                  return { user: user as User, error: null, success: true };
+                }
+              }
+            }
+          } catch (serverErr) {
+            console.log('⚠️ Server-side login fallback failed:', serverErr);
+          }
           return { 
             user: null, 
             error: 'Authentication rate limit. Please try creating a new account instead, or wait 60 seconds and try again.', 

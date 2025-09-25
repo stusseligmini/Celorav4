@@ -46,14 +46,13 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Create user profile
+    // Create user profile (align with schema: primary key is `id` referencing auth.users)
     const { error: profileError } = await supabaseAdmin
       .from('user_profiles')
       .insert({
-        user_id: data.user.id,
+        id: data.user.id,
         email: data.user.email,
-        full_name: '',
-        created_at: new Date().toISOString()
+        full_name: ''
       });
 
     if (profileError) {

@@ -59,24 +59,8 @@ export default function SignInPage() {
     setError(null);
     
     try {
-      // Try admin signin first (bypasses rate limits)
-      const adminResponse = await fetch('/api/auth/admin-signin', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      
-      if (adminResponse.ok) {
-        const result = await adminResponse.json();
-        if (result.success) {
-          router.push('/');
-          return;
-        }
-      }
-
-      // Fallback to regular signin
+      // Standard sign-in to create a real client session
       const result = await authService.signInWithEmail(email, password);
-      
       if (result.success) {
         router.push('/');
       } else {
@@ -295,14 +279,9 @@ export default function SignInPage() {
                       
                       if (result.success) {
                         setError(null);
-                        // Auto-signin after creation
-                        const signinResponse = await fetch('/api/auth/admin-signin', {
-                          method: 'POST',
-                          headers: { 'Content-Type': 'application/json' },
-                          body: JSON.stringify({ email, password }),
-                        });
-                        
-                        if (signinResponse.ok) {
+                        // Auto-signin after creation with client auth to establish session
+                        const signIn = await authService.signInWithEmail(email, password);
+                        if (signIn.success) {
                           router.push('/');
                         } else {
                           setError('Account created! Please try signing in now.');
