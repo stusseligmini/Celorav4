@@ -37,55 +37,77 @@ export function useNotifications(): UseNotificationsReturn {
     async function setupNotifications() {
       try {
         // Fetch initial notifications
-        const response = await fetch('/api/notifications');
-        const data = await response.json();
-        
-        if (data.success) {
-          setNotifications(data.notifications);
-        } else {
-          setError(data.error);
+        try {
+          const response = await fetch('/api/notifications');
+          const data = await response.json();
+          
+          if (data.success && data.data?.notifications) {
+            setNotifications(data.data.notifications || []);
+          } else {
+            console.warn('Failed to get valid notifications data:', data);
+            // Use empty array if data is missing or malformed
+            setNotifications([]);
+          }
+        } catch (fetchErr) {
+          console.error('Error fetching notifications:', fetchErr);
+          // Safely set empty notifications on error
+          setNotifications([]);
         }
 
-        // Set up real-time subscription
-        channel = supabase
-          .channel('notifications')
-          .on(
-            'postgres_changes',
-            {
-              event: '*',
-              schema: 'public',
-              table: 'notifications'
-            },
-            (payload) => {
-              console.log('Notification update:', payload);
-              
-              if (payload.eventType === 'INSERT') {
-                setNotifications(prev => [payload.new as Notification, ...prev]);
-                
-                // Show browser notification if permission granted
-                if (Notification.permission === 'granted') {
-                  const notification = payload.new as Notification;
-                  new Notification(notification.title, {
-                    body: notification.message,
-                    icon: '/icon-192x192.png',
-                    badge: '/icon-192x192.png',
-                    tag: notification.id
-                  });
+        // Set up real-time subscription with error handling
+        try {
+          channel = supabase
+            .channel('notifications')
+            .on(
+              'postgres_changes',
+              {
+                event: '*',
+                schema: 'public',
+                table: 'notifications'
+              },
+              (payload) => {
+                try {
+                  console.log('Notification update:', payload);
+                  
+                  if (payload.eventType === 'INSERT') {
+                    setNotifications(prev => [payload.new as Notification, ...prev]);
+                    
+                    // Show browser notification if permission granted
+                    if (typeof window !== 'undefined' && 
+                        'Notification' in window && 
+                        Notification.permission === 'granted') {
+                      try {
+                        const notification = payload.new as Notification;
+                        new Notification(notification.title, {
+                          body: notification.message,
+                          icon: '/icon-192x192.png',
+                          badge: '/icon-192x192.png',
+                          tag: notification.id
+                        });
+                      } catch (notifErr) {
+                        console.error('Error showing browser notification:', notifErr);
+                      }
+                    }
+                  } else if (payload.eventType === 'UPDATE') {
+                    setNotifications(prev => 
+                      prev.map(n => 
+                        n.id === payload.new.id ? payload.new as Notification : n
+                      )
+                    );
+                  } else if (payload.eventType === 'DELETE') {
+                    setNotifications(prev => 
+                      prev.filter(n => n.id !== payload.old.id)
+                    );
+                  }
+                } catch (payloadErr) {
+                  console.error('Error processing notification payload:', payloadErr);
                 }
-              } else if (payload.eventType === 'UPDATE') {
-                setNotifications(prev => 
-                  prev.map(n => 
-                    n.id === payload.new.id ? payload.new as Notification : n
-                  )
-                );
-              } else if (payload.eventType === 'DELETE') {
-                setNotifications(prev => 
-                  prev.filter(n => n.id !== payload.old.id)
-                );
               }
-            }
-          )
-          .subscribe();
+            )
+            .subscribe();
+        } catch (channelErr) {
+          console.error('Error setting up supabase channel:', channelErr);
+        }
 
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load notifications');
@@ -96,11 +118,17 @@ export function useNotifications(): UseNotificationsReturn {
 
     setupNotifications();
 
-    // Request notification permission
-    if (typeof window !== 'undefined' && 'Notification' in window) {
-      if (Notification.permission === 'default') {
-        Notification.requestPermission();
+    // Request notification permission - with additional error handling
+    try {
+      if (typeof window !== 'undefined' && 'Notification' in window) {
+        if (Notification.permission === 'default') {
+          Notification.requestPermission().catch(err => {
+            console.warn('Failed to request notification permission:', err);
+          });
+        }
       }
+    } catch (notifErr) {
+      console.warn('Error accessing Notification API:', notifErr);
     }
 
     return () => {

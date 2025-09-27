@@ -35,14 +35,23 @@ export default function SidebarPage() {
   useEffect(() => {
     // Fetch notifications
     if (authFlow.user) {
-      fetch('/api/notifications')
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            setNotifications(data.notifications);
-          }
-        })
-        .catch(console.error);
+      try {
+        fetch('/api/notifications')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success) {
+              setNotifications(data.notifications);
+            }
+          })
+          .catch(error => {
+            console.error('Failed to fetch notifications:', error);
+            // Set empty notifications on error to prevent UI issues
+            setNotifications([]);
+          });
+      } catch (error) {
+        console.error('Error in notifications fetch:', error);
+        setNotifications([]);
+      }
     }
   }, [authFlow.user]);
 
@@ -68,13 +77,21 @@ export default function SidebarPage() {
 
   // Don't render if not authenticated (will redirect)
   if (!authFlow.user) {
-    return null;
+    // Show minimal UI while redirecting or if there's an unexpected auth state
+    return (
+      <div className="min-h-screen bg-black flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
+          <p className="text-cyan-400 font-mono">Redirecting to login...</p>
+        </div>
+      </div>
+    );
   }
 
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Welcome Screen with Seed Phrase Setup */}
-      {showWelcome && (
+      {showWelcome && authFlow.user && (
         <WelcomeScreen
           userName={authFlow.user?.user_metadata?.full_name || ''}
           onComplete={handleSeedPhraseComplete}
@@ -83,7 +100,7 @@ export default function SidebarPage() {
         />
       )}
 
-      {/* Navigation Sidebar */}
+      {/* Navigation Sidebar - authFlow.user is safely checked inside component */}
       <NavigationSidebar />
 
       {/* Main Content Area */}

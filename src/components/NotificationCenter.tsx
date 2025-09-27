@@ -16,22 +16,32 @@ interface Notification {
 }
 
 export default function NotificationCenter() {
-  const { notifications, unreadCount, markAsRead, markAllAsRead, loading } = useNotifications();
+  const { notifications, unreadCount, markAsRead, markAllAsRead, loading, error } = useNotifications();
   const [isOpen, setIsOpen] = useState(false);
+  
+  // Make sure notifications is always an array, even if hook fails
+  const safeNotifications = Array.isArray(notifications) ? notifications : [];
+  // Make sure unreadCount is a number
+  const safeUnreadCount = typeof unreadCount === 'number' ? unreadCount : 0;
 
   const formatTimeAgo = (dateString: string) => {
-    const date = new Date(dateString);
-    const now = new Date();
-    const diff = now.getTime() - date.getTime();
-    
-    const minutes = Math.floor(diff / (1000 * 60));
-    const hours = Math.floor(diff / (1000 * 60 * 60));
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    
-    if (minutes < 1) return 'Just now';
-    if (minutes < 60) return `${minutes}m ago`;
-    if (hours < 24) return `${hours}h ago`;
-    return `${days}d ago`;
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diff = now.getTime() - date.getTime();
+      
+      const minutes = Math.floor(diff / (1000 * 60));
+      const hours = Math.floor(diff / (1000 * 60 * 60));
+      const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+      
+      if (minutes < 1) return 'Just now';
+      if (minutes < 60) return `${minutes}m ago`;
+      if (hours < 24) return `${hours}h ago`;
+      return `${days}d ago`;
+    } catch (err) {
+      console.error('Error formatting date:', err);
+      return 'Unknown date';
+    }
   };
 
   const getPriorityColor = (priority: string) => {
@@ -102,7 +112,7 @@ export default function NotificationCenter() {
                 )}
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                {unreadCount} unread • {notifications.length} total
+                {safeUnreadCount} unread • {safeNotifications.length} total
               </div>
             </div>
 
@@ -113,14 +123,16 @@ export default function NotificationCenter() {
                   <div className="animate-spin w-6 h-6 border-2 border-cyan-400/20 border-t-cyan-400 rounded-full mx-auto"></div>
                   <div className="mt-2 text-sm">Loading notifications...</div>
                 </div>
-              ) : notifications.length === 0 ? (
+              ) : safeNotifications.length === 0 ? (
                 <div className="p-8 text-center text-gray-400">
                   <div className="text-4xl mb-2">🔔</div>
-                  <div className="text-sm">No notifications yet</div>
+                  <div className="text-sm">
+                    {error ? 'Failed to load notifications' : 'No notifications yet'}
+                  </div>
                 </div>
               ) : (
                 <div className="p-2">
-                  {notifications.map((notification: Notification) => (
+                  {safeNotifications.map((notification: Notification) => (
                     <motion.div
                       key={notification.id}
                       initial={{ opacity: 0, x: -20 }}
@@ -171,7 +183,7 @@ export default function NotificationCenter() {
             </div>
 
             {/* Footer */}
-            {notifications.length > 0 && (
+            {safeNotifications.length > 0 && (
               <div className="p-3 border-t border-cyan-400/20 text-center">
                 <button
                   onClick={() => setIsOpen(false)}

@@ -42,9 +42,19 @@ export function NavigationSidebar() {
     }
   }, [isMobile]);
 
-  // Ensure we have the user data
+  // Ensure we have the user data - safely handle potential undefined user in production
   if (!user) {
-    return null;
+    // Return a minimal version that doesn't depend on user data
+    return (
+      <div className="fixed h-full left-0 top-0 z-50 bg-gray-900/70 backdrop-blur w-64 border-r border-cyan-400/20">
+        <div className="p-4 flex items-center justify-between">
+          <div className="text-2xl font-mono font-bold text-cyan-400">CELORA</div>
+        </div>
+        <div className="p-4 mb-6 border-b border-cyan-400/20">
+          <div className="text-center text-gray-400">Loading user data...</div>
+        </div>
+      </div>
+    );
   }
   
   // When sidebar is fully closed on mobile
