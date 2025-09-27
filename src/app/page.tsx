@@ -167,9 +167,14 @@ export default function HomePage() {
           <div className="space-y-8">
             {/* Welcome Section */}
             <div className="bg-gradient-to-r from-cyan-400/10 to-blue-500/10 border border-cyan-400/20 rounded-lg p-6">
-              <h2 className="text-2xl font-mono font-bold text-cyan-400 mb-2">
-                WELCOME TO CELORA
-              </h2>
+              <div className="flex items-center justify-between mb-2">
+                <h2 className="text-2xl font-mono font-bold text-cyan-400">
+                  WELCOME TO CELORA
+                </h2>
+                <Link href="/sidebar" className="bg-cyan-500/20 text-cyan-400 text-xs font-mono px-3 py-1 rounded-full hover:bg-cyan-500/30 transition-colors">
+                  TRY NEW SIDEBAR DESIGN →
+                </Link>
+              </div>
               <p className="text-gray-400">
                 Your complete financial technology platform for virtual cards, crypto management, and analytics.
               </p>
