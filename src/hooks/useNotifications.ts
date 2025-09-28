@@ -36,10 +36,13 @@ export function useNotifications(): UseNotificationsReturn {
 
     async function setupNotifications() {
       try {
-        // Fetch initial notifications
+        // Fetch initial notifications using retry utility
         try {
-          const response = await fetch('/api/notifications');
-          const data = await response.json();
+          // Import fetchWithRetry utility
+          const { fetchJsonWithRetry } = await import('../lib/apiUtils');
+          
+          // Use fetch with retry for more reliable API calls
+          const data = await fetchJsonWithRetry('/api/notifications');
           
           if (data.success && data.data?.notifications) {
             setNotifications(data.data.notifications || []);
@@ -158,7 +161,11 @@ export function useNotifications(): UseNotificationsReturn {
 
   const markAsRead = async (id: string) => {
     try {
-      const response = await fetch('/api/notifications', {
+      // Import fetchWithRetry utility
+      const { fetchJsonWithRetry } = await import('../lib/apiUtils');
+      
+      // Use fetch with retry for more reliable API calls
+      const data = await fetchJsonWithRetry('/api/notifications', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -166,7 +173,6 @@ export function useNotifications(): UseNotificationsReturn {
         body: JSON.stringify({ notificationId: id, read: true }),
       });
 
-      const data = await response.json();
       if (!data.success) {
         setError(data.error);
       }
@@ -179,9 +185,12 @@ export function useNotifications(): UseNotificationsReturn {
     try {
       const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
       
+      // Import fetchWithRetry utility
+      const { fetchWithRetry } = await import('../lib/apiUtils');
+      
       await Promise.all(
         unreadIds.map(id => 
-          fetch('/api/notifications', {
+          fetchWithRetry('/api/notifications', {
             method: 'PATCH',
             headers: {
               'Content-Type': 'application/json',
@@ -197,7 +206,11 @@ export function useNotifications(): UseNotificationsReturn {
 
   const createNotification = async (notification: Omit<Notification, 'id' | 'read' | 'created_at'>) => {
     try {
-      const response = await fetch('/api/notifications', {
+      // Import fetchWithRetry utility
+      const { fetchJsonWithRetry } = await import('../lib/apiUtils');
+      
+      // Use fetch with retry for more reliable API calls
+      const data = await fetchJsonWithRetry('/api/notifications', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +218,6 @@ export function useNotifications(): UseNotificationsReturn {
         body: JSON.stringify(notification),
       });
 
-      const data = await response.json();
       if (!data.success) {
         setError(data.error);
       }

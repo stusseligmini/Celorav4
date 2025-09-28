@@ -4,6 +4,8 @@ import { createBrowserClient } from './supabaseClient';
 import { SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
 
 let supabaseInstance: SupabaseClient | null = null;
+let connectionAttempts = 0;
+const maxConnectionAttempts = 5;
 
 /**
  * Gets a singleton instance of the Supabase client
@@ -23,6 +25,41 @@ export function getSupabaseClient() {
   } catch (error) {
     console.error('Error creating Supabase client:', error);
     throw error;
+  }
+}
+
+/**
+ * Tests the Supabase connection and attempts to recover it if needed
+ */
+export async function testSupabaseConnection() {
+  try {
+    const supabase = getSupabaseClient();
+    
+    // Try a simple query
+    const { count, error } = await supabase
+      .from('user_profiles')
+      .select('*', { count: 'exact', head: true });
+    
+    if (error) {
+      console.error('Supabase connection test failed:', error);
+      if (connectionAttempts < maxConnectionAttempts) {
+        connectionAttempts++;
+        console.log(`Reconnection attempt ${connectionAttempts}/${maxConnectionAttempts}`);
+        
+        // Clear the instance and try again
+        supabaseInstance = null;
+        return getSupabaseClient();
+      } else {
+        throw new Error('Failed to connect to Supabase after multiple attempts');
+      }
+    }
+    
+    // Reset connection attempts on success
+    connectionAttempts = 0;
+    return supabase;
+  } catch (err) {
+    console.error('Error testing Supabase connection:', err);
+    throw err;
   }
 }
 

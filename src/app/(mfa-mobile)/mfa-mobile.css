@@ -1,0 +1,149 @@
+/**
+ * Mobiloptimaliserte CSS styles for MFA komponenter
+ * Disse stilene legger til touch-vennlige grensesnitt og responsiv design
+ */
+
+.mfa-mobile-container {
+  padding: 1rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.mfa-input-mobile {
+  height: 4rem;
+  font-size: 1.5rem;
+  width: 100%;
+  text-align: center;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+  transition: all 0.2s ease;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.mfa-input-mobile:focus {
+  border-color: #22d3ee;
+  box-shadow: 0 0 0 2px rgba(34, 211, 238, 0.4);
+  outline: none;
+}
+
+.mfa-input-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+}
+
+.mfa-button-mobile {
+  width: 100%;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  font-weight: 600;
+  font-size: 1rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: all 0.2s ease;
+  margin-bottom: 0.5rem;
+}
+
+.mfa-button-primary {
+  background: linear-gradient(to right, #06b6d4, #2563eb);
+  color: white;
+}
+
+.mfa-button-primary:active {
+  background: linear-gradient(to right, #0891b2, #1d4ed8);
+  transform: scale(0.98);
+}
+
+.mfa-button-secondary {
+  background-color: transparent;
+  border: 1px solid rgba(34, 211, 238, 0.5);
+  color: #22d3ee;
+}
+
+.mfa-button-secondary:active {
+  background-color: rgba(34, 211, 238, 0.1);
+}
+
+.mfa-recovery-code {
+  padding: 0.75rem;
+  background-color: rgba(15, 23, 42, 0.6);
+  border-radius: 0.375rem;
+  border: 1px solid rgba(100, 116, 139, 0.3);
+  font-family: monospace;
+  margin-bottom: 0.5rem;
+  word-break: break-all;
+}
+
+.mfa-code-segment {
+  min-width: 3.5rem;
+  height: 4rem;
+  padding: 0;
+  font-size: 1.75rem;
+  font-weight: 600;
+  border-radius: 0.5rem;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.mfa-copy-icon {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.5rem;
+  padding: 0.375rem;
+  border-radius: 9999px;
+  background-color: rgba(34, 211, 238, 0.2);
+  color: #22d3ee;
+  cursor: pointer;
+}
+
+.mfa-copy-icon:active {
+  background-color: rgba(34, 211, 238, 0.4);
+  transform: scale(0.95);
+}
+
+.mfa-timer-container {
+  width: 100%;
+  height: 4px;
+  background-color: rgba(100, 116, 139, 0.3);
+  border-radius: 9999px;
+  margin: 1rem 0;
+  overflow: hidden;
+}
+
+.mfa-timer-progress {
+  height: 100%;
+  background: linear-gradient(to right, #22d3ee, #2563eb);
+  transition: width 1s linear;
+}
+
+/* Spesifikk mobil tilpassning for å unngå zoom på iOS */
+@media (max-width: 768px) {
+  input[type="text"],
+  input[type="number"] {
+    font-size: 16px; /* iOS unngår zoom ved 16px+ */
+  }
+  
+  .mfa-mobile-wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+  }
+  
+  .mfa-mobile-bottom-padding {
+    padding-bottom: env(safe-area-inset-bottom, 1rem);
+  }
+  
+  .mfa-mobile-header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-color: rgba(15, 23, 42, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid rgba(100, 116, 139, 0.2);
+  }
+}

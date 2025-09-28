@@ -1,17 +1,22 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
 import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import CookieErrorHandler from '../components/CookieErrorHandler';
-import { getSupabaseClient } from '../lib/supabaseSingleton';
+import WebSocketErrorHandler from '../components/WebSocketErrorHandler';
+import { getSupabaseClient, testSupabaseConnection } from '../lib/supabaseSingleton';
+import { withRetry, validateSupabaseClient, attemptSupabaseRecovery } from '../lib/supabaseErrorHandling';
 
 interface SupabaseContextType {
   user: User | null;
   session: Session | null;
   loading: boolean;
+  error: Error | null;
+  reconnecting: boolean;
   signIn: (email: string, password: string) => Promise<{ error: any }>;
   signUp: (email: string, password: string, metadata?: any) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
+  refreshSession: () => Promise<void>;
 }
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
@@ -20,67 +25,159 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
+  const [reconnecting, setReconnecting] = useState(false);
+  const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
   // Use the singleton pattern for the Supabase client
   const supabase = getSupabaseClient();
 
-  useEffect(() => {
-    // Get initial session
-    const getSession = async () => {
-      const { data: { session }, error } = await supabase.auth.getSession();
+  // Function to safely get session with recovery
+  const refreshSession = async () => {
+    setLoading(true);
+    setError(null);
+    
+    try {
+      // First validate the client is working
+      const isClientValid = await validateSupabaseClient(supabase);
+      
+      if (!isClientValid) {
+        // Try to recover the client
+        setReconnecting(true);
+        await attemptSupabaseRecovery(supabase);
+      }
+      
+      // Try to get the session with retry logic
+      const result = await withRetry('get-auth-session', async () => {
+        return await supabase.auth.getSession();
+      });
+      
+      const { data: { session }, error } = result;
+      
       if (error) {
-        console.error('Error getting session:', error);
+        console.error('Error getting session after recovery attempts:', error);
+        setError(new Error(error.message));
       } else {
         setSession(session);
         setUser(session?.user ?? null);
+        setError(null);
       }
+    } catch (err) {
+      console.error('Fatal error getting session:', err);
+      setError(err instanceof Error ? err : new Error('Unknown error getting session'));
+    } finally {
       setLoading(false);
-    };
+      setReconnecting(false);
+    }
+  };
 
-    getSession();
+  useEffect(() => {
+    // Get initial session
+    refreshSession();
 
-    // Listen for auth changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(
-      async (event: AuthChangeEvent, session: Session | null) => {
-        setSession(session);
-        setUser(session?.user ?? null);
-        setLoading(false);
+    // Set up automatic recovery
+    const healthCheckInterval = setInterval(async () => {
+      try {
+        // Simple health check
+        const isValid = await validateSupabaseClient(supabase);
+        if (!isValid && !reconnecting) {
+          console.log('Detected Supabase client issue, attempting refresh');
+          refreshSession();
+        }
+      } catch (err) {
+        console.warn('Error during health check:', err);
       }
-    );
+    }, 60000); // Check every minute
 
-    return () => subscription?.unsubscribe();
+    // Listen for auth changes with error handling
+    let subscription: { unsubscribe: () => void } | null = null;
+    
+    try {
+      const authStateChange = supabase.auth.onAuthStateChange(
+        async (event: AuthChangeEvent, newSession: Session | null) => {
+          try {
+            setSession(newSession);
+            setUser(newSession?.user ?? null);
+            setLoading(false);
+          } catch (err) {
+            console.error('Error handling auth state change:', err);
+          }
+        }
+      );
+      
+      subscription = authStateChange.data.subscription;
+    } catch (err) {
+      console.error('Error setting up auth state change listener:', err);
+    }
+
+    // Clean up
+    return () => {
+      clearInterval(healthCheckInterval);
+      if (reconnectTimeoutRef.current) {
+        clearTimeout(reconnectTimeoutRef.current);
+      }
+      if (subscription) {
+        try {
+          subscription.unsubscribe();
+        } catch (err) {
+          console.warn('Error unsubscribing from auth changes:', err);
+        }
+      }
+    };
   }, [supabase]);
 
   const signOut = async () => {
-    await supabase.auth.signOut();
+    try {
+      await supabase.auth.signOut();
+    } catch (err) {
+      console.error('Error signing out:', err);
+      throw err;
+    }
   };
 
   const signIn = async (email: string, password: string) => {
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-    return { error };
+    try {
+      const { error } = await withRetry('sign-in', async () => {
+        return await supabase.auth.signInWithPassword({
+          email,
+          password,
+        });
+      });
+      return { error };
+    } catch (err) {
+      console.error('Error signing in:', err);
+      return { error: err instanceof Error ? err : new Error('Unknown error signing in') };
+    }
   };
 
   const signUp = async (email: string, password: string, metadata?: any) => {
-    const { error } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: metadata || {}
-      }
-    });
-    return { error };
+    try {
+      const { error } = await withRetry('sign-up', async () => {
+        return await supabase.auth.signUp({
+          email,
+          password,
+          options: {
+            data: metadata || {}
+          }
+        });
+      });
+      return { error };
+    } catch (err) {
+      console.error('Error signing up:', err);
+      return { error: err instanceof Error ? err : new Error('Unknown error signing up') };
+    }
   };
 
   const value = {
     user,
     session,
     loading,
+    error,
+    reconnecting,
     signIn,
     signUp,
     signOut,
+    refreshSession,
   };
 
   return (
@@ -88,6 +185,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
       <SupabaseContext.Provider value={value}>
         {children}
       </SupabaseContext.Provider>
+      {/* Add WebSocketErrorHandler to manage WebSocket connection issues */}
+      <WebSocketErrorHandler />
     </CookieErrorHandler>
   );
 }

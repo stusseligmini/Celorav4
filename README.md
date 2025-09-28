@@ -44,9 +44,13 @@ Experience the full platform with:
 
 
 ### Authentication & Authorization
- Email/password and social authentication
+- Email/password and social authentication
+- Multi-Factor Authentication (MFA)
+  - Time-based One-Time Password (TOTP)
+  - QR code setup with authenticator apps
+  - Recovery codes for account access
 - Secure session handling with automatic refresh
-- - User permissions and access control
+- User permissions and access control
 
 ### Data Security
 -- Database-level access controls

@@ -2,6 +2,7 @@
 
 import { createBrowserClient } from '@supabase/ssr';
 import { useEffect, useState } from 'react';
+import SecurityStatusPanel from './SecurityStatusPanel';
 
 interface DebugInfo {
   supabaseConnected: boolean;
@@ -187,6 +188,11 @@ export function DebugPanel() {
               <div className="text-xs">
                 Active channels: {debugInfo.realTimeConnections.length}
               </div>
+            </div>
+            
+            {/* Security Status */}
+            <div className="pt-3 border-t border-gray-200">
+              <SecurityStatusPanel showDetails={true} />
             </div>
           </div>
         </div>

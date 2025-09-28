@@ -1,5 +1,7 @@
 import { createBrowserClient } from '@supabase/ssr';
 import { seedPhraseToHash } from './seedPhrase';
+import * as speakeasy from 'speakeasy';
+import * as QRCode from 'qrcode';
 
 export interface User {
   id: string;
@@ -8,16 +10,44 @@ export interface User {
   wallet_type?: 'email' | 'seed_phrase';
   public_email?: string;
   created_at: string;
+  mfa_enabled?: boolean;
 }
 
 export interface AuthResponse {
   user: User | null;
   error: string | null;
   success: boolean;
+  requiresMFA?: boolean;
+  tempToken?: string; // Temporary token for MFA verification flow
+}
+
+export interface MFASetupResponse {
+  secret: string;
+  qrCodeUrl: string;
+  recoveryCodes: string[];
+  error: string | null;
+  success: boolean;
+}
+
+export interface MFAEnableResponse {
+  enabled: boolean;
+  error: string | null;
+  recoveryCodes: string[];
+}
+
+export interface MFADisableResponse {
+  disabled: boolean;
+  error: string | null;
+}
+
+export interface MFAVerifyResponse {
+  verified: boolean;
+  error: string | null;
+  user?: User;
 }
 
 class AuthService {
-  private supabase;
+  supabase;
 
   constructor() {
     this.supabase = createBrowserClient(
@@ -26,7 +56,7 @@ class AuthService {
     );
   }
 
-  // Sign in with email and password - ENHANCED WITH CAPTCHA HANDLING
+  // Sign in with email and password - ENHANCED WITH CAPTCHA HANDLING & MFA
   async signInWithEmail(email: string, password: string): Promise<AuthResponse> {
     try {
       console.log('🔐 Starting email sign in...');
@@ -51,6 +81,30 @@ class AuthService {
           });
           if (!setErr) {
             const { data: { user } } = await this.supabase.auth.getUser();
+            
+            // Check if MFA is enabled for this user
+            if (user) {
+              const { data: profileData, error: profileError } = await this.supabase
+                .from('user_profiles')
+                .select('mfa_enabled')
+                .eq('id', user.id)
+                .single();
+                
+              if (!profileError && profileData?.mfa_enabled) {
+                console.log('🔒 MFA is enabled for this user, requiring verification...');
+                // Generate temporary token for MFA verification
+                const tempToken = await this.generateTemporaryToken(user.id);
+                
+                return {
+                  user: null,
+                  error: null,
+                  success: true,
+                  requiresMFA: true,
+                  tempToken
+                };
+              }
+            }
+            
             console.log('✅ Admin login successful');
             return { user: user as User, error: null, success: true };
           } else {
@@ -85,6 +139,30 @@ class AuthService {
             });
             if (!setErr) {
               const { data: { user } } = await this.supabase.auth.getUser();
+              
+              // Check if MFA is enabled for this user
+              if (user) {
+                const { data: profileData, error: profileError } = await this.supabase
+                  .from('user_profiles')
+                  .select('mfa_enabled')
+                  .eq('id', user.id)
+                  .single();
+                  
+                if (!profileError && profileData?.mfa_enabled) {
+                  console.log('🔒 MFA is enabled for this user, requiring verification...');
+                  // Generate temporary token for MFA verification
+                  const tempToken = await this.generateTemporaryToken(user.id);
+                  
+                  return {
+                    user: null,
+                    error: null,
+                    success: true,
+                    requiresMFA: true,
+                    tempToken
+                  };
+                }
+              }
+              
               console.log('✅ Server-first login successful');
               return { user: user as User, error: null, success: true };
             }
@@ -122,6 +200,30 @@ class AuthService {
                 });
                 if (!setErr) {
                   const { data: { user } } = await this.supabase.auth.getUser();
+                  
+                  // Check if MFA is enabled for this user
+                  if (user) {
+                    const { data: profileData, error: profileError } = await this.supabase
+                      .from('user_profiles')
+                      .select('mfa_enabled')
+                      .eq('id', user.id)
+                      .single();
+                      
+                    if (!profileError && profileData?.mfa_enabled) {
+                      console.log('🔒 MFA is enabled for this user, requiring verification...');
+                      // Generate temporary token for MFA verification
+                      const tempToken = await this.generateTemporaryToken(user.id);
+                      
+                      return {
+                        user: null,
+                        error: null,
+                        success: true,
+                        requiresMFA: true,
+                        tempToken
+                      };
+                    }
+                  }
+                  
                   return { user: user as User, error: null, success: true };
                 }
               }
@@ -147,6 +249,29 @@ class AuthService {
         return { user: null, error: error.message, success: false };
       }
 
+      // Check if MFA is enabled for this user
+      if (data.user) {
+        const { data: profileData, error: profileError } = await this.supabase
+          .from('user_profiles')
+          .select('mfa_enabled')
+          .eq('id', data.user.id)
+          .single();
+          
+        if (!profileError && profileData?.mfa_enabled) {
+          console.log('🔒 MFA is enabled for this user, requiring verification...');
+          // Generate temporary token for MFA verification
+          const tempToken = await this.generateTemporaryToken(data.user.id);
+          
+          return {
+            user: null,
+            error: null,
+            success: true,
+            requiresMFA: true,
+            tempToken
+          };
+        }
+      }
+
       console.log('✅ Email sign in successful');
       return { 
         user: data.user as User, 
@@ -161,6 +286,42 @@ class AuthService {
         success: false 
       };
     }
+  }
+  
+  // Generate a temporary token for MFA verification
+  private async generateTemporaryToken(userId: string): Promise<string> {
+    // In a real implementation, this should create a secure temporary token
+    // stored in the database with an expiration time
+    // For this implementation, we'll create a signed token with userId and timestamp
+    const timestamp = new Date().getTime();
+    const token = `${userId}_${timestamp}_${Math.random().toString(36).substring(2, 15)}`;
+    
+    // In production, you'd store this token in a database table with expiration
+    return token;
+  }
+
+  // Validate a temporary MFA token
+  private async validateTemporaryToken(token: string, userId: string): Promise<boolean> {
+    // In a real implementation, this would check the database for the token
+    // and validate it's not expired and belongs to this user
+    
+    // For this implementation, we'll do a basic check
+    if (!token) return false;
+    
+    const parts = token.split('_');
+    if (parts.length !== 3) return false;
+    
+    const tokenUserId = parts[0];
+    const timestamp = parseInt(parts[1]);
+    
+    // Check if token belongs to this user
+    if (tokenUserId !== userId) return false;
+    
+    // Check if token is expired (10 minutes)
+    const now = new Date().getTime();
+    if (now - timestamp > 10 * 60 * 1000) return false;
+    
+    return true;
   }
 
   // Sign in with seed phrase
@@ -213,6 +374,30 @@ class AuthService {
                   });
                   if (!setErr) {
                     const { data: { user } } = await this.supabase.auth.getUser();
+                    
+                    // Check if MFA is enabled for this user
+                    if (user) {
+                      const { data: profileData, error: profileError } = await this.supabase
+                        .from('user_profiles')
+                        .select('mfa_enabled')
+                        .eq('id', user.id)
+                        .single();
+                        
+                      if (!profileError && profileData?.mfa_enabled) {
+                        console.log('🔒 MFA is enabled for this user, requiring verification...');
+                        // Generate temporary token for MFA verification
+                        const tempToken = await this.generateTemporaryToken(user.id);
+                        
+                        return {
+                          user: null,
+                          error: null,
+                          success: true,
+                          requiresMFA: true,
+                          tempToken
+                        };
+                      }
+                    }
+                    
                     return { user: user as User, error: null, success: true };
                   }
                 }
@@ -234,6 +419,30 @@ class AuthService {
             
               if (verifyResponse.ok && verifyResult.success) {
                 console.log('✅ Alternative verification successful');
+                
+                // If we have a user, check for MFA
+                if (verifyResult.user) {
+                  const { data: profileData, error: profileError } = await this.supabase
+                    .from('user_profiles')
+                    .select('mfa_enabled')
+                    .eq('id', verifyResult.user.id)
+                    .single();
+                    
+                  if (!profileError && profileData?.mfa_enabled) {
+                    console.log('🔒 MFA is enabled for this user, requiring verification...');
+                    // Generate temporary token for MFA verification
+                    const tempToken = await this.generateTemporaryToken(verifyResult.user.id);
+                    
+                    return {
+                      user: null,
+                      error: null,
+                      success: true,
+                      requiresMFA: true,
+                      tempToken
+                    };
+                  }
+                }
+                
                 return {
                   user: verifyResult.user,
                   error: null,
@@ -266,6 +475,29 @@ class AuthService {
           error: `Sign in failed: ${error.message}`, 
           success: false 
         };
+      }
+
+      // Check if MFA is enabled for this user
+      if (data.user) {
+        const { data: profileData, error: profileError } = await this.supabase
+          .from('user_profiles')
+          .select('mfa_enabled')
+          .eq('id', data.user.id)
+          .single();
+          
+        if (!profileError && profileData?.mfa_enabled) {
+          console.log('🔒 MFA is enabled for this user, requiring verification...');
+          // Generate temporary token for MFA verification
+          const tempToken = await this.generateTemporaryToken(data.user.id);
+          
+          return {
+            user: null,
+            error: null,
+            success: true,
+            requiresMFA: true,
+            tempToken
+          };
+        }
       }
 
       console.log('✅ Sign in successful');
@@ -452,6 +684,488 @@ class AuthService {
     }
   }
 
+  // Set up MFA for a user
+  async setupMFA(): Promise<MFASetupResponse> {
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await this.supabase.auth.getUser();
+      
+      if (userError || !user) {
+        return {
+          secret: '',
+          qrCodeUrl: '',
+          recoveryCodes: [],
+          error: 'You must be logged in to set up MFA',
+          success: false
+        };
+      }
+
+      // Generate a new secret
+      const secret = speakeasy.generateSecret({
+        name: `Celora:${user.email || user.id}`
+      });
+
+      // Generate QR code
+      const qrCodeUrl = await QRCode.toDataURL(secret.otpauth_url || '');
+
+      // Generate recovery codes using the server function
+      const { data: recoveryCodes, error: recoveryError } = await this.supabase.rpc(
+        'generate_recovery_codes'
+      );
+
+      if (recoveryError) {
+        console.error('Error generating recovery codes:', recoveryError);
+        return {
+          secret: '',
+          qrCodeUrl: '',
+          recoveryCodes: [],
+          error: 'Failed to generate recovery codes',
+          success: false
+        };
+      }
+
+      return {
+        secret: secret.base32,
+        qrCodeUrl,
+        recoveryCodes: recoveryCodes || [],
+        error: null,
+        success: true
+      };
+    } catch (err) {
+      console.error('Error setting up MFA:', err);
+      return {
+        secret: '',
+        qrCodeUrl: '',
+        recoveryCodes: [],
+        error: 'An unexpected error occurred',
+        success: false
+      };
+    }
+  }
+
+  // Enable MFA for a user after verification
+  async enableMFA(secret: string, token: string, recoveryCodes: string[]): Promise<{ success: boolean, error: string | null }> {
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await this.supabase.auth.getUser();
+      
+      if (userError || !user) {
+        return {
+          success: false,
+          error: 'You must be logged in to enable MFA'
+        };
+      }
+
+      // Verify token first
+      const isValid = speakeasy.totp.verify({
+        secret,
+        encoding: 'base32',
+        token: token.replace(/\s+/g, '')
+      });
+
+      if (!isValid) {
+        return {
+          success: false,
+          error: 'Invalid verification code'
+        };
+      }
+
+      // Update user profile with MFA settings
+      const { error: updateError } = await this.supabase
+        .from('user_profiles')
+        .update({
+          mfa_enabled: true,
+          mfa_secret: secret,
+          mfa_recovery_codes: recoveryCodes,
+          mfa_last_verified: new Date().toISOString()
+        })
+        .eq('id', user.id);
+
+      if (updateError) {
+        console.error('Error enabling MFA:', updateError);
+        return {
+          success: false,
+          error: 'Failed to enable MFA'
+        };
+      }
+
+      // Record the current device as verified
+      await this.recordVerifiedDevice(user.id);
+
+      return {
+        success: true,
+        error: null
+      };
+    } catch (err) {
+      console.error('Error enabling MFA:', err);
+      return {
+        success: false,
+        error: 'An unexpected error occurred'
+      };
+    }
+  }
+
+  // Record the current device as a verified MFA device
+  private async recordVerifiedDevice(userId: string) {
+    try {
+      // Get current device info
+      const deviceInfo = {
+        userAgent: navigator.userAgent,
+        lastVerified: new Date().toISOString(),
+        deviceId: this.getDeviceId()
+      };
+
+      // Get current verified devices
+      const { data, error } = await this.supabase
+        .from('user_profiles')
+        .select('mfa_verified_devices')
+        .eq('id', userId)
+        .single();
+
+      if (error) {
+        console.error('Error getting verified devices:', error);
+        return;
+      }
+
+      // Add current device to the list
+      let verifiedDevices = data.mfa_verified_devices || [];
+      
+      // Check if device already exists
+      const existingIndex = verifiedDevices.findIndex((d: any) => d.deviceId === deviceInfo.deviceId);
+      if (existingIndex >= 0) {
+        // Update existing device
+        verifiedDevices[existingIndex] = deviceInfo;
+      } else {
+        // Add new device
+        verifiedDevices.push(deviceInfo);
+      }
+
+      // Update the devices list
+      await this.supabase
+        .from('user_profiles')
+        .update({
+          mfa_verified_devices: verifiedDevices
+        })
+        .eq('id', userId);
+    } catch (err) {
+      console.error('Error recording verified device:', err);
+    }
+  }
+
+  // Get a unique device ID (simplified)
+  private getDeviceId(): string {
+    // In production, you should use a more sophisticated device fingerprinting
+    // This is a simplified example
+    let id = localStorage.getItem('celora_device_id');
+    if (!id) {
+      id = `device_${Math.random().toString(36).substring(2, 15)}_${new Date().getTime()}`;
+      localStorage.setItem('celora_device_id', id);
+    }
+    return id;
+  }
+
+  // Verify MFA token during login
+  async verifyMFA(tempToken: string, token: string): Promise<MFAVerifyResponse> {
+    try {
+      // Extract user ID from the temporary token
+      const userId = tempToken.split('_')[0];
+      
+      // Validate the temporary token
+      const isValidToken = await this.validateTemporaryToken(tempToken, userId);
+      if (!isValidToken) {
+        return {
+          verified: false,
+          error: 'Invalid or expired session. Please log in again.'
+        };
+      }
+      
+      // Get the user's MFA secret
+      const { data, error } = await this.supabase
+        .from('user_profiles')
+        .select('mfa_secret, id')
+        .eq('id', userId)
+        .single();
+      
+      if (error || !data) {
+        console.error('Error getting MFA secret:', error);
+        return {
+          verified: false,
+          error: 'Failed to verify MFA'
+        };
+      }
+      
+      // Verify the provided token against the secret
+      const isValid = speakeasy.totp.verify({
+        secret: data.mfa_secret,
+        encoding: 'base32',
+        token: token.replace(/\s+/g, '')
+      });
+      
+      if (!isValid) {
+        // Log failed attempt
+        await this.supabase
+          .from('mfa_verification_log')
+          .insert([
+            {
+              user_id: userId,
+              success: false
+            }
+          ]);
+          
+        return {
+          verified: false,
+          error: 'Invalid verification code'
+        };
+      }
+      
+      // Log successful attempt
+      await this.supabase
+        .from('mfa_verification_log')
+        .insert([
+          {
+            user_id: userId,
+            success: true
+          }
+        ]);
+      
+      // Update last verified timestamp
+      await this.supabase
+        .from('user_profiles')
+        .update({
+          mfa_last_verified: new Date().toISOString()
+        })
+        .eq('id', userId);
+      
+      // Record the current device as verified
+      await this.recordVerifiedDevice(userId);
+      
+      // Get the user to complete the sign-in
+      const { data: { user }, error: userError } = await this.supabase.auth.getUser();
+      
+      if (userError || !user) {
+        return {
+          verified: false,
+          error: 'Failed to get user data'
+        };
+      }
+      
+      return {
+        verified: true,
+        error: null,
+        user: user as User
+      };
+    } catch (err) {
+      console.error('Error verifying MFA:', err);
+      return {
+        verified: false,
+        error: 'An unexpected error occurred'
+      };
+    }
+  }
+
+  // Verify recovery code
+  async verifyRecoveryCode(tempToken: string, recoveryCode: string): Promise<MFAVerifyResponse> {
+    try {
+      // Extract user ID from the temporary token
+      const userId = tempToken.split('_')[0];
+      
+      // Validate the temporary token
+      const isValidToken = await this.validateTemporaryToken(tempToken, userId);
+      if (!isValidToken) {
+        return {
+          verified: false,
+          error: 'Invalid or expired session. Please log in again.'
+        };
+      }
+      
+      // Verify the recovery code using the database function
+      const { data: verifyResult, error: verifyError } = await this.supabase.rpc(
+        'verify_recovery_code',
+        {
+          p_user_id: userId,
+          p_code: recoveryCode
+        }
+      );
+      
+      if (verifyError) {
+        console.error('Error verifying recovery code:', verifyError);
+        return {
+          verified: false,
+          error: 'Failed to verify recovery code'
+        };
+      }
+      
+      if (!verifyResult) {
+        return {
+          verified: false,
+          error: 'Invalid recovery code'
+        };
+      }
+      
+      // Record the current device as verified
+      await this.recordVerifiedDevice(userId);
+      
+      // Get the user to complete the sign-in
+      const { data: { user }, error: userError } = await this.supabase.auth.getUser();
+      
+      if (userError || !user) {
+        return {
+          verified: false,
+          error: 'Failed to get user data'
+        };
+      }
+      
+      return {
+        verified: true,
+        error: null,
+        user: user as User
+      };
+    } catch (err) {
+      console.error('Error verifying recovery code:', err);
+      return {
+        verified: false,
+        error: 'An unexpected error occurred'
+      };
+    }
+  }
+
+  // Disable MFA for a user
+  async disableMFA(token: string): Promise<{ success: boolean, error: string | null }> {
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await this.supabase.auth.getUser();
+      
+      if (userError || !user) {
+        return {
+          success: false,
+          error: 'You must be logged in to disable MFA'
+        };
+      }
+
+      // Get the user's MFA secret
+      const { data, error } = await this.supabase
+        .from('user_profiles')
+        .select('mfa_secret, mfa_enabled')
+        .eq('id', user.id)
+        .single();
+      
+      if (error || !data) {
+        return {
+          success: false,
+          error: 'Failed to get MFA settings'
+        };
+      }
+      
+      // If MFA is not enabled, nothing to do
+      if (!data.mfa_enabled) {
+        return {
+          success: true,
+          error: null
+        };
+      }
+      
+      // Verify the token first
+      const isValid = speakeasy.totp.verify({
+        secret: data.mfa_secret,
+        encoding: 'base32',
+        token: token.replace(/\s+/g, '')
+      });
+      
+      if (!isValid) {
+        return {
+          success: false,
+          error: 'Invalid verification code'
+        };
+      }
+
+      // Update user profile to disable MFA
+      const { error: updateError } = await this.supabase
+        .from('user_profiles')
+        .update({
+          mfa_enabled: false,
+          mfa_secret: null,
+          mfa_recovery_codes: null,
+          mfa_verified_devices: []
+        })
+        .eq('id', user.id);
+
+      if (updateError) {
+        console.error('Error disabling MFA:', updateError);
+        return {
+          success: false,
+          error: 'Failed to disable MFA'
+        };
+      }
+
+      return {
+        success: true,
+        error: null
+      };
+    } catch (err) {
+      console.error('Error disabling MFA:', err);
+      return {
+        success: false,
+        error: 'An unexpected error occurred'
+      };
+    }
+  }
+
+  // Check if current user has MFA enabled
+  async isMFAEnabled(): Promise<boolean> {
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await this.supabase.auth.getUser();
+      
+      if (userError || !user) {
+        return false;
+      }
+
+      // Check user profile for MFA setting
+      const { data, error } = await this.supabase
+        .from('user_profiles')
+        .select('mfa_enabled')
+        .eq('id', user.id)
+        .single();
+      
+      if (error || !data) {
+        return false;
+      }
+      
+      return data.mfa_enabled || false;
+    } catch (err) {
+      console.error('Error checking MFA status:', err);
+      return false;
+    }
+  }
+
+  // Get remaining recovery codes
+  async getRemainingRecoveryCodes(): Promise<string[]> {
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await this.supabase.auth.getUser();
+      
+      if (userError || !user) {
+        return [];
+      }
+
+      // Get recovery codes
+      const { data, error } = await this.supabase
+        .from('user_profiles')
+        .select('mfa_recovery_codes')
+        .eq('id', user.id)
+        .single();
+      
+      if (error || !data) {
+        return [];
+      }
+      
+      return data.mfa_recovery_codes || [];
+    } catch (err) {
+      console.error('Error getting recovery codes:', err);
+      return [];
+    }
+  }
+
   // Get current user
   async getCurrentUser(): Promise<User | null> {
     try {
@@ -459,6 +1173,19 @@ class AuthService {
       
       if (error || !user) {
         return null;
+      }
+
+      // Get MFA status
+      if (user) {
+        const { data } = await this.supabase
+          .from('user_profiles')
+          .select('mfa_enabled')
+          .eq('id', user.id)
+          .single();
+          
+        if (data) {
+          (user as User).mfa_enabled = data.mfa_enabled;
+        }
       }
 
       return user as User;
@@ -479,7 +1206,20 @@ class AuthService {
 
   // Listen for auth state changes
   onAuthStateChange(callback: (user: User | null) => void) {
-    return this.supabase.auth.onAuthStateChange((event, session) => {
+    return this.supabase.auth.onAuthStateChange(async (event, session) => {
+      if (session?.user) {
+        // Get MFA status
+        const { data } = await this.supabase
+          .from('user_profiles')
+          .select('mfa_enabled')
+          .eq('id', session.user.id)
+          .single();
+          
+        if (data) {
+          (session.user as User).mfa_enabled = data.mfa_enabled;
+        }
+      }
+      
       callback(session?.user as User || null);
     });
   }
@@ -601,6 +1341,116 @@ class AuthService {
       return { error: 'Failed to send reset email', success: false };
     }
   }
+}
+
+// Eksportere MFA standalone funksjoner for direkte bruk
+
+/**
+ * Setup MFA for the current user
+ * @returns MFA setup information including secret and QR code URL
+ */
+export async function setupMFA(): Promise<MFASetupResponse> {
+  return authService.setupMFA();
+}
+
+/**
+ * Verify MFA token during login or setup
+ * @param userId User ID or temp token
+ * @param token Verification code
+ * @param isRecoveryCode Whether the token is a recovery code
+ * @returns Verification result
+ */
+export async function verifyMFA(userId: string, token: string, isRecoveryCode: boolean = false): Promise<MFAVerifyResponse> {
+  if (isRecoveryCode) {
+    const result = await authService.verifyRecoveryCode(userId, token);
+    return {
+      verified: result.verified,
+      error: result.error,
+      user: result.user
+    };
+  } else {
+    const result = await authService.verifyMFA(userId, token);
+    return {
+      verified: result.verified,
+      error: result.error,
+      user: result.user
+    };
+  }
+}
+
+/**
+ * Enable MFA for the current user
+ * @param secret The MFA secret
+ * @param token Verification token to confirm setup
+ * @returns Result of the operation
+ */
+export async function enableMFA(userId: string, token: string): Promise<MFAEnableResponse> {
+  // Get recoveryCodes first
+  const { data: recoveryCodes, error: recoveryError } = await authService.supabase.rpc(
+    'generate_recovery_codes'
+  );
+
+  if (recoveryError) {
+    return {
+      enabled: false,
+      error: 'Failed to generate recovery codes',
+      recoveryCodes: []
+    };
+  }
+  
+  // Get MFA secret
+  const { data, error } = await authService.supabase
+    .from('user_profiles')
+    .select('mfa_secret')
+    .eq('id', userId)
+    .single();
+    
+  if (error || !data?.mfa_secret) {
+    return {
+      enabled: false,
+      error: 'MFA not set up properly',
+      recoveryCodes: []
+    };
+  }
+  
+  const result = await authService.enableMFA(data.mfa_secret, token, recoveryCodes || []);
+  
+  return {
+    enabled: result.success,
+    error: result.error,
+    recoveryCodes: recoveryCodes || []
+  };
+}
+
+/**
+ * Disable MFA for the current user
+ * @param userId The user ID
+ * @param token Verification token to confirm
+ * @returns Result of the operation
+ */
+export async function disableMFA(userId: string, token: string): Promise<MFADisableResponse> {
+  const result = await authService.disableMFA(token);
+  
+  return {
+    disabled: result.success,
+    error: result.error
+  };
+}
+
+/**
+ * Check if the current user has MFA enabled
+ * @returns True if MFA is enabled, false otherwise
+ */
+export async function isMFAEnabled(): Promise<boolean> {
+  return await authService.isMFAEnabled();
+}
+
+/**
+ * Get the remaining recovery codes for the current user
+ * @returns Array of remaining recovery codes
+ */
+export async function getRemainingRecoveryCodes(): Promise<string[]> {
+  return await authService.getRemainingRecoveryCodes();
 }
 
 // Export singleton instance

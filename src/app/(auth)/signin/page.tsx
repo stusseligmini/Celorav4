@@ -3,8 +3,9 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
-import { authService } from '@/lib/auth';
+import { authService, User } from '@/lib/auth';
 import { validateSeedPhrase, BIP39_WORDS } from '@/lib/seedPhrase';
+import MFAVerification from '@/components/MFAVerification';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -18,6 +19,10 @@ export default function SignInPage() {
   const [seedPhraseInput, setSeedPhraseInput] = useState('');
   const [showSuggestions, setShowSuggestions] = useState<number | null>(null);
   const [suggestions, setSuggestions] = useState<string[]>([]);
+  
+  // MFA-relaterte tilstander
+  const [requiresMFA, setRequiresMFA] = useState(false);
+  const [tempToken, setTempToken] = useState('');
 
   // Auto-complete suggestions for seed phrase
   useEffect(() => {
@@ -62,7 +67,14 @@ export default function SignInPage() {
       // Standard sign-in to create a real client session
       const result = await authService.signInWithEmail(email, password);
       if (result.success) {
-        router.push('/');
+        if (result.requiresMFA && result.tempToken) {
+          // Brukeren har aktivert MFA og må verifisere
+          setRequiresMFA(true);
+          setTempToken(result.tempToken);
+        } else {
+          // Ingen MFA, logg inn direkte
+          router.push('/');
+        }
       } else {
         setError(result.error);
       }
@@ -90,8 +102,18 @@ export default function SignInPage() {
     const result = await authService.signInWithSeedPhrase(seedPhrase);
     
     if (result.success) {
-      console.log('✅ Sign in successful, redirecting...');
-      router.push('/');
+      console.log('✅ Sign in successful');
+      
+      if (result.requiresMFA && result.tempToken) {
+        // Brukeren har aktivert MFA og må verifisere
+        console.log('🔐 MFA verification required');
+        setRequiresMFA(true);
+        setTempToken(result.tempToken);
+      } else {
+        // Ingen MFA, logg inn direkte
+        console.log('🚀 Redirecting to dashboard...');
+        router.push('/');
+      }
     } else {
       console.log('❌ Sign in failed:', result.error);
       
@@ -163,11 +185,43 @@ export default function SignInPage() {
     setSeedPhrase(Array(12).fill(''));
     setError(null);
   };
+  
+  // Håndterer vellykket MFA-verifisering
+  const handleMFAVerified = (user: User) => {
+    console.log('✅ MFA verification successful');
+    setRequiresMFA(false);
+    setTempToken('');
+    router.push('/');
+  };
+  
+  // Håndterer avbrutt MFA-verifisering
+  const handleMFACancel = () => {
+    console.log('❌ MFA verification canceled');
+    setRequiresMFA(false);
+    setTempToken('');
+    setError('Authentication canceled. Please try again.');
+    
+    // Logg ut for å sikre at all sesjonsinformasjon er fjernet
+    authService.signOut();
+  };
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 to-blue-950/20"></div>
       <div className="relative z-10 w-full max-w-md">
+        {requiresMFA ? (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-8"
+          >
+            <MFAVerification 
+              tempToken={tempToken} 
+              onVerified={handleMFAVerified} 
+              onCancel={handleMFACancel}
+            />
+          </motion.div>
+        ) : (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -438,6 +492,7 @@ export default function SignInPage() {
             </div>
           </div>
         </motion.div>
+        )}
       </div>
     </div>
   );

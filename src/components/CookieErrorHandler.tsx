@@ -8,8 +8,15 @@ import React, { useEffect } from 'react';
  */
 export default function CookieErrorHandler({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    // Import the function to enable safe JSON parsing
-    import('../lib/cookieHelper').then(({ enableSafeJsonParsing }) => {
+    // Immediately clean up problematic cookies on mount
+    import('../lib/cookieHelper').then(({ cleanupProblemCookies, enableSafeJsonParsing }) => {
+      // First clean up any problematic cookies
+      console.log('🍪 Proactively cleaning up problematic cookies...');
+      const removedCookies = cleanupProblemCookies();
+      if (removedCookies.length > 0) {
+        console.log(`🧹 Cleaned up ${removedCookies.length} problematic cookies:`, removedCookies);
+      }
+      
       // Patch JSON.parse to handle base64-encoded cookies
       const disablePatch = enableSafeJsonParsing();
       
@@ -42,11 +49,12 @@ export default function CookieErrorHandler({ children }: { children: React.React
             const cookieValue = cookieParts.slice(1).join('=');
             
             // Check if this cookie might be causing issues
-            if (cookieValue?.includes('base64-eyJ')) {
+            if (cookieValue?.includes('base64-eyJ') || cookieValue?.includes('Unexpected token')) {
               console.warn(`Problematic cookie found: ${cookieName}`);
               
-              // Optional: Clear the problematic cookie
-              // document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+              // Clear the problematic cookie
+              document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+              document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
             }
           });
         } catch (clearError) {
@@ -83,10 +91,18 @@ export function safeJsonParse(input: string | null | undefined) {
     return JSON.parse(input);
   } catch (err) {
     // Check if this might be a base64-encoded string
-    if (input.startsWith('base64-')) {
+    if (typeof input === 'string' && input.startsWith('base64-')) {
       try {
         const base64Part = input.substring(7); // Remove 'base64-' prefix
-        const decoded = atob(base64Part);
+        
+        // Make sure the base64 string is properly padded and handle URL-safe characters
+        const paddedBase64 = base64Part.replace(/-/g, '+').replace(/_/g, '/');
+        const paddingNeeded = paddedBase64.length % 4;
+        const fullPadded = paddingNeeded > 0 
+          ? paddedBase64 + '='.repeat(4 - paddingNeeded) 
+          : paddedBase64;
+        
+        const decoded = atob(fullPadded);
         return JSON.parse(decoded);
       } catch (base64Err) {
         console.warn('Failed to parse base64-encoded string:', base64Err);

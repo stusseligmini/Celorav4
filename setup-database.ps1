@@ -76,6 +76,20 @@ if (Test-Path "supabase-policies-additions.sql") {
     Write-Host "⚠️ supabase-policies-additions.sql not found, skipping" -ForegroundColor Yellow
 }
 
+# Read and execute MFA schema
+Write-Host "🔐 Reading MFA database setup..." -ForegroundColor Blue
+
+if (Test-Path "database\deploy-mfa.sql") {
+    $mfaSchema = Get-Content "database\deploy-mfa.sql" -Raw
+    Write-Host "✅ MFA schema loaded" -ForegroundColor Green
+    
+    Write-Host "🔒 Executing MFA setup..." -ForegroundColor Blue
+    $mfaResult = Invoke-SupabaseSQL -SqlContent $mfaSchema
+    Write-Host "✅ MFA database setup complete" -ForegroundColor Green
+} else {
+    Write-Host "⚠️ database\deploy-mfa.sql not found, skipping MFA setup" -ForegroundColor Yellow
+}
+
 # Test database connectivity
 Write-Host "🧪 Testing database functionality..." -ForegroundColor Blue
 

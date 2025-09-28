@@ -2,7 +2,7 @@
 
 import { createBrowserClient as originalCreateBrowserClient } from '@supabase/ssr';
 import { SupabaseClient, AuthChangeEvent, Session } from '@supabase/supabase-js';
-import { parseCookieValue } from './cookieHelper';
+import { parseCookieValue, cleanupProblemCookies } from './cookieHelper';
 
 // Global instance counter for debugging
 let instanceCounter = 0;
@@ -12,6 +12,7 @@ let instanceCounter = 0;
  * - Base64 encoded cookies
  * - Undefined property access
  * - WebSocket connection issues
+ * - Cookie parsing errors
  */
 export function createEnhancedBrowserClient(
   supabaseUrl: string, 
@@ -19,13 +20,78 @@ export function createEnhancedBrowserClient(
   options?: any
 ): SupabaseClient {
   try {
+    // Try to clean up any problematic cookies before creating the client
+    if (typeof document !== 'undefined') {
+      const removedCookies = cleanupProblemCookies();
+      if (removedCookies.length > 0) {
+        console.log(`🧹 Cleaned up ${removedCookies.length} problematic cookies before Supabase initialization`);
+      }
+      
+      // Also add a fallback mechanism for Supabase cookies
+      // If you find any cookies with supabase or sb- prefix, let's ensure they're valid
+      try {
+        const cookies = document.cookie.split(';');
+        cookies.forEach(cookie => {
+          const cookieParts = cookie.trim().split('=');
+          const cookieName = cookieParts[0];
+          
+          // Check if this is a Supabase-related cookie
+          if (cookieName.startsWith('sb-') || cookieName.includes('supabase')) {
+            try {
+              const cookieValue = cookieParts.slice(1).join('=');
+              
+              // Try parsing it - if it fails, we'll clean it up
+              if (cookieValue) {
+                parseCookieValue(cookieValue);
+              }
+            } catch (parseErr) {
+              // If parsing fails, remove the cookie
+              console.warn(`Removing problematic Supabase cookie: ${cookieName}`);
+              document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+              document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+            }
+          }
+        });
+      } catch (cookieCleanupError) {
+        console.error('Error during proactive cookie cleanup:', cookieCleanupError);
+      }
+    }
+    
     instanceCounter++;
     if (instanceCounter > 1) {
       console.warn(`Multiple Supabase client instances detected (${instanceCounter}). Consider using the singleton pattern.`);
     }
 
-    // Original client creation
-    const client = originalCreateBrowserClient(supabaseUrl, supabaseKey, options);
+    // Set custom options to handle cookie issues
+    const enhancedOptions = {
+      ...(options || {}),
+      // Customize cookie options to avoid future parsing issues
+      cookies: {
+        ...(options?.cookies || {}),
+        // Set custom serialization/deserialization methods
+        serialize: (name: string, value: any) => {
+          try {
+            // Ensure the value is always a string
+            return typeof value === 'string' ? value : JSON.stringify(value);
+          } catch (e) {
+            console.warn('Error serializing cookie:', e);
+            return String(value);
+          }
+        },
+        parse: (cookieStr: string) => {
+          try {
+            // Use our custom safe parser
+            return parseCookieValue(cookieStr);
+          } catch (e) {
+            console.warn('Error parsing cookie:', e);
+            return null;
+          }
+        }
+      }
+    };
+
+    // Original client creation with enhanced options
+    const client = originalCreateBrowserClient(supabaseUrl, supabaseKey, enhancedOptions);
     
     // Wrap auth methods with additional error handling
     const originalAuth = client.auth;
@@ -38,9 +104,16 @@ export function createEnhancedBrowserClient(
       } catch (error: any) {
         if (error && error.message && (
             error.message.includes('Failed to parse cookie') || 
-            error.message.includes('base64')
+            error.message.includes('base64') ||
+            error.message.includes('Unexpected token')
           )) {
           console.warn('Cookie parsing error detected, attempting recovery:', error.message);
+          
+          // Try to clean up problematic cookies
+          if (typeof document !== 'undefined') {
+            cleanupProblemCookies();
+          }
+          
           // Return null session - better than crashing
           return { data: { session: null }, error: null };
         }
@@ -67,6 +140,50 @@ export function createEnhancedBrowserClient(
         console.warn('Error in onAuthStateChange setup:', error);
         throw error; // Still throw to maintain type compatibility
       }
+    };
+    
+    // Enhance realtime connection handling
+    const originalChannel = client.channel;
+    client.channel = (name, opts) => {
+      const channel = originalChannel.call(client, name, opts);
+      
+      // Add custom error handling for WebSocket connections
+      const originalSubscribe = channel.subscribe;
+      channel.subscribe = function enhancedSubscribe(callback) {
+        try {
+          // Add reconnection logic for WebSocket failures
+          return originalSubscribe.call(this, (status) => {
+            // Handle WebSocket closed errors
+            if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
+              console.warn(`WebSocket channel ${name} encountered an error: ${status}`);
+              
+              // Attempt to reconnect with backoff
+              setTimeout(() => {
+                console.log(`Attempting to reconnect WebSocket channel ${name}`);
+                try {
+                  originalSubscribe.call(this, callback);
+                } catch (reconnectError) {
+                  console.error('Error during WebSocket reconnection:', reconnectError);
+                }
+              }, 3000);
+            }
+            
+            // Call the original callback
+            if (typeof callback === 'function') {
+              try {
+                return callback(status);
+              } catch (callbackError) {
+                console.warn('Error in channel status callback:', callbackError);
+              }
+            }
+          });
+        } catch (subscribeError) {
+          console.warn('Error in channel.subscribe:', subscribeError);
+          throw subscribeError; // Re-throw to maintain type compatibility
+        }
+      };
+      
+      return channel;
     };
 
     return client;
