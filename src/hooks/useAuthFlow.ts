@@ -28,6 +28,18 @@ export function useAuthFlow(): AuthState {
   useEffect(() => {
     const handleAuthFlow = async () => {
       try {
+        // Debug environment variables
+        console.log('🔍 Environment check:', {
+          supabaseUrl: process.env.NEXT_PUBLIC_SUPABASE_URL,
+          hasAnonKey: !!process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
+        });
+
+        if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+          console.error('❌ Missing environment variables');
+          setAuthState({ user: null, needsSeedPhrase: false, loading: false, isNewUser: false });
+          return;
+        }
+
         const supabase = createBrowserClient(
           process.env.NEXT_PUBLIC_SUPABASE_URL!,
           process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
