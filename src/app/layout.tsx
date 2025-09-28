@@ -1,6 +1,7 @@
 import './globals.css'
 import type { Metadata } from 'next'
 import { SpeedInsights } from "@vercel/speed-insights/next"
+import { SupabaseProvider } from '../providers/SupabaseProvider'
 
 export const metadata: Metadata = {
   title: 'Celora - Professional Fintech Platform',
@@ -15,7 +16,9 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen bg-slate-900 antialiased">
-        {children}
+        <SupabaseProvider>
+          {children}
+        </SupabaseProvider>
         <SpeedInsights />
       </body>
     </html>

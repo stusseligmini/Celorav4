@@ -169,7 +169,7 @@ class AuthService {
       console.log('🔐 Starting seed phrase sign in...');
       
       // Validate seed phrase format
-      if (seedPhrase.length !== 12 || seedPhrase.some(word => !word.trim())) {
+      if (!Array.isArray(seedPhrase) || seedPhrase.length !== 12 || seedPhrase.some(word => !word || !word.trim())) {
         return { 
           user: null, 
           error: 'Please enter all 12 seed phrase words', 

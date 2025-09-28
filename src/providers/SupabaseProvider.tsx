@@ -1,8 +1,9 @@
 'use client';
 
 import React, { createContext, useContext, useEffect, useState } from 'react';
-import { createBrowserClient } from '@supabase/ssr';
 import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
+import CookieErrorHandler from '../components/CookieErrorHandler';
+import { getSupabaseClient } from '../lib/supabaseSingleton';
 
 interface SupabaseContextType {
   user: User | null;
@@ -20,10 +21,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [session, setSession] = useState<Session | null>(null);
   const [loading, setLoading] = useState(true);
   
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  // Use the singleton pattern for the Supabase client
+  const supabase = getSupabaseClient();
 
   useEffect(() => {
     // Get initial session
@@ -85,9 +84,11 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <SupabaseContext.Provider value={value}>
-      {children}
-    </SupabaseContext.Provider>
+    <CookieErrorHandler>
+      <SupabaseContext.Provider value={value}>
+        {children}
+      </SupabaseContext.Provider>
+    </CookieErrorHandler>
   );
 }
 

@@ -225,19 +225,24 @@ export const generateSecureSeedPhrase = (): string[] => {
 };
 
 export const validateSeedPhrase = (phrase: string[]): boolean => {
-  if (phrase.length !== 12) return false;
+  if (!Array.isArray(phrase) || phrase.length !== 12) return false;
   
   return phrase.every(word => {
+    if (!word) return false;
     const trimmedWord = word.trim().toLowerCase();
     return trimmedWord.length > 0 && BIP39_WORDS.includes(trimmedWord);
   });
 };
 
 export const normalizeSeedPhrase = (phrase: string[]): string[] => {
-  return phrase.map(word => word.trim().toLowerCase());
+  if (!Array.isArray(phrase)) return [];
+  return phrase.map(word => word && typeof word === 'string' ? word.trim().toLowerCase() : '');
 };
 
 export const seedPhraseToHash = async (phrase: string[]): Promise<string> => {
+  if (!Array.isArray(phrase)) {
+    throw new Error('Invalid seed phrase format');
+  }
   const normalizedPhrase = normalizeSeedPhrase(phrase);
   const phraseString = normalizedPhrase.join(' ');
   
@@ -256,6 +261,12 @@ export const getSeedPhraseStrength = (phrase: string[]): {
 } => {
   const feedback: string[] = [];
   let score = 0;
+  
+  // Check if phrase is a valid array
+  if (!Array.isArray(phrase)) {
+    feedback.push('Invalid seed phrase format');
+    return { strength: 'weak', score: 0, feedback };
+  }
   
   // Check length
   if (phrase.length === 12) {
@@ -284,11 +295,22 @@ export const getSeedPhraseStrength = (phrase: string[]): {
     feedback.push('Duplicate words detected');
   }
   
-  // Check for common patterns
+  // Check for common patterns with error handling for invalid words
   const hasConsecutiveWords = phrase.some((word, index) => {
     if (index === 0) return false;
-    const currentIndex = BIP39_WORDS.indexOf(word.trim().toLowerCase());
-    const previousIndex = BIP39_WORDS.indexOf(phrase[index - 1].trim().toLowerCase());
+    
+    // Add safety checks to prevent errors
+    if (!word || !phrase[index - 1]) return false;
+    
+    const currentWord = word.trim().toLowerCase();
+    const previousWord = phrase[index - 1].trim().toLowerCase();
+    
+    const currentIndex = BIP39_WORDS.indexOf(currentWord);
+    const previousIndex = BIP39_WORDS.indexOf(previousWord);
+    
+    // Only check if both words are valid (indexOf returned a valid index)
+    if (currentIndex === -1 || previousIndex === -1) return false;
+    
     return Math.abs(currentIndex - previousIndex) === 1;
   });
   

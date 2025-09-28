@@ -78,7 +78,7 @@ export default function NotificationCenter() {
           </svg>
         </div>
         
-        {unreadCount > 0 && (
+                      {typeof unreadCount === 'number' && unreadCount > 0 && (
           <motion.div
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -102,7 +102,7 @@ export default function NotificationCenter() {
             <div className="p-4 border-b border-cyan-400/20">
               <div className="flex items-center justify-between">
                 <h3 className="text-cyan-400 font-mono font-bold">NOTIFICATIONS</h3>
-                {unreadCount > 0 && (
+                {typeof unreadCount === 'number' && unreadCount > 0 && (
                   <button
                     onClick={markAllAsRead}
                     className="text-xs text-gray-400 hover:text-cyan-400 transition-colors"
@@ -112,7 +112,7 @@ export default function NotificationCenter() {
                 )}
               </div>
               <div className="text-xs text-gray-500 mt-1">
-                {safeUnreadCount} unread • {safeNotifications.length} total
+                {safeUnreadCount || 0} unread • {safeNotifications.length || 0} total
               </div>
             </div>
 

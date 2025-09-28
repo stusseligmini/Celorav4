@@ -1,8 +1,8 @@
 'use client';
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import { RealtimeChannel } from '@supabase/supabase-js';
+import { getSupabaseClient, setupRealtimeChannel } from '../lib/supabaseSingleton';
 
 interface Notification {
   id: string;
@@ -29,7 +29,7 @@ export function useNotifications(): UseNotificationsReturn {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const supabase = createClientComponentClient();
+  const supabase = getSupabaseClient();
 
   useEffect(() => {
     let channel: RealtimeChannel;
@@ -56,8 +56,21 @@ export function useNotifications(): UseNotificationsReturn {
 
         // Set up real-time subscription with error handling
         try {
-          channel = supabase
-            .channel('notifications')
+          // Create a channel with a unique name to avoid conflicts
+          const channelName = `notifications-${Date.now()}`;
+          
+          // Use the helper function for setting up channels with error handling
+          channel = setupRealtimeChannel(supabase, channelName)
+            // Add additional error handler
+            .on(
+              'system',
+              { event: 'error' },
+              (err: any) => {
+                console.error('Notifications websocket error:', err);
+                setError('WebSocket connection error. Please refresh the page.');
+              }
+            )
+            // Then add the actual data handlers
             .on(
               'postgres_changes',
               {
@@ -65,7 +78,7 @@ export function useNotifications(): UseNotificationsReturn {
                 schema: 'public',
                 table: 'notifications'
               },
-              (payload) => {
+              (payload: any) => {
                 try {
                   console.log('Notification update:', payload);
                   
@@ -133,7 +146,12 @@ export function useNotifications(): UseNotificationsReturn {
 
     return () => {
       if (channel) {
-        supabase.removeChannel(channel);
+        try {
+          supabase.removeChannel(channel);
+        } catch (err) {
+          console.warn('Error removing channel:', err);
+          // Continue cleanup regardless of error
+        }
       }
     };
   }, [supabase]);
@@ -196,7 +214,7 @@ export function useNotifications(): UseNotificationsReturn {
     }
   };
 
-  const unreadCount = notifications.filter(n => !n.read).length;
+  const unreadCount = Array.isArray(notifications) ? notifications.filter(n => !n.read).length : 0;
 
   return {
     notifications,

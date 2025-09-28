@@ -13,7 +13,7 @@ import { useAuthFlow } from '../hooks/useAuthFlow';
 export default function HomePage() {
   const router = useRouter();
   const [activeTab, setActiveTab] = useState<'overview' | 'cards' | 'wallet' | 'transactions'>('overview');
-  const [notifications, setNotifications] = useState([]);
+  const [notifications, setNotifications] = useState<any[]>([]);
   const [showWelcome, setShowWelcome] = useState(false);
   const authFlow = useAuthFlow();
 
@@ -35,14 +35,26 @@ export default function HomePage() {
   useEffect(() => {
     // Fetch notifications
     if (authFlow.user) {
-      fetch('/api/notifications')
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            setNotifications(data.notifications);
-          }
-        })
-        .catch(console.error);
+      try {
+        fetch('/api/notifications')
+          .then(res => res.json())
+          .then(data => {
+            if (data.success && Array.isArray(data.notifications)) {
+              setNotifications(data.notifications);
+            } else {
+              console.warn('Failed to get valid notifications data:', data);
+              setNotifications([]);
+            }
+          })
+          .catch(error => {
+            console.error('Failed to fetch notifications:', error);
+            // Set empty notifications on error to prevent UI issues
+            setNotifications([]);
+          });
+      } catch (error) {
+        console.error('Error in notifications fetch:', error);
+        setNotifications([]);
+      }
     }
   }, [authFlow.user]);
 
@@ -144,7 +156,7 @@ export default function HomePage() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                 </button>
-                {notifications.length > 0 && (
+                {Array.isArray(notifications) && notifications.length > 0 && (
                   <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
                     {notifications.length}
                   </span>
