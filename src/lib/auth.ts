@@ -179,7 +179,7 @@ class AuthService {
 
       // Generate hash from seed phrase
       const hashHex = await seedPhraseToHash(seedPhrase);
-      const walletEmail = `${hashHex.slice(0, 16)}@celora.wallet`;
+      const walletEmail = `${hashHex.slice(0, 16)}@celora.net`;
 
       console.log('📧 Attempting sign in with wallet email:', walletEmail);
       console.log('🔐 Hash preview:', hashHex.slice(0, 8) + '...');
@@ -381,7 +381,7 @@ class AuthService {
       
       // Generate hash from seed phrase
       const hashHex = await seedPhraseToHash(seedPhrase);
-      const walletEmail = `${hashHex.slice(0, 16)}@celora.wallet`;
+      const walletEmail = `${hashHex.slice(0, 16)}@celora.net`;
 
       console.log('📧 Generated wallet email:', walletEmail);
       console.log('� Full name:', fullName);
@@ -581,7 +581,7 @@ class AuthService {
   async resetPassword(email: string): Promise<{ error: string | null; success: boolean }> {
     try {
       // Check if this is a wallet email (seed phrase account)
-      if (email.includes('@celora.wallet')) {
+      if (email.includes('@celora.net')) {
         return { 
           error: 'Seed phrase wallets cannot reset passwords. Please use your 12-word recovery phrase.', 
           success: false 

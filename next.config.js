@@ -1,7 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: ['supabase.com'],
+    domains: ['supabase.com', 'celora.net'],
   },
   
   // Basic performance optimizations
