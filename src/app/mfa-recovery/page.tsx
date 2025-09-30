@@ -8,11 +8,6 @@ import { useLanguagePreference } from '@/lib/userPreferencesClient';
 import { useRouter } from 'next/navigation';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 
-export const metadata = {
-  title: 'MFA Recovery - Celora',
-  description: 'Recover your Multi-Factor Authentication (MFA) access',
-};
-
 /**
  * MFA Recovery Page - Desktop Version
  * For mobile devices, users will be redirected to the mobile-optimized version

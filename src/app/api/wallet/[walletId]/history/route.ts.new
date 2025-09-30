@@ -1,0 +1,17 @@
+import { NextRequest, NextResponse } from 'next/server';
+
+export async function GET() {
+  // Temporary implementation until we can fix the type issues
+  return NextResponse.json({
+    success: true,
+    message: 'This is a temporary implementation. The full transaction history functionality will be available soon.',
+    data: {
+      transactions: [],
+      pagination: {
+        limit: 10,
+        offset: 0,
+        count: 0
+      }
+    }
+  });
+}

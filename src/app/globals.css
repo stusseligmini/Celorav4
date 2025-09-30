@@ -2,83 +2,169 @@
 @tailwind components;
 @tailwind utilities;
 
+@keyframes neonPulse {
+  0% { opacity: 0.9; }
+  50% { opacity: 1; }
+  100% { opacity: 0.9; }
+}
+
+@keyframes neonBorder {
+  0% { box-shadow: 0 0 5px #06b6d4, 0 0 15px rgba(6, 182, 212, 0.5); }
+  50% { box-shadow: 0 0 10px #06b6d4, 0 0 25px rgba(6, 182, 212, 0.6); }
+  100% { box-shadow: 0 0 5px #06b6d4, 0 0 15px rgba(6, 182, 212, 0.5); }
+}
+
+@keyframes gradientBackground {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes scanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
 :root {
-  --background: #0f172a;
+  --background: #0a0e17;
   --foreground: #ffffff;
   --cyan-primary: #06b6d4;
   --cyan-secondary: #0891b2;
   --cyan-accent: #22d3ee;
-  --dark-surface: #1e293b;
-  --dark-card: #334155;
-  --dark-border: #475569;
+  --dark-surface: #151c2c;
+  --dark-card: #1e2a3b;
+  --dark-border: #2d3748;
+  --neon-glow: 0 0 10px #06b6d4, 0 0 20px rgba(6, 182, 212, 0.5);
+  --neon-text-shadow: 0 0 5px rgba(6, 182, 212, 0.8), 0 0 10px rgba(6, 182, 212, 0.4);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(2, 132, 199, 0.1) 0%, transparent 50%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   min-height: 100vh;
   line-height: 1.6;
 }
 
-/* Modern professional theme */
+/* Cyberpunk/Neon Theme */
 .bg-primary {
-  background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+  background: linear-gradient(135deg, #0a0e17 0%, #151c2c 50%, #1e2a3b 100%);
+  background-size: 200% 200%;
+  animation: gradientBackground 15s ease infinite;
 }
 
 .bg-card {
-  background: rgba(51, 65, 85, 0.8);
-  border: 1px solid rgba(71, 85, 105, 0.5);
+  background: rgba(30, 42, 59, 0.7);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  box-shadow: var(--neon-glow);
   backdrop-filter: blur(10px);
-  border-radius: 12px;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+  animation: neonBorder 3s infinite;
 }
 
-/* Subtle accent colors */
+.bg-card::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan-primary), transparent);
+  opacity: 0.7;
+  animation: scanline 3s linear infinite;
+}
+
+/* Neon accent colors */
 .text-accent {
   color: var(--cyan-primary);
+  text-shadow: var(--neon-text-shadow);
 }
 
 .bg-accent {
   background: var(--cyan-primary);
+  box-shadow: 0 0 10px var(--cyan-primary);
 }
 
 .border-accent {
   border-color: var(--cyan-primary);
+  box-shadow: 0 0 5px var(--cyan-primary);
 }
 
-/* Card styles with subtle effects */
+/* Cyberpunk card styles */
 .modern-card {
-  background: rgba(51, 65, 85, 0.6);
-  border: 1px solid rgba(71, 85, 105, 0.4);
-  border-radius: 12px;
+  background: rgba(30, 42, 59, 0.6);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 6px;
   backdrop-filter: blur(8px);
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.modern-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--cyan-primary), transparent);
+  transition: all 1s;
 }
 
 .modern-card:hover {
-  border-color: rgba(6, 182, 212, 0.4);
-  background: rgba(51, 65, 85, 0.8);
-  transform: translateY(-1px);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+  border-color: rgba(6, 182, 212, 0.7);
+  background: rgba(30, 42, 59, 0.8);
+  transform: translateY(-2px);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.4), 0 0 30px rgba(6, 182, 212, 0.2);
 }
 
-/* Button styles - clean and professional */
+.modern-card:hover::before {
+  left: 100%;
+}
+
+/* Cyberpunk button styles */
 .btn-primary {
   background: linear-gradient(135deg, #06b6d4, #0891b2);
   color: white;
   font-weight: 500;
   padding: 12px 24px;
-  border-radius: 8px;
+  border-radius: 4px;
   border: none;
   cursor: pointer;
-  transition: all 0.2s ease;
-  box-shadow: 0 2px 10px rgba(6, 182, 212, 0.2);
+  transition: all 0.3s ease;
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.5), inset 0 0 5px rgba(6, 182, 212, 0.5);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  position: relative;
+  overflow: hidden;
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: all 0.5s;
 }
 
 .btn-primary:hover {
   background: linear-gradient(135deg, #0891b2, #0e7490);
   transform: translateY(-1px);
-  box-shadow: 0 4px 15px rgba(6, 182, 212, 0.3);
+  box-shadow: 0 0 15px rgba(6, 182, 212, 0.7), inset 0 0 10px rgba(6, 182, 212, 0.4);
+  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+}
+
+.btn-primary:hover::before {
+  left: 100%;
 }
 
 .btn-outline {
@@ -87,37 +173,96 @@ body {
   border: 1px solid var(--cyan-primary);
   font-weight: 500;
   padding: 10px 20px;
-  border-radius: 8px;
+  border-radius: 4px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  box-shadow: 0 0 5px rgba(6, 182, 212, 0.3);
+  text-shadow: 0 0 3px rgba(6, 182, 212, 0.5);
 }
 
 .btn-outline:hover {
-  background: var(--cyan-primary);
+  background: rgba(6, 182, 212, 0.1);
   color: white;
   transform: translateY(-1px);
+  border-color: var(--cyan-primary);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.5);
+  text-shadow: 0 0 5px var(--cyan-primary);
 }
 
-/* Minimal glow effects for accents only */
+/* Neon glow effects */
 .subtle-glow {
-  box-shadow: 0 0 20px rgba(6, 182, 212, 0.1);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.3);
+  transition: all 0.3s ease;
 }
 
 .subtle-glow:hover {
-  box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
+  box-shadow: 0 0 30px rgba(6, 182, 212, 0.6);
 }
 
-/* Remove all neon and flicker effects */
+/* Cyberpunk text styles */
 .accent-text {
   color: var(--cyan-primary);
+  text-shadow: 0 0 5px rgba(6, 182, 212, 0.8);
+  animation: neonPulse 2s infinite;
 }
 
-/* Clean gradient backgrounds */
+/* Cyberpunk logo text */
+.neon-text {
+  color: var(--cyan-primary);
+  text-shadow: 0 0 5px var(--cyan-primary), 
+               0 0 10px var(--cyan-primary), 
+               0 0 20px rgba(6, 182, 212, 0.5);
+  letter-spacing: 2px;
+  animation: neonPulse 3s infinite;
+}
+
+/* Cyberpunk gradient backgrounds */
 .gradient-bg {
   background: linear-gradient(135deg, 
-    rgba(15, 23, 42, 0.95) 0%, 
-    rgba(30, 41, 59, 0.95) 50%, 
-    rgba(51, 65, 85, 0.95) 100%);
+    rgba(10, 14, 23, 0.95) 0%, 
+    rgba(21, 28, 44, 0.95) 50%, 
+    rgba(30, 42, 59, 0.95) 100%);
+  background-size: 200% 200%;
+  animation: gradientBackground 15s ease infinite;
+}
+
+/* Form inputs styling */
+.neon-input {
+  background: rgba(10, 14, 23, 0.7);
+  border: 1px solid rgba(6, 182, 212, 0.3);
+  border-radius: 4px;
+  color: white;
+  transition: all 0.3s ease;
+}
+
+.neon-input:focus {
+  border-color: var(--cyan-primary);
+  box-shadow: 0 0 0 2px rgba(6, 182, 212, 0.2), 0 0 10px rgba(6, 182, 212, 0.4);
+  background: rgba(21, 28, 44, 0.7);
+  outline: none;
+}
+
+/* CRT scanline effect */
+.crt-overlay {
+  position: relative;
+}
+
+.crt-overlay::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0) 50%, 
+    rgba(0, 0, 0, 0.1) 50%
+  );
+  background-size: 100% 4px;
+  pointer-events: none;
+  z-index: 10;
 }
 
 @layer utilities {

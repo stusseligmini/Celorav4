@@ -112,3 +112,6 @@ export function useAuthFlow(): AuthState {
 
   return authState;
 }
+
+// Alias for compatibility
+export const useAuth = useAuthFlow;

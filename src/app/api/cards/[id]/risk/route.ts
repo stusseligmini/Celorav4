@@ -9,6 +9,7 @@ export async function GET(
   request: NextRequest,
   context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params;
   // Temporary placeholder - TODO: Implement with Supabase direct calls
   return NextResponse.json({ 
     message: 'Card risk assessment - under construction',

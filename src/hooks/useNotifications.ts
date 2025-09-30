@@ -1,9 +1,11 @@
 'use client';
 
-import { useEffect, useState, useRef } from 'react';
-import { RealtimeChannel } from '@supabase/supabase-js';
-import { getSupabaseClient, setupRealtimeChannel } from '../lib/supabaseSingleton';
+import { useEffect, useState } from 'react';
+import { notificationManager, Notification as NotificationManagerType } from '../lib/notificationManager';
+import { getSupabaseClient } from '../lib/supabaseSingleton';
+import { User } from '@supabase/supabase-js';
 
+// Legacy Notification type for compatibility with existing components
 interface Notification {
   id: string;
   type: string;
@@ -25,208 +27,142 @@ interface UseNotificationsReturn {
   error: string | null;
 }
 
+// Convert new notification format to legacy format for backwards compatibility
+function convertNotification(notification: NotificationManagerType): Notification {
+  return {
+    id: notification.id,
+    type: notification.type,
+    title: notification.payload.title,
+    message: notification.payload.body,
+    priority: notification.priority === 'critical' ? 'high' : notification.priority,
+    read: notification.read,
+    created_at: notification.createdAt,
+    action_url: notification.payload.link || notification.payload.action?.url
+  };
+}
+
 export function useNotifications(): UseNotificationsReturn {
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const supabase = getSupabaseClient();
+  const [user, setUser] = useState<User | null>(null);
 
   useEffect(() => {
-    let channel: RealtimeChannel;
+    // Initialize notification manager
+    notificationManager.initialize().catch(console.error);
 
-    async function setupNotifications() {
+    // Get current user
+    const fetchUser = async () => {
       try {
-        // Fetch initial notifications using retry utility
-        try {
-          // Import fetchWithRetry utility
-          const { fetchJsonWithRetry } = await import('../lib/apiUtils');
-          
-          // Use fetch with retry for more reliable API calls
-          const data = await fetchJsonWithRetry('/api/notifications');
-          
-          if (data.success && data.data?.notifications) {
-            setNotifications(data.data.notifications || []);
-          } else {
-            console.warn('Failed to get valid notifications data:', data);
-            // Use empty array if data is missing or malformed
-            setNotifications([]);
-          }
-        } catch (fetchErr) {
-          console.error('Error fetching notifications:', fetchErr);
-          // Safely set empty notifications on error
-          setNotifications([]);
-        }
-
-        // Set up real-time subscription with error handling
-        try {
-          // Create a channel with a unique name to avoid conflicts
-          const channelName = `notifications-${Date.now()}`;
-          
-          // Use the helper function for setting up channels with error handling
-          channel = setupRealtimeChannel(supabase, channelName)
-            // Add additional error handler
-            .on(
-              'system',
-              { event: 'error' },
-              (err: any) => {
-                console.error('Notifications websocket error:', err);
-                setError('WebSocket connection error. Please refresh the page.');
-              }
-            )
-            // Then add the actual data handlers
-            .on(
-              'postgres_changes',
-              {
-                event: '*',
-                schema: 'public',
-                table: 'notifications'
-              },
-              (payload: any) => {
-                try {
-                  console.log('Notification update:', payload);
-                  
-                  if (payload.eventType === 'INSERT') {
-                    setNotifications(prev => [payload.new as Notification, ...prev]);
-                    
-                    // Show browser notification if permission granted
-                    if (typeof window !== 'undefined' && 
-                        'Notification' in window && 
-                        Notification.permission === 'granted') {
-                      try {
-                        const notification = payload.new as Notification;
-                        new Notification(notification.title, {
-                          body: notification.message,
-                          icon: '/icon-192x192.png',
-                          badge: '/icon-192x192.png',
-                          tag: notification.id
-                        });
-                      } catch (notifErr) {
-                        console.error('Error showing browser notification:', notifErr);
-                      }
-                    }
-                  } else if (payload.eventType === 'UPDATE') {
-                    setNotifications(prev => 
-                      prev.map(n => 
-                        n.id === payload.new.id ? payload.new as Notification : n
-                      )
-                    );
-                  } else if (payload.eventType === 'DELETE') {
-                    setNotifications(prev => 
-                      prev.filter(n => n.id !== payload.old.id)
-                    );
-                  }
-                } catch (payloadErr) {
-                  console.error('Error processing notification payload:', payloadErr);
-                }
-              }
-            )
-            .subscribe();
-        } catch (channelErr) {
-          console.error('Error setting up supabase channel:', channelErr);
-        }
-
+        const { data } = await getSupabaseClient().auth.getUser();
+        setUser(data.user);
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to load notifications');
+        console.error('Error getting user:', err);
+        setUser(null);
+      }
+    };
+
+    fetchUser();
+
+    // Listen for notification events
+    const handleNotification = (event: Event) => {
+      const newNotification = (event as CustomEvent).detail as NotificationManagerType;
+      // Convert to legacy format and add to state
+      const legacyNotification = convertNotification(newNotification);
+      setNotifications(prev => [legacyNotification, ...prev]);
+    };
+
+    window.addEventListener('celora:notification', handleNotification);
+
+    return () => {
+      window.removeEventListener('celora:notification', handleNotification);
+    };
+  }, []);
+
+  // Load notifications when user is available
+  useEffect(() => {
+    const loadNotifications = async () => {
+      if (!user) return;
+      
+      try {
+        const fetchedNotifications = await notificationManager.getNotifications(user.id);
+        const legacyNotifications = fetchedNotifications.map(convertNotification);
+        setNotifications(legacyNotifications);
+      } catch (err) {
+        console.error('Error loading notifications:', err);
+        setError('Failed to load notifications');
       } finally {
         setLoading(false);
       }
-    }
-
-    setupNotifications();
-
-    // Request notification permission - with additional error handling
-    try {
-      if (typeof window !== 'undefined' && 'Notification' in window) {
-        if (Notification.permission === 'default') {
-          Notification.requestPermission().catch(err => {
-            console.warn('Failed to request notification permission:', err);
-          });
-        }
-      }
-    } catch (notifErr) {
-      console.warn('Error accessing Notification API:', notifErr);
-    }
-
-    return () => {
-      if (channel) {
-        try {
-          supabase.removeChannel(channel);
-        } catch (err) {
-          console.warn('Error removing channel:', err);
-          // Continue cleanup regardless of error
-        }
-      }
     };
-  }, [supabase]);
+
+    if (user) {
+      loadNotifications();
+    }
+  }, [user]);
 
   const markAsRead = async (id: string) => {
+    if (!id) return;
+    
     try {
-      // Import fetchWithRetry utility
-      const { fetchJsonWithRetry } = await import('../lib/apiUtils');
+      const success = await notificationManager.markAsRead(id);
       
-      // Use fetch with retry for more reliable API calls
-      const data = await fetchJsonWithRetry('/api/notifications', {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ notificationId: id, read: true }),
-      });
-
-      if (!data.success) {
-        setError(data.error);
+      if (success) {
+        setNotifications(prev => 
+          prev.map(notification => 
+            notification.id === id 
+              ? { ...notification, read: true } 
+              : notification
+          )
+        );
       }
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to mark as read');
+      console.error('Error marking notification as read:', err);
+      setError('Failed to mark notification as read');
     }
   };
 
   const markAllAsRead = async () => {
+    if (!user) return;
+    
     try {
       const unreadIds = notifications.filter(n => !n.read).map(n => n.id);
       
-      // Import fetchWithRetry utility
-      const { fetchWithRetry } = await import('../lib/apiUtils');
-      
       await Promise.all(
-        unreadIds.map(id => 
-          fetchWithRetry('/api/notifications', {
-            method: 'PATCH',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ notificationId: id, read: true }),
-          })
-        )
+        unreadIds.map(id => notificationManager.markAsRead(id))
+      );
+      
+      setNotifications(prev => 
+        prev.map(notification => ({ ...notification, read: true }))
       );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to mark all as read');
+      console.error('Error marking all notifications as read:', err);
+      setError('Failed to mark all notifications as read');
     }
   };
 
   const createNotification = async (notification: Omit<Notification, 'id' | 'read' | 'created_at'>) => {
+    if (!user) return;
+    
     try {
-      // Import fetchWithRetry utility
-      const { fetchJsonWithRetry } = await import('../lib/apiUtils');
-      
-      // Use fetch with retry for more reliable API calls
-      const data = await fetchJsonWithRetry('/api/notifications', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      await notificationManager.sendNotification(
+        user.id,
+        notification.type as any,
+        'in_app',
+        {
+          title: notification.title,
+          body: notification.message,
+          link: notification.action_url
         },
-        body: JSON.stringify(notification),
-      });
-
-      if (!data.success) {
-        setError(data.error);
-      }
+        notification.priority as any
+      );
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create notification');
+      console.error('Error creating notification:', err);
+      setError('Failed to create notification');
     }
   };
 
-  const unreadCount = Array.isArray(notifications) ? notifications.filter(n => !n.read).length : 0;
+  const unreadCount = notifications.filter(n => !n.read).length;
 
   return {
     notifications,
@@ -237,4 +173,31 @@ export function useNotifications(): UseNotificationsReturn {
     loading,
     error
   };
+}
+
+// React hook for notification count only
+export function useNotificationCount(userId?: string): number {
+  const [count, setCount] = useState(0);
+
+  useEffect(() => {
+    if (!userId) return;
+
+    // Initial count
+    notificationManager.getUnreadCount(userId).then(setCount);
+
+    // Listen for new notifications
+    const handleNewNotification = () => {
+      notificationManager.getUnreadCount(userId).then(setCount);
+    };
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('celora:notification', handleNewNotification);
+
+      return () => {
+        window.removeEventListener('celora:notification', handleNewNotification);
+      };
+    }
+  }, [userId]);
+
+  return count;
 }

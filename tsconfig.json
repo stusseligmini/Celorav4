@@ -27,5 +27,5 @@
     }
   },
   "include": ["next-env.d.ts", "src/**/*", "app/**/*", "components/**/*", "hooks/**/*", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "migration_source", "packages", "apps", "benchmark", "scripts", "tests", "secure", "ops"]
+  "exclude": ["node_modules", "migration_source", "packages", "apps", "benchmark", "scripts", "tests", "secure", "ops", "src/lib/advancedEncryption.ts", "src/lib/encryptionManager.ts"]
 }

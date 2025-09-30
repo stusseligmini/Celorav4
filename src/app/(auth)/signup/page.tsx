@@ -68,16 +68,17 @@ export default function SignUpPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-900 via-gray-800 to-black flex items-center justify-center p-4">
-      <div className="max-w-md w-full">
+    <div className="min-h-screen bg-black text-white flex items-center justify-center p-4">
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 to-blue-950/20 gradient-bg crt-overlay"></div>
+      <div className="max-w-md w-full relative z-10">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-8 border border-gray-700"
+          className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/30 rounded-lg p-8 subtle-glow"
         >
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-cyan-400 to-blue-600 mb-2">
+            <h1 className="text-3xl font-mono font-bold text-cyan-400 mb-2 neon-text">
               CELORA
             </h1>
             <p className="text-gray-400">Create Your Account</p>
@@ -90,9 +91,9 @@ export default function SignUpPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-md"
+                className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-md shadow-[0_0_15px_rgba(239,68,68,0.2)]"
               >
-                <p className="text-red-400 text-sm">{error}</p>
+                <p className="text-red-400 text-sm font-mono">{error}</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -104,9 +105,9 @@ export default function SignUpPage() {
                 initial={{ opacity: 0, scale: 0.95 }}
                 animate={{ opacity: 1, scale: 1 }}
                 exit={{ opacity: 0, scale: 0.95 }}
-                className="mb-4 p-3 bg-green-500/20 border border-green-500/50 rounded-md"
+                className="mb-4 p-3 bg-green-500/10 border border-green-500/30 rounded-md shadow-[0_0_15px_rgba(34,197,94,0.2)]"
               >
-                <p className="text-green-400 text-sm">{success}</p>
+                <p className="text-green-400 text-sm font-mono">{success}</p>
               </motion.div>
             )}
           </AnimatePresence>
@@ -115,7 +116,7 @@ export default function SignUpPage() {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Full Name */}
             <div>
-              <label className="block text-sm font-mono text-cyan-400 mb-2">
+              <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">
                 FULL NAME
               </label>
               <input
@@ -123,7 +124,7 @@ export default function SignUpPage() {
                 required
                 value={fullName}
                 onChange={(e) => setFullName(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
+                className="w-full neon-input bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                 placeholder="Enter your full name"
                 disabled={loading}
               />
@@ -131,7 +132,7 @@ export default function SignUpPage() {
 
             {/* Email */}
             <div>
-              <label className="block text-sm font-mono text-cyan-400 mb-2">
+              <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">
                 EMAIL ADDRESS
               </label>
               <input
@@ -139,7 +140,7 @@ export default function SignUpPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
+                className="w-full neon-input bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                 placeholder="your@email.com"
                 disabled={loading}
               />
@@ -147,7 +148,7 @@ export default function SignUpPage() {
 
             {/* Password */}
             <div>
-              <label className="block text-sm font-mono text-cyan-400 mb-2">
+              <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">
                 PASSWORD
               </label>
               <input
@@ -155,7 +156,7 @@ export default function SignUpPage() {
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
+                className="w-full neon-input bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                 placeholder="Choose a strong password"
                 disabled={loading}
                 minLength={8}
@@ -167,7 +168,7 @@ export default function SignUpPage() {
 
             {/* Confirm Password */}
             <div>
-              <label className="block text-sm font-mono text-cyan-400 mb-2">
+              <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">
                 CONFIRM PASSWORD
               </label>
               <input
@@ -175,7 +176,7 @@ export default function SignUpPage() {
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}
-                className="w-full bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
+                className="w-full neon-input bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none transition-colors"
                 placeholder="Repeat your password"
                 disabled={loading}
               />
@@ -185,7 +186,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn-primary bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <div className="flex items-center justify-center">
@@ -204,7 +205,7 @@ export default function SignUpPage() {
               Already have an account?{' '}
               <Link 
                 href="/signin" 
-                className="text-cyan-400 hover:text-cyan-300 transition-colors font-medium"
+                className="text-cyan-400 hover:text-cyan-300 transition-colors font-medium text-shadow-neon"
               >
                 Sign In
               </Link>
@@ -212,8 +213,8 @@ export default function SignUpPage() {
           </div>
 
           {/* Security Note */}
-          <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-md">
-            <h3 className="text-blue-400 font-medium text-sm mb-2">🔒 Professional Security</h3>
+          <div className="mt-6 p-4 bg-blue-500/10 border border-blue-500/20 rounded-md shadow-[0_0_15px_rgba(59,130,246,0.15)]">
+            <h3 className="text-blue-400 font-medium text-sm mb-2 text-shadow-neon">🔒 Professional Security</h3>
             <p className="text-gray-400 text-xs">
               After creating your account, you'll have the option to set up a 12-word 
               seed phrase backup for ultimate security. This follows industry best practices 

@@ -5,9 +5,11 @@ import { SupabaseProvider } from '../providers/SupabaseProvider'
 import ErrorBoundary from '../components/ErrorBoundary'
 import NetworkStatusHandler from '../components/NetworkStatusHandler'
 import ServiceWorkerRegistration from '../components/ServiceWorkerRegistration'
+import PushNotificationRegistration from '../components/PushNotificationRegistration'
 import { headers } from 'next/headers'
 import { CspNonceProvider } from '../lib/cspHelpers'
 import SecurityMonitor from '../components/SecurityMonitor'
+import { FeatureFlagProvider } from '../components/FeatureFlagComponents'
 
 export const metadata: Metadata = {
   title: 'Celora - Professional Fintech Platform',
@@ -41,12 +43,15 @@ export default async function RootLayout({
           <NetworkStatusHandler>
             <SupabaseProvider>
               <SecurityMonitor>
-                {children}
+                <FeatureFlagProvider>
+                  {children}
+                </FeatureFlagProvider>
               </SecurityMonitor>
             </SupabaseProvider>
           </NetworkStatusHandler>
         </ErrorBoundary>
         <ServiceWorkerRegistration />
+        <PushNotificationRegistration />
         <SpeedInsights />
       </body>
     </html>

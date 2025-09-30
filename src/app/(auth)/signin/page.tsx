@@ -207,13 +207,13 @@ export default function SignInPage() {
 
   return (
     <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 to-blue-950/20"></div>
+      <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 to-blue-950/20 gradient-bg crt-overlay"></div>
       <div className="relative z-10 w-full max-w-md">
         {requiresMFA ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-8"
+            className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/30 rounded-lg p-8 subtle-glow"
           >
             <MFAVerification 
               tempToken={tempToken} 
@@ -225,21 +225,21 @@ export default function SignInPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-8"
+          className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/30 rounded-lg p-8 subtle-glow"
         >
           {/* Header */}
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-mono font-bold text-cyan-400 mb-2">CELORA</h1>
+            <h1 className="text-3xl font-mono font-bold text-cyan-400 mb-2 neon-text">CELORA</h1>
             <p className="text-gray-400">Access Your Wallet</p>
           </div>
 
           {/* Auth Method Selector */}
-          <div className="flex mb-6 bg-gray-800/50 rounded-lg p-1">
+          <div className="flex mb-6 bg-gray-800/50 rounded-lg p-1 border border-cyan-400/20">
             <button
               onClick={() => setAuthMethod('email')}
               className={`flex-1 py-2 px-4 rounded-md text-sm font-mono transition-all ${
                 authMethod === 'email'
-                  ? 'bg-cyan-400/20 text-cyan-400'
+                  ? 'bg-cyan-400/20 text-cyan-400 text-shadow-neon'
                   : 'text-gray-400 hover:text-cyan-400'
               }`}
             >
@@ -249,7 +249,7 @@ export default function SignInPage() {
               onClick={() => setAuthMethod('seedphrase')}
               className={`flex-1 py-2 px-4 rounded-md text-sm font-mono transition-all ${
                 authMethod === 'seedphrase'
-                  ? 'bg-cyan-400/20 text-cyan-400'
+                  ? 'bg-cyan-400/20 text-cyan-400 text-shadow-neon'
                   : 'text-gray-400 hover:text-cyan-400'
               }`}
             >
@@ -258,12 +258,12 @@ export default function SignInPage() {
           </div>
 
           {error && (
-            <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-md">
-              <p className="text-red-400 text-sm mb-2">{error}</p>
+            <div className="mb-4 p-3 bg-red-500/10 border border-red-500/30 rounded-md shadow-[0_0_15px_rgba(239,68,68,0.2)]">
+              <p className="text-red-400 text-sm mb-2 font-mono">{error}</p>
               {error.includes('rate limit') || error.includes('too many') ? (
                 <button
                   onClick={clearAndRetry}
-                  className="text-xs text-cyan-400 hover:text-cyan-300 underline"
+                  className="text-xs text-cyan-400 hover:text-cyan-300 underline text-shadow-neon"
                 >
                   Clear Cache & Retry
                 </button>
@@ -280,30 +280,30 @@ export default function SignInPage() {
               className="space-y-4"
             >
               <div>
-                <label className="block text-sm font-mono text-cyan-400 mb-2">EMAIL</label>
+                <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">EMAIL</label>
                 <input
                   type="email"
                   required
                   value={email}
                   onChange={e => setEmail(e.target.value)}
-                  className="w-full bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none"
+                  className="w-full neon-input bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none"
                   placeholder="your@email.com"
                 />
               </div>
               <div>
-                <label className="block text-sm font-mono text-cyan-400 mb-2">PASSWORD</label>
+                <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">PASSWORD</label>
                 <input
                   type="password"
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}
-                  className="w-full bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none"
+                  className="w-full neon-input bg-gray-800/50 border border-gray-600 rounded-md px-3 py-3 text-white placeholder-gray-400 focus:border-cyan-400 focus:outline-none"
                   placeholder="Enter your password"
                 />
               </div>
               <button
                 disabled={loading}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50"
+                className="w-full btn-primary bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50"
               >
                 {loading ? 'SIGNING IN...' : 'SIGN IN'}
               </button>
@@ -367,14 +367,14 @@ export default function SignInPage() {
             >
               <div>
                 <div className="flex justify-between items-center mb-2">
-                  <label className="text-sm font-mono text-cyan-400">
+                  <label className="text-sm font-mono text-cyan-400 accent-text">
                     12-WORD SEED PHRASE
                   </label>
                   <div className="flex space-x-2">
                     <button
                       type="button"
                       onClick={handlePasteSeedPhrase}
-                      className="text-xs text-cyan-400 hover:text-cyan-300 font-mono transition-colors"
+                      className="text-xs text-cyan-400 hover:text-cyan-300 font-mono transition-colors text-shadow-neon"
                     >
                       PASTE
                     </button>
@@ -391,7 +391,7 @@ export default function SignInPage() {
                 <div className="grid grid-cols-3 gap-2 relative">
                   {seedPhrase.map((word, index) => (
                     <div key={index} className="relative">
-                      <span className="absolute left-2 top-1 text-xs text-gray-500 font-mono z-10">
+                      <span className="absolute left-2 top-1 text-xs text-cyan-400/70 font-mono z-10">
                         {index + 1}
                       </span>
                       <input
@@ -401,11 +401,11 @@ export default function SignInPage() {
                         onChange={e => handleSeedWordChange(index, e.target.value)}
                         onFocus={() => setShowSuggestions(index)}
                         onBlur={() => setTimeout(() => setShowSuggestions(null), 200)}
-                        className={`w-full bg-gray-800/50 border rounded-md px-2 pt-5 pb-2 text-white text-sm placeholder-gray-400 focus:outline-none transition-all ${
+                        className={`w-full neon-input bg-gray-800/50 border rounded-md px-2 pt-5 pb-2 text-white text-sm placeholder-gray-400 focus:outline-none transition-all ${
                           word && BIP39_WORDS.includes(word.toLowerCase())
-                            ? 'border-green-500/50 focus:border-green-400'
+                            ? 'border-green-500/50 focus:border-green-400 shadow-[0_0_10px_rgba(34,197,94,0.3)]'
                             : word && word.length > 0
-                            ? 'border-red-500/50 focus:border-red-400'
+                            ? 'border-red-500/50 focus:border-red-400 shadow-[0_0_10px_rgba(239,68,68,0.3)]'
                             : 'border-gray-600 focus:border-cyan-400'
                         }`}
                         placeholder="word"
@@ -419,7 +419,7 @@ export default function SignInPage() {
                             initial={{ opacity: 0, y: -10 }}
                             animate={{ opacity: 1, y: 0 }}
                             exit={{ opacity: 0, y: -10 }}
-                            className="absolute top-full left-0 right-0 z-20 bg-gray-800 border border-gray-600 rounded-md mt-1 max-h-32 overflow-y-auto"
+                            className="absolute top-full left-0 right-0 z-20 bg-gray-800/80 backdrop-blur border border-cyan-400/30 rounded-md mt-1 max-h-32 overflow-y-auto shadow-[0_0_10px_rgba(6,182,212,0.2)]"
                           >
                             {suggestions.map((suggestion, i) => (
                               <button
@@ -450,9 +450,9 @@ export default function SignInPage() {
                   </div>
                   
                   {/* Progress bar */}
-                  <div className="w-full bg-gray-700 rounded-full h-1">
+                  <div className="w-full bg-gray-700 rounded-full h-1 overflow-hidden">
                     <div 
-                      className="bg-gradient-to-r from-cyan-500 to-blue-600 h-1 rounded-full transition-all duration-300"
+                      className="bg-gradient-to-r from-cyan-500 to-blue-600 h-1 rounded-full transition-all duration-300 shadow-[0_0_8px_rgba(6,182,212,0.5)]"
                       style={{ 
                         width: `${(seedPhrase.filter(w => w && BIP39_WORDS.includes(w.toLowerCase())).length / 12) * 100}%` 
                       }}
@@ -467,7 +467,7 @@ export default function SignInPage() {
               
               <button
                 disabled={loading || !validateSeedPhrase(seedPhrase)}
-                className="w-full bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:from-gray-600 disabled:to-gray-700 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50"
+                className="w-full btn-primary bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:from-gray-600 disabled:to-gray-700 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50"
               >
                 {loading ? 'ACCESSING WALLET...' : 'ACCESS WALLET'}
               </button>
@@ -475,17 +475,17 @@ export default function SignInPage() {
           )}
 
           {/* Footer Links */}
-          <div className="mt-6 pt-6 border-t border-gray-700/50">
+          <div className="mt-6 pt-6 border-t border-cyan-400/20">
             <div className="flex justify-between text-sm">
               <Link 
                 href="/signup" 
-                className="text-cyan-400 hover:text-cyan-300 font-mono transition-colors"
+                className="text-cyan-400 hover:text-cyan-300 font-mono transition-colors text-shadow-neon"
               >
                 CREATE WALLET
               </Link>
               <Link 
                 href="/reset-password" 
-                className="text-cyan-400 hover:text-cyan-300 font-mono transition-colors"
+                className="text-cyan-400 hover:text-cyan-300 font-mono transition-colors text-shadow-neon"
               >
                 RECOVER WALLET
               </Link>

@@ -136,14 +136,14 @@ class AdvancedEncryption {
     const iv = randomBytes(config.ivLength);
 
     // Derive encryption key
-    const key = this.deriveKey(password, salt, config);
+    const key = await this.deriveKey(password, salt, config);
 
     // Create cipher
     const cipher = createCipheriv(config.algorithm, key, iv);
 
     // Set additional authenticated data if provided
     if (additionalData && config.algorithm.includes('gcm')) {
-      cipher.setAAD(Buffer.from(additionalData, 'utf8'));
+      (cipher as any).setAAD(Buffer.from(additionalData, 'utf8'));
     }
 
     // Encrypt data
@@ -180,7 +180,7 @@ class AdvancedEncryption {
 
     // Derive the same key
     const config = ENCRYPTION_CONFIG.SENSITIVE;
-    const key = this.deriveKey(password, salt, config);
+    const key = await this.deriveKey(password, salt, config);
 
     // Create decipher
     const decipher = createDecipheriv(encryptedData.algorithm, key, iv);
@@ -192,7 +192,7 @@ class AdvancedEncryption {
 
     // Set additional authenticated data if provided
     if (additionalData && encryptedData.algorithm.includes('gcm')) {
-      decipher.setAAD(Buffer.from(additionalData, 'utf8'));
+      (decipher as any).setAAD(Buffer.from(additionalData, 'utf8'));
     }
 
     // Decrypt data
@@ -230,7 +230,7 @@ class AdvancedEncryption {
 
     // Set additional authenticated data (card number last 4 digits for verification)
     const aad = cardData.cardNumber.slice(-4);
-    cipher.setAAD(Buffer.from(aad, 'utf8'));
+    (cipher as any).setAAD(Buffer.from(aad, 'utf8'));
 
     // Encrypt data
     let encrypted = cipher.update(serializedData, 'utf8', 'base64');

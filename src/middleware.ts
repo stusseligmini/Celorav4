@@ -54,6 +54,15 @@ function applyRateLimit(ip: string, path: string, limit = 60, windowMs = 60000):
 }
 
 export async function middleware(request: NextRequest) {
+  // Handle route conflicts with mfa mobile routes
+  if (request.nextUrl.pathname === '/mfa-recovery-mobile') {
+    return NextResponse.redirect(new URL('/(mfa-mobile)/mfa-recovery-mobile', request.url));
+  }
+  
+  if (request.nextUrl.pathname === '/mfa-verification-mobile') {
+    return NextResponse.redirect(new URL('/(mfa-mobile)/mfa-verification-mobile', request.url));
+  }
+  
   let response = NextResponse.next();
   const correlationId = request.headers.get('x-correlation-id') || generateUUID();
   

@@ -1,3 +1,5 @@
+'use client';
+
 import React, { Component, ErrorInfo, ReactNode } from 'react';
 import { maskPII } from '../lib/dataMasking';
 import { logError } from '../lib/logger';

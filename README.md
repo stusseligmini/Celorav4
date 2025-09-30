@@ -26,6 +26,13 @@ Celora V2 is a next-generation fintech platform built with modern web technologi
 - **Performance Metrics** - Portfolio performance and risk analysis
 - **Custom Dashboards** - Personalized financial data visualization
 
+### 🔔 Notification System
+- **Multi-Channel Delivery** - In-app, push, email, and SMS notifications
+- **User Preferences** - Granular control over notification types and channels
+- **Real-Time Alerts** - Instant notifications for critical events
+- **Transaction Monitoring** - Automated alerts for suspicious activities
+- **Admin Management** - Comprehensive notification management interface
+
 ## 🏗️ Architecture
 
 ### Technology Stack
@@ -53,15 +60,24 @@ Experience the full platform with:
 - User permissions and access control
 
 ### Data Security
--- Database-level access controls
- - Encrypted sensitive data storage
- Comprehensive activity logging
- Real-time transaction monitoring
+- Database-level access controls
+- Encrypted sensitive data storage
+- Comprehensive activity logging
+- Real-time transaction monitoring
+
+### Notification System
+- Singleton pattern for system-wide notification management
+- Database-backed persistent notifications
+- Real-time delivery via WebSockets
+- Push notification support with service worker integration
+- User preference management with opt-in/opt-out capabilities
+- Priority-based notification delivery
+- Admin interface for notification management
 
 ### Compliance
- Data privacy and user rights
- KYC/AML compliance features
- Regular security assessments
+- Data privacy and user rights
+- KYC/AML compliance features
+- Regular security assessments
 
 
 ## 📝 License
