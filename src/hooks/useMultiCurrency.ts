@@ -10,6 +10,8 @@ interface UseMultiCurrencyReturn {
   convertCurrency: (amount: number, from: string, to: string, includeFee?: boolean) => Promise<CurrencyConversion | null>;
   formatCurrency: (amount: number, currency: string, locale?: string) => string;
   updatePreferences: (preferences: Partial<CurrencyPreferences>) => Promise<boolean>;
+  refreshExchangeRates: () => Promise<void>;
+  lastExchangeRateUpdate: string | null;
   loading: boolean;
   error: string | null;
 }
@@ -20,6 +22,7 @@ export function useMultiCurrency(userId?: string): UseMultiCurrencyReturn {
   const [userPreferences, setUserPreferences] = useState<CurrencyPreferences | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [lastExchangeRateUpdate, setLastExchangeRateUpdate] = useState<string | null>(null);
 
   // Initialize multi-currency system
   useEffect(() => {
@@ -132,6 +135,51 @@ export function useMultiCurrency(userId?: string): UseMultiCurrencyReturn {
       return false;
     }
   }, [userId]);
+  
+  // Refresh exchange rates function
+  const refreshExchangeRates = useCallback(async (): Promise<void> => {
+    try {
+      setLoading(true);
+      // Call the method to update exchange rates
+      await multiCurrency.initialize();
+      await loadExchangeRates();
+      setLastExchangeRateUpdate(new Date().toISOString());
+    } catch (err) {
+      console.error('Failed to refresh exchange rates:', err);
+      setError('Failed to refresh exchange rates');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+  
+  // Private function to load exchange rates
+  const loadExchangeRates = async () => {
+    try {
+      // Build exchange rate matrix
+      const rates: Record<string, Record<string, number | null>> = {};
+      const supportedCurrencies = multiCurrency.getSupportedCurrencies();
+      
+      supportedCurrencies.forEach(fromCurrency => {
+        rates[fromCurrency.code] = {};
+        supportedCurrencies.forEach(toCurrency => {
+          if (fromCurrency.code === toCurrency.code) {
+            rates[fromCurrency.code][toCurrency.code] = 1;
+          } else {
+            rates[fromCurrency.code][toCurrency.code] = multiCurrency.getExchangeRate(
+              fromCurrency.code,
+              toCurrency.code
+            );
+          }
+        });
+      });
+      
+      setExchangeRates(rates);
+      setLastExchangeRateUpdate(new Date().toISOString());
+    } catch (err) {
+      console.error('Failed to load exchange rates:', err);
+      setError('Failed to load exchange rates');
+    }
+  };
 
   return {
     currencies,
@@ -140,6 +188,8 @@ export function useMultiCurrency(userId?: string): UseMultiCurrencyReturn {
     convertCurrency,
     formatCurrency,
     updatePreferences,
+    refreshExchangeRates,
+    lastExchangeRateUpdate,
     loading,
     error
   };
