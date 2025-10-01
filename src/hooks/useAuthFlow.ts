@@ -39,8 +39,14 @@ export function useAuthFlow(): AuthState {
           setAuthState({ user: null, needsSeedPhrase: false, loading: false, isNewUser: false });
           return;
         }
-
-        const supabase = getBrowserClient();
+        let supabase;
+        try {
+          supabase = getBrowserClient();
+        } catch (e) {
+          console.error('Failed to init Supabase client in useAuthFlow:', e);
+          setAuthState({ user: null, needsSeedPhrase: false, loading: false, isNewUser: false });
+          return;
+        }
 
         // Get current user
         const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -90,7 +96,12 @@ export function useAuthFlow(): AuthState {
     handleAuthFlow();
 
     // Listen for auth changes
-    const supabase = getBrowserClient();
+    let supabase;
+    try {
+      supabase = getBrowserClient();
+    } catch {
+      return; // no listener if client missing
+    }
 
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event: any, session: any) => {
       if (event === 'SIGNED_IN' && session) {

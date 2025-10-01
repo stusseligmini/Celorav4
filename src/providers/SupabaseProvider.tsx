@@ -1,7 +1,7 @@
 'use client';
 
-import React, { createContext, useContext, useEffect, useState, useRef } from 'react';
-import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
+import React, { createContext, useContext, useEffect, useState, useRef, useMemo } from 'react';
+import { User, Session, AuthChangeEvent, SupabaseClient } from '@supabase/supabase-js';
 import CookieErrorHandler from '../components/CookieErrorHandler';
 import WebSocketErrorHandler from '../components/WebSocketErrorHandler';
 import { getBrowserClient } from '../lib/supabase-browser';
@@ -18,6 +18,8 @@ interface SupabaseContextType {
   signUp: (email: string, password: string, metadata?: any) => Promise<{ error: any }>;
   signOut: () => Promise<void>;
   refreshSession: () => Promise<void>;
+  supabase: SupabaseClient | null;
+  envOk: boolean;
 }
 
 const SupabaseContext = createContext<SupabaseContextType | undefined>(undefined);
@@ -29,9 +31,12 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [error, setError] = useState<Error | null>(null);
   const [reconnecting, setReconnecting] = useState(false);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
-  
-  // Use the browser singleton pattern for the Supabase client
-  const supabase = getBrowserClient();
+
+  // Hold client instance; don't construct if env is missing
+  const [supabase, setSupabase] = useState<SupabaseClient | null>(null);
+  const envOk = useMemo(() => {
+    return Boolean(process.env.NEXT_PUBLIC_SUPABASE_URL && process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY);
+  }, []);
 
   // Function to safely get session with recovery
   const refreshSession = async () => {
@@ -39,6 +44,13 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     
     try {
+      if (!supabase) {
+        // No client available; likely missing env. Degraded mode.
+        setSession(null);
+        setUser(null);
+        setError(null);
+        return;
+      }
       // Use browser singleton client directly
       setReconnecting(false);
       
@@ -69,13 +81,23 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     // Rydd opp i eventuelle korrupte Supabase-data før initialisering
     cleanupSupabaseStorage();
-    
-    // Get initial session
+    // Initialize client lazily if env is ok
+    if (envOk && !supabase) {
+      try {
+        const client = getBrowserClient();
+        setSupabase(client as unknown as SupabaseClient);
+      } catch (e) {
+        console.error('Failed to create Supabase client in provider:', e);
+      }
+    }
+
+    // Get initial session (will no-op if supabase is null)
     refreshSession();
 
     // Set up automatic recovery
     const healthCheckInterval = setInterval(async () => {
       try {
+        if (!supabase) return;
         // Simple health check
         const isValid = await validateSupabaseClient(supabase);
         if (!isValid && !reconnecting) {
@@ -91,7 +113,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     let subscription: { unsubscribe: () => void } | null = null;
     
     try {
-      const authStateChange = supabase.auth.onAuthStateChange(
+      if (supabase) {
+        const authStateChange = supabase.auth.onAuthStateChange(
         async (event: AuthChangeEvent, newSession: Session | null) => {
           try {
             setSession(newSession);
@@ -101,9 +124,10 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
             console.error('Error handling auth state change:', err);
           }
         }
-      );
-      
-      subscription = authStateChange.data.subscription;
+        );
+        
+        subscription = authStateChange.data.subscription;
+      }
     } catch (err) {
       console.error('Error setting up auth state change listener:', err);
     }
@@ -122,10 +146,11 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
         }
       }
     };
-  }, [supabase]);
+  }, [envOk, supabase]);
 
   const signOut = async () => {
     try {
+      if (!supabase) return;
       await supabase.auth.signOut();
     } catch (err) {
       console.error('Error signing out:', err);
@@ -135,6 +160,9 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 
   const signIn = async (email: string, password: string) => {
     try {
+      if (!supabase) {
+        return { error: new Error('Auth not available: missing configuration') };
+      }
       const { error } = await withRetry('sign-in', async () => {
         return await supabase.auth.signInWithPassword({
           email,
@@ -150,6 +178,9 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
 
   const signUp = async (email: string, password: string, metadata?: any) => {
     try {
+      if (!supabase) {
+        return { error: new Error('Auth not available: missing configuration') };
+      }
       const { error } = await withRetry('sign-up', async () => {
         return await supabase.auth.signUp({
           email,
@@ -176,6 +207,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     signUp,
     signOut,
     refreshSession,
+    supabase,
+    envOk,
   };
 
   return (
