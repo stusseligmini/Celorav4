@@ -28,22 +28,26 @@
 :root {
   --background: #0a0e17;
   --foreground: #ffffff;
-  --cyan-primary: #06b6d4;
-  --cyan-secondary: #0891b2;
-  --cyan-accent: #22d3ee;
-  --dark-surface: #151c2c;
-  --dark-card: #1e2a3b;
-  --dark-border: #2d3748;
-  --neon-glow: 0 0 10px #06b6d4, 0 0 20px rgba(6, 182, 212, 0.5);
-  --neon-text-shadow: 0 0 5px rgba(6, 182, 212, 0.8), 0 0 10px rgba(6, 182, 212, 0.4);
+  --cyan-primary: #0af5d3;  /* Lysere cyan/grønn */
+  --cyan-secondary: #09e2c2; /* Mellomtønene cyan/grønn */
+  --cyan-accent: #02fada;    /* Sterkt cyan/grønn */
+  --purple-glow: #e31aff;    /* Lilla neonlys fra logoen */
+  --purple-accent: #d31aed;  /* Mellomtønene lilla */
+  --dark-surface: #0e1624;   /* Mørkere bakgrunn */
+  --dark-card: #151d2e;      /* Mørk kortbakgrunn */
+  --dark-border: #1e2a40;    /* Mørk kantfarge */
+  --neon-glow: 0 0 10px #0af5d3, 0 0 20px rgba(10, 245, 211, 0.5);
+  --neon-text-shadow: 0 0 5px rgba(10, 245, 211, 0.8), 0 0 10px rgba(10, 245, 211, 0.4);
+  --neon-purple-glow: 0 0 10px #e31aff, 0 0 20px rgba(227, 26, 255, 0.5);
+  --neon-purple-text-shadow: 0 0 5px rgba(227, 26, 255, 0.8), 0 0 10px rgba(227, 26, 255, 0.4);
 }
 
 body {
   color: var(--foreground);
   background: var(--background);
   background-image: 
-    radial-gradient(circle at 20% 30%, rgba(6, 182, 212, 0.1) 0%, transparent 50%),
-    radial-gradient(circle at 80% 70%, rgba(2, 132, 199, 0.1) 0%, transparent 50%);
+    radial-gradient(circle at 20% 30%, rgba(10, 245, 211, 0.1) 0%, transparent 50%),
+    radial-gradient(circle at 80% 70%, rgba(227, 26, 255, 0.1) 0%, transparent 50%);
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', sans-serif;
   min-height: 100vh;
   line-height: 1.6;
@@ -130,15 +134,15 @@ body {
 
 /* Cyberpunk button styles */
 .btn-primary {
-  background: linear-gradient(135deg, #06b6d4, #0891b2);
-  color: white;
+  background: linear-gradient(135deg, #0af5d3, #09e2c2);
+  color: #0a0e17; /* Mørk tekst på lys knapp for bedre kontrast */
   font-weight: 500;
   padding: 12px 24px;
   border-radius: 4px;
   border: none;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 0 10px rgba(6, 182, 212, 0.5), inset 0 0 5px rgba(6, 182, 212, 0.5);
+  box-shadow: 0 0 10px rgba(10, 245, 211, 0.5), inset 0 0 5px rgba(10, 245, 211, 0.5);
   text-transform: uppercase;
   letter-spacing: 1px;
   position: relative;
@@ -152,15 +156,15 @@ body {
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
   transition: all 0.5s;
 }
 
 .btn-primary:hover {
-  background: linear-gradient(135deg, #0891b2, #0e7490);
+  background: linear-gradient(135deg, #02fada, #0af5d3);
   transform: translateY(-1px);
-  box-shadow: 0 0 15px rgba(6, 182, 212, 0.7), inset 0 0 10px rgba(6, 182, 212, 0.4);
-  text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+  box-shadow: 0 0 15px rgba(10, 245, 211, 0.7), inset 0 0 10px rgba(10, 245, 211, 0.4);
+  text-shadow: 0 0 5px rgba(10, 10, 10, 0.5);
 }
 
 .btn-primary:hover::before {
@@ -213,9 +217,28 @@ body {
   color: var(--cyan-primary);
   text-shadow: 0 0 5px var(--cyan-primary), 
                0 0 10px var(--cyan-primary), 
-               0 0 20px rgba(6, 182, 212, 0.5);
+               0 0 20px rgba(10, 245, 211, 0.5);
   letter-spacing: 2px;
   animation: neonPulse 3s infinite;
+}
+
+.neon-text-purple {
+  color: var(--purple-glow);
+  text-shadow: 0 0 5px var(--purple-glow), 
+               0 0 10px var(--purple-glow), 
+               0 0 20px rgba(227, 26, 255, 0.5);
+  letter-spacing: 2px;
+  animation: neonPulse 3s infinite;
+}
+
+.logo-text {
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  letter-spacing: 3px;
+  background: linear-gradient(to right, var(--purple-glow), var(--cyan-primary));
+  -webkit-background-clip: text;
+  color: transparent;
+  text-shadow: 0 0 10px rgba(10, 245, 211, 0.5), 0 0 15px rgba(227, 26, 255, 0.3);
 }
 
 /* Cyberpunk gradient backgrounds */

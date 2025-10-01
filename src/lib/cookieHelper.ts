@@ -343,9 +343,10 @@ export function enableSafeJsonParsing() {
 
 /**
  * Identifies and removes problematic cookies that might be causing JSON parsing errors
+ * @param onlyClear If true, only clears problematic cookies. If false, clears ALL Supabase cookies.
  * @returns Array of cookie names that were removed
  */
-export function cleanupProblemCookies(): string[] {
+export function cleanupProblemCookies(onlyClear: boolean = false): string[] {
   if (typeof document === 'undefined') return [];
   
   const removedCookies: string[] = [];
@@ -365,20 +366,34 @@ export function cleanupProblemCookies(): string[] {
       const cookieName = cookieParts[0];
       const cookieValue = cookieParts.slice(1).join('=');
       
-      // Check if this cookie might be causing issues
+      // Check if this cookie might be causing issues or if it's a Supabase cookie
       const isPotentiallyProblematic = problematicPatterns.some(pattern => 
-        cookieValue?.includes(pattern)
+        cookieValue?.includes(pattern) || cookieName.includes(pattern)
       ) || (cookieValue?.length > 500); // Also check for very long cookies
       
-      if (isPotentiallyProblematic) {
-        console.warn(`Potential problematic cookie found: ${cookieName}. Attempting to clean.`);
+      const isSupabaseRelated = cookieName.startsWith('sb-') || 
+                               cookieName.includes('supabase') ||
+                               cookieName.includes('_supabase');
+      
+      if ((onlyClear && isPotentiallyProblematic) || (!onlyClear && isSupabaseRelated)) {
+        console.warn(`${onlyClear ? 'Problematic' : 'Supabase'} cookie found: ${cookieName}. Removing...`);
         
         try {
-          // Delete the cookie by setting expiration to the past
+          // Delete the cookie for all possible paths and domains
+          deleteCookie(cookieName, '/', undefined);
+          
+          // Try additional deletion strategies to ensure removal
           document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;`;
+          document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${window.location.hostname};`;
+          
+          // Try also with subdomains
+          if (window.location.hostname.includes('.')) {
+            document.cookie = `${cookieName}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=.${window.location.hostname};`;
+          }
+          
           removedCookies.push(cookieName);
         } catch (clearError) {
-          console.error('Error clearing problematic cookie:', clearError);
+          console.error('Error clearing cookie:', clearError);
         }
       }
     });

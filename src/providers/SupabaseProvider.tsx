@@ -4,8 +4,9 @@ import React, { createContext, useContext, useEffect, useState, useRef } from 'r
 import { User, Session, AuthChangeEvent } from '@supabase/supabase-js';
 import CookieErrorHandler from '../components/CookieErrorHandler';
 import WebSocketErrorHandler from '../components/WebSocketErrorHandler';
-import { getSupabaseClient, testSupabaseConnection } from '../lib/supabaseSingleton';
+import { getBrowserClient } from '../lib/supabase-browser';
 import { withRetry, validateSupabaseClient, attemptSupabaseRecovery } from '../lib/supabaseErrorHandling';
+import { cleanupSupabaseStorage } from '../lib/supabaseCleanup';
 
 interface SupabaseContextType {
   user: User | null;
@@ -29,8 +30,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   const [reconnecting, setReconnecting] = useState(false);
   const reconnectTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Use the singleton pattern for the Supabase client
-  const supabase = getSupabaseClient();
+  // Use the browser singleton pattern for the Supabase client
+  const supabase = getBrowserClient();
 
   // Function to safely get session with recovery
   const refreshSession = async () => {
@@ -38,14 +39,8 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     setError(null);
     
     try {
-      // First validate the client is working
-      const isClientValid = await validateSupabaseClient(supabase);
-      
-      if (!isClientValid) {
-        // Try to recover the client
-        setReconnecting(true);
-        await attemptSupabaseRecovery(supabase);
-      }
+      // Use browser singleton client directly
+      setReconnecting(false);
       
       // Try to get the session with retry logic
       const result = await withRetry('get-auth-session', async () => {
@@ -72,6 +67,9 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    // Rydd opp i eventuelle korrupte Supabase-data før initialisering
+    cleanupSupabaseStorage();
+    
     // Get initial session
     refreshSession();
 

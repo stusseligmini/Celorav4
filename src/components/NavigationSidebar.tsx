@@ -51,7 +51,7 @@ export function NavigationSidebar() {
           <div className="text-2xl font-mono font-bold text-cyan-400">CELORA</div>
         </div>
         <div className="p-4 mb-6 border-b border-cyan-400/20">
-          <div className="text-center text-gray-400">Loading user data...</div>
+          <div className="text-center text-cyan-primary/70">Loading user data...</div>
         </div>
       </div>
     );
@@ -62,7 +62,7 @@ export function NavigationSidebar() {
     return (
       <button
         onClick={() => setIsMobileOpen(true)}
-        className="fixed top-4 left-4 z-50 p-3 bg-gray-900/90 backdrop-blur rounded-lg border border-cyan-400/20 text-cyan-400"
+        className="fixed top-4 left-4 z-50 p-3 bg-gray-900/90 backdrop-blur-sm rounded-lg border border-cyan-primary/30 text-cyan-primary hover:shadow-neon-sm"
         aria-label="Open menu"
       >
         <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -171,7 +171,7 @@ export function NavigationSidebar() {
           )}
           {collapsed && (
             <div className="w-full flex justify-center">
-              <div className="text-2xl font-mono font-bold text-cyan-400">C</div>
+              <div className="text-2xl font-mono font-bold text-cyan-primary neon-text">C</div>
             </div>
           )}
           
@@ -188,7 +188,7 @@ export function NavigationSidebar() {
           ) : (
             <button
               onClick={() => setCollapsed(!collapsed)}
-              className="p-2 text-cyan-400 hover:bg-cyan-400/10 rounded-full transition-colors"
+              className="p-2 text-cyan-primary hover:bg-cyan-primary/15 rounded-full transition-colors"
               aria-label={collapsed ? "Expand sidebar" : "Collapse sidebar"}
             >
               {collapsed ? (
@@ -205,10 +205,10 @@ export function NavigationSidebar() {
         </div>
 
       {/* User profile */}
-      <div className={`p-4 mb-6 border-b border-cyan-400/20 ${collapsed ? 'text-center' : ''}`}>
+      <div className={`p-4 mb-6 border-b border-cyan-primary/20 ${collapsed ? 'text-center' : ''}`}>
         <div className="flex flex-col items-center space-y-3">
-          <div className="w-12 h-12 bg-cyan-400/20 rounded-full flex items-center justify-center">
-            <span className="text-cyan-400 text-lg font-mono">
+          <div className="w-12 h-12 bg-cyan-primary/20 rounded-full flex items-center justify-center border border-cyan-primary/30">
+            <span className="text-cyan-primary text-lg font-mono neon-text">
               {user.user_metadata?.full_name?.[0]?.toUpperCase() || 'U'}
             </span>
           </div>
@@ -235,8 +235,8 @@ export function NavigationSidebar() {
               href={item.path}
               className={`flex items-center ${collapsed ? 'justify-center' : 'justify-start'} py-3 px-4 rounded-lg transition-colors
                 ${isActive 
-                  ? 'bg-cyan-400/20 text-cyan-400' 
-                  : 'text-gray-400 hover:bg-gray-800/50 hover:text-cyan-400'
+                  ? 'bg-cyan-primary/20 text-cyan-primary border border-cyan-primary/30 shadow-neon-sm' 
+                  : 'text-gray-400 hover:bg-gray-800/50 hover:text-cyan-primary hover:border hover:border-cyan-primary/30'
                 }
               `}
             >
@@ -254,10 +254,10 @@ export function NavigationSidebar() {
       {/* Bottom actions */}
       <div className={`absolute bottom-0 left-0 right-0 p-4 ${collapsed ? 'text-center' : ''}`}>
         <div 
-          className={`bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-400/20 rounded-lg p-4 mb-4
+          className={`bg-gradient-to-r from-cyan-primary/10 to-purple-glow/10 border border-cyan-primary/20 rounded-lg p-4 mb-4 hover:shadow-neon-sm transition-all duration-300
             ${collapsed ? 'hidden' : 'block'}`}
         >
-          <div className="text-xs text-cyan-400 mb-2 font-mono">PRO ACCOUNT</div>
+          <div className="text-xs text-cyan-primary mb-2 font-mono neon-text">PRO ACCOUNT</div>
           <div className="text-sm text-white mb-2">Advanced features unlocked</div>
           <div className="text-xs text-gray-400">Active until Jan 2024</div>
         </div>
@@ -265,7 +265,7 @@ export function NavigationSidebar() {
         <button 
           onClick={() => router.push('/auth/signout')}
           className={`flex items-center ${collapsed ? 'justify-center' : 'justify-start'} 
-            py-3 px-4 rounded-lg transition-colors w-full text-gray-400 hover:bg-gray-800/50 hover:text-red-400`}
+            py-3 px-4 rounded-lg transition-colors w-full text-gray-400 hover:bg-gray-800/50 hover:text-red-500 hover:border hover:border-red-500/30`}
         >
           <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />

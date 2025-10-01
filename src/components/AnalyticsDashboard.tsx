@@ -106,15 +106,15 @@ export default function AnalyticsDashboard() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="w-16 h-16 border-4 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin mx-auto"></div>
-          <div className="mt-4 text-cyan-400 font-mono">Loading Analytics...</div>
+          <div className="w-16 h-16 border-4 border-cyan-primary/20 border-t-cyan-primary rounded-full animate-spin mx-auto shadow-neon-sm"></div>
+          <div className="mt-4 text-cyan-primary font-mono neon-text">Loading Analytics...</div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="min-h-screen bg-black text-white p-6">
+    <div className="min-h-screen bg-gradient-to-b from-gray-900 to-black text-white p-6">
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -122,7 +122,7 @@ export default function AnalyticsDashboard() {
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <h1 className="text-4xl font-mono font-bold text-cyan-400 mb-2">
+          <h1 className="text-4xl font-mono font-bold text-cyan-primary neon-text mb-2">
             ANALYTICS DASHBOARD
           </h1>
           <p className="text-gray-400">Real-time insights into your financial data</p>
@@ -140,8 +140,8 @@ export default function AnalyticsDashboard() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex-1 py-3 px-4 text-sm font-mono font-bold rounded-md transition-all ${
                 activeTab === tab.id
-                  ? 'bg-cyan-400/20 text-cyan-400 shadow-lg shadow-cyan-400/20'
-                  : 'text-gray-400 hover:text-cyan-400 hover:bg-gray-800/50'
+                  ? 'bg-cyan-primary/20 text-cyan-primary shadow-neon-sm border border-cyan-primary/30'
+                  : 'text-gray-400 hover:text-cyan-primary hover:bg-gray-800/50 hover:border hover:border-cyan-primary/20'
               }`}
             >
               <span className="mr-2">{tab.icon}</span>
@@ -193,7 +193,7 @@ export default function AnalyticsDashboard() {
                     <div className="text-sm text-gray-400">This Week</div>
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-cyan-400">
+                    <div className="text-lg font-bold text-cyan-primary neon-text">
                       {formatCurrency(spendingData.weekly.daily_average)}
                     </div>
                     <div className="text-sm text-gray-400">Daily Average</div>
@@ -212,7 +212,7 @@ export default function AnalyticsDashboard() {
                     <div className="text-sm text-gray-400">Projected Monthly</div>
                   </div>
                   <div>
-                    <div className="text-lg font-bold text-yellow-400">
+                    <div className="text-lg font-bold text-purple-glow">
                       {formatCurrency(spendingData.trends.avg_daily)}
                     </div>
                     <div className="text-sm text-gray-400">Average Daily</div>
@@ -232,7 +232,7 @@ export default function AnalyticsDashboard() {
                       <div className="text-sm text-gray-400">{category.name}</div>
                       <div className="w-full bg-gray-700 rounded-full h-2 mt-2">
                         <div
-                          className="bg-cyan-400 h-2 rounded-full"
+                          className="bg-cyan-primary h-2 rounded-full shadow-neon-xs"
                           style={{
                             width: `${(category.amount / spendingData.categories.top_categories[0].amount) * 100}%`
                           }}

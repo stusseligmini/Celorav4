@@ -71,8 +71,8 @@ export default function HomePage() {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
         <div className="text-center">
-          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-400 mx-auto mb-4"></div>
-          <p className="text-cyan-400 font-mono">Loading...</p>
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-cyan-primary mx-auto mb-4 shadow-neon-sm"></div>
+          <p className="text-cyan-primary font-mono neon-text">Loading...</p>
         </div>
       </div>
     );
@@ -96,11 +96,11 @@ export default function HomePage() {
       )}
 
       {/* Top Navigation */}
-      <nav className="bg-gray-900/50 backdrop-blur border-b border-cyan-400/20 sticky top-0 z-50">
+      <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-cyan-primary/20 sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-mono font-bold text-cyan-400">CELORA</h1>
+              <h1 className="text-2xl font-mono font-bold text-cyan-primary neon-text">CELORA</h1>
               <div className="hidden md:flex space-x-6">
                 <button
                   onClick={() => setActiveTab('overview')}
@@ -151,7 +151,7 @@ export default function HomePage() {
             <div className="flex items-center space-x-4">
               {/* Notification Bell */}
               <div className="relative">
-                <button className="text-gray-400 hover:text-cyan-400 transition-colors">
+                <button className="text-gray-400 hover:text-cyan-primary transition-colors">
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
@@ -164,8 +164,8 @@ export default function HomePage() {
               </div>
               
               {/* User Avatar */}
-              <div className="w-8 h-8 bg-cyan-400/20 rounded-full flex items-center justify-center">
-                <span className="text-cyan-400 text-sm font-mono">U</span>
+              <div className="w-8 h-8 bg-cyan-primary/20 border border-cyan-primary/30 rounded-full flex items-center justify-center">
+                <span className="text-cyan-primary text-sm font-mono neon-text">U</span>
               </div>
             </div>
           </div>
@@ -178,12 +178,12 @@ export default function HomePage() {
         {activeTab === 'overview' && (
           <div className="space-y-8">
             {/* Welcome Section */}
-            <div className="bg-gradient-to-r from-cyan-400/10 to-blue-500/10 border border-cyan-400/20 rounded-lg p-6">
+            <div className="bg-gradient-to-r from-cyan-primary/10 to-purple-glow/10 border border-cyan-primary/20 rounded-lg p-6 hover:shadow-neon-sm transition-all duration-300">
               <div className="flex items-center justify-between mb-2">
-                <h2 className="text-2xl font-mono font-bold text-cyan-400">
+                <h2 className="text-2xl font-mono font-bold text-cyan-primary neon-text">
                   WELCOME TO CELORA
                 </h2>
-                <Link href="/sidebar" className="bg-cyan-500/20 text-cyan-400 text-xs font-mono px-3 py-1 rounded-full hover:bg-cyan-500/30 transition-colors">
+                <Link href="/sidebar" className="bg-cyan-primary/20 border border-cyan-primary/30 text-cyan-primary text-xs font-mono px-3 py-1 rounded-full hover:bg-cyan-primary/30 hover:shadow-neon-xs transition-all duration-300">
                   TRY NEW SIDEBAR DESIGN →
                 </Link>
               </div>
@@ -218,8 +218,8 @@ export default function HomePage() {
 
             {/* Recent Activity */}
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
-                <h3 className="text-cyan-400 font-mono font-bold mb-4">RECENT TRANSACTIONS</h3>
+              <div className="bg-gray-900/50 backdrop-blur-sm border border-cyan-primary/20 rounded-lg p-6 hover:shadow-neon-sm transition-all duration-300">
+                <h3 className="text-cyan-primary font-mono font-bold mb-4 neon-text">RECENT TRANSACTIONS</h3>
                 <div className="space-y-3">
                   {[
                     { desc: 'Amazon Purchase', amount: '-$129.99', time: '2 mins ago', type: 'card' },

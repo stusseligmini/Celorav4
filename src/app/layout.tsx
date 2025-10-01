@@ -10,6 +10,7 @@ import { headers } from 'next/headers'
 import { CspNonceProvider } from '../lib/cspHelpers'
 import SecurityMonitor from '../components/SecurityMonitor'
 import { FeatureFlagProvider } from '../components/FeatureFlagComponents'
+import { SupabaseInitializer } from './supabase-init'
 
 export const metadata: Metadata = {
   title: 'Celora - Professional Fintech Platform',
@@ -39,6 +40,8 @@ export default async function RootLayout({
         <meta name="csp-nonce" content={nonce} />
       </head>
       <body className="min-h-screen bg-slate-900 antialiased">
+        {/* Kjør Supabase-initialisering tidlig i livssyklusen */}
+        <SupabaseInitializer />
         <ErrorBoundary>
           <NetworkStatusHandler>
             <SupabaseProvider>
