@@ -11,17 +11,33 @@ let browserClient: ReturnType<typeof createClient<any>> | null = null;
  */
 export function getBrowserClient() {
   if (!browserClient) {
-    const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-    browserClient = createClient(url, anon, {
-      auth: {
-        storageKey: "sb-zpcycakwdvymqhwvakrv-auth",
-        persistSession: true,
-        autoRefreshToken: true,
-      },
-      // Begrenser antall realtime-events for å unngå overbelastning
-      realtime: { params: { eventsPerSecond: 3 } },
-    });
+    const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const anon = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+    
+    if (!url || !anon) {
+      console.error('❌ Supabase environment variables mangler!', {
+        hasUrl: !!url,
+        hasAnon: !!anon
+      });
+      throw new Error('Supabase configuration is missing. Please check environment variables.');
+    }
+    
+    try {
+      browserClient = createClient(url, anon, {
+        auth: {
+          storageKey: "sb-zpcycakwdvymqhwvakrv-auth",
+          persistSession: true,
+          autoRefreshToken: true,
+        },
+        // Begrenser antall realtime-events for å unngå overbelastning
+        realtime: { params: { eventsPerSecond: 3 } },
+      });
+      
+      console.log('✅ Supabase browser client initialisert');
+    } catch (error) {
+      console.error('❌ Feil ved opprettelse av Supabase client:', error);
+      throw error;
+    }
   }
   return browserClient;
 }

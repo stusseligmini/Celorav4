@@ -16,12 +16,15 @@ export const metadata: Metadata = {
   title: 'Celora - Professional Fintech Platform',
   description: 'Advanced financial technology platform for virtual cards, cryptocurrency management, and real-time analytics',
   manifest: '/manifest.json',
-  themeColor: '#0f172a',
   appleWebApp: {
     capable: true,
     statusBarStyle: 'black-translucent',
     title: 'Celora'
   },
+}
+
+export const viewport = {
+  themeColor: '#0f172a',
 }
 
 export default async function RootLayout({
@@ -38,6 +41,7 @@ export default async function RootLayout({
       <head>
         {/* Make nonce available to client components via meta tag */}
         <meta name="csp-nonce" content={nonce} />
+        <meta charSet="utf-8" />
       </head>
       <body className="min-h-screen bg-slate-900 antialiased">
         {/* Kjør Supabase-initialisering tidlig i livssyklusen */}
