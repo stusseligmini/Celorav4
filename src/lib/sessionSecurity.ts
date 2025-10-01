@@ -1,7 +1,7 @@
 'use client';
 
 import { SupabaseClient, Session } from '@supabase/supabase-js';
-import { validateJwt, createRefreshStrategy, detectTokenMisuse } from './jwtSecurity';
+import { validateJwt, createRefreshStrategy, detectTokenMisuse } from './jwtSecurityClient';
 import { logSecurity } from './logger';
 
 /**

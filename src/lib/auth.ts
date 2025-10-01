@@ -1,4 +1,5 @@
-import { createBrowserClient } from '@supabase/ssr';
+// Use centralized singleton to avoid multiple browser clients
+import { getSupabaseClient } from './supabaseSingleton';
 import { seedPhraseToHash } from './seedPhrase';
 import * as speakeasy from 'speakeasy';
 import * as QRCode from 'qrcode';
@@ -47,13 +48,9 @@ export interface MFAVerifyResponse {
 }
 
 class AuthService {
-  supabase;
-
-  constructor() {
-    this.supabase = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
+  // Lazily resolve the singleton client to avoid initializing at import-time
+  get supabase() {
+    return getSupabaseClient();
   }
 
   // Sign in with email and password - ENHANCED WITH CAPTCHA HANDLING & MFA

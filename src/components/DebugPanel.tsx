@@ -1,6 +1,6 @@
 'use client'
 
-import { createBrowserClient } from '@supabase/ssr';
+import { getSupabaseClient } from '@/lib/supabaseSingleton';
 import { useEffect, useState } from 'react';
 import SecurityStatusPanel from './SecurityStatusPanel';
 
@@ -32,10 +32,21 @@ export function useDebugInfo() {
     const startTime = performance.now();
     
     async function checkConnections() {
-      const supabase = createBrowserClient(
-        process.env.NEXT_PUBLIC_SUPABASE_URL!,
-        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-      );
+      let supabase: ReturnType<typeof getSupabaseClient> | null = null;
+      try {
+        supabase = getSupabaseClient();
+      } catch (e) {
+        // Likely missing env or init error; reflect in debug info and bail early
+        setDebugInfo(prev => ({
+          ...prev,
+          supabaseConnected: false,
+          performanceMetrics: {
+            ...prev.performanceMetrics,
+            pageLoadTime: performance.now() - startTime,
+          }
+        }));
+        return;
+      }
 
       try {
         // Test Supabase connection

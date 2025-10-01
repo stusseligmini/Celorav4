@@ -1,3 +1,4 @@
+import 'server-only';
 /**
  * JWT Token Security Module
  * 

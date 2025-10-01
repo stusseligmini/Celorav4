@@ -1,24 +1,22 @@
 "use client";
 import { useEffect, useState } from 'react';
-import { createBrowserClient } from '@supabase/ssr';
+import { getSupabaseClient } from '@/lib/supabaseSingleton';
+import type { Session } from '@supabase/supabase-js';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
 export default function UpdatePasswordPage() {
   const router = useRouter();
-  const supabase = createBrowserClient(
-    process.env.NEXT_PUBLIC_SUPABASE_URL!,
-    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-  );
+  const supabase = getSupabaseClient();
   const [password, setPassword] = useState('');
   const [confirm, setConfirm] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [message, setMessage] = useState<string | null>(null);
 
-  useEffect(()=>{
+  useEffect(() => {
     // Ensure user is in password recovery session
-    supabase.auth.getSession().then(({ data })=>{
+    supabase.auth.getSession().then(({ data }: { data: { session: Session | null } }) => {
       if(!data.session) {
         setError('No active recovery session');
       }
