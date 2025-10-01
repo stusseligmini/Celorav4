@@ -53,7 +53,7 @@ export class WalletService {
    * @returns The created wallet
    */
   static async createWallet(params: CreateWalletParams): Promise<Wallet> {
-    const supabase = getSupabaseClient();
+  const supabase = getSupabaseClient();
     
     // Get the authenticated user
     const { data: { user }, error: userError } = await supabase.auth.getUser();
@@ -138,7 +138,7 @@ export class WalletService {
    * @returns The wallet information
    */
   static async getWallet(walletId: string): Promise<Wallet> {
-    const supabase = getSupabaseClient();
+  const supabase = getSupabaseClient();
     
     const { data: wallet, error } = await supabase
       .from('wallets')

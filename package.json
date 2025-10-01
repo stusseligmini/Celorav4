@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+  "predeploy:smoke": "node -e \"require('dotenv').config(); require('./scripts/smoke-check.ts')\"",
+  "deploy:smoke": "npm run predeploy:smoke && echo Smoke OK",
     "start": "next start",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",

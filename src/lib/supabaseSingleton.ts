@@ -1,9 +1,8 @@
 'use client';
 
-import { createBrowserClient } from './supabaseClient';
 import { SupabaseClient, RealtimeChannel } from '@supabase/supabase-js';
+import { getBrowserClient } from './supabase-browser';
 
-let supabaseInstance: SupabaseClient | null = null;
 let connectionAttempts = 0;
 const maxConnectionAttempts = 5;
 
@@ -12,20 +11,9 @@ const maxConnectionAttempts = 5;
  * This prevents multiple instances from being created which could cause issues with
  * real-time subscriptions and authentication state
  */
-export function getSupabaseClient() {
-  if (supabaseInstance) return supabaseInstance;
-  
-  try {
-    supabaseInstance = createBrowserClient(
-      process.env.NEXT_PUBLIC_SUPABASE_URL!,
-      process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-    );
-    
-    return supabaseInstance;
-  } catch (error) {
-    console.error('Error creating Supabase client:', error);
-    throw error;
-  }
+export function getSupabaseClient(): SupabaseClient {
+  // Delegate to unified browser singleton to avoid multiple instances
+  return getBrowserClient() as unknown as SupabaseClient;
 }
 
 /**
@@ -46,9 +34,8 @@ export async function testSupabaseConnection() {
         connectionAttempts++;
         console.log(`Reconnection attempt ${connectionAttempts}/${maxConnectionAttempts}`);
         
-        // Clear the instance and try again
-        supabaseInstance = null;
-        return getSupabaseClient();
+  // Recreate via unified singleton
+  return getSupabaseClient();
       } else {
         throw new Error('Failed to connect to Supabase after multiple attempts');
       }
