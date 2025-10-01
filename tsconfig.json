@@ -9,9 +9,16 @@
     "strict": true,
     "skipLibCheck": true,
     "resolveJsonModule": true,
-    "types": ["node"],
+    "types": [
+      "node"
+    ],
     "outDir": "dist",
-    "lib": ["dom", "dom.iterable", "es6", "ES2022"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "es6",
+      "ES2022"
+    ],
     "allowJs": true,
     "noEmit": true,
     "isolatedModules": true,
@@ -23,9 +30,31 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": [
+        "./src/*"
+      ]
     }
   },
-  "include": ["next-env.d.ts", "src/**/*", "app/**/*", "components/**/*", "hooks/**/*", ".next/types/**/*.ts"],
-  "exclude": ["node_modules", "migration_source", "packages", "apps", "benchmark", "scripts", "tests", "secure", "ops", "src/lib/advancedEncryption.ts", "src/lib/encryptionManager.ts"]
+  "include": [
+    "app/**/*",
+    "components/**/*",
+    "hooks/**/*",
+    "next-env.d.ts",
+    "src/**/*",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "migration_source",
+    "packages",
+    "apps",
+    "benchmark",
+    "scripts",
+    "tests",
+    "secure",
+    "ops",
+    "src/lib/advancedEncryption.ts",
+    "src/lib/encryptionManager.ts",
+    ".next"
+  ]
 }
