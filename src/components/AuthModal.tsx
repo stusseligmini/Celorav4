@@ -159,8 +159,9 @@ export function AuthModal({ isOpen, onClose, defaultTab = 'signin' }: AuthModalP
               <label htmlFor="password" className="block text-sm font-medium text-cyan-primary mb-1">
                 Password
               </label>
-              <input
-                type="password"
+                <input
+                  type="password"
+                  autoComplete="current-password"
                 id="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}

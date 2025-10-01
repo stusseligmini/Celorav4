@@ -1,9 +1,10 @@
 'use client';
-
-import { createClient } from "@supabase/supabase-js";
+import { createBrowserClient } from './supabaseClient';
+import { cleanupSupabaseStorage } from './supabaseCleanup';
+import { cleanupProblemCookies } from './cookieHelper';
 
 // Singleton-instans av Supabase-klienten
-let browserClient: ReturnType<typeof createClient<any>> | null = null;
+let browserClient: any | null = null;
 
 /**
  * Henter singleton-instansen av Supabase-klienten for browser-kontekst
@@ -23,13 +24,21 @@ export function getBrowserClient() {
     }
     
     try {
-      browserClient = createClient(url, anon, {
+      // Aggressiv tidlig-opprydding av problematiske Supabase-cookies for å hindre JSON/base64-feil
+      try {
+        cleanupSupabaseStorage();
+        cleanupProblemCookies(false);
+      } catch (e) {
+        console.warn('Cookie/storage cleanup warning:', e);
+      }
+
+      // Bruk den forbedrede wrapperen slik at vi har ekstra beskyttelser på cookies og realtime
+      browserClient = createBrowserClient(url, anon, {
         auth: {
-          storageKey: "sb-zpcycakwdvymqhwvakrv-auth",
+          storageKey: 'sb-zpcycakwdvymqhwvakrv-auth',
           persistSession: true,
           autoRefreshToken: true,
         },
-        // Begrenser antall realtime-events for å unngå overbelastning
         realtime: { params: { eventsPerSecond: 3 } },
       });
       

@@ -252,8 +252,9 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
               <label className="block text-sm font-medium text-cyan-300 mb-1 font-mono">
                 4-DIGIT SECURITY PIN
               </label>
-              <input
-                type="password"
+                <input
+                  type="password"
+                  autoComplete="new-password"
                 value={cardPin}
                 onChange={(e) => setCardPin(e.target.value.replace(/\D/g, '').slice(0, 4))}
                 className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100 text-center text-2xl tracking-widest font-mono glow-cyan"
@@ -266,8 +267,9 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
               <label className="block text-sm font-medium text-cyan-300 mb-1 font-mono">
                 CONFIRM SECURITY PIN
               </label>
-              <input
-                type="password"
+                <input
+                  type="password"
+                  autoComplete="new-password"
                 value={confirmPin}
                 onChange={(e) => setPinConfirm(e.target.value.replace(/\D/g, '').slice(0, 4))}
                 className="w-full px-3 py-2 bg-gray-800 border border-gray-600 rounded-md focus:ring-2 focus:ring-cyan-500 focus:border-cyan-500 text-gray-100 text-center text-2xl tracking-widest font-mono glow-cyan"

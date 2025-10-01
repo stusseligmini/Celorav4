@@ -151,8 +151,9 @@ export default function SignUpPage() {
               <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">
                 PASSWORD
               </label>
-              <input
-                type="password"
+                <input
+                  type="password"
+                  autoComplete="new-password"
                 required
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
@@ -171,8 +172,9 @@ export default function SignUpPage() {
               <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">
                 CONFIRM PASSWORD
               </label>
-              <input
-                type="password"
+                <input
+                  type="password"
+                  autoComplete="new-password"
                 required
                 value={confirmPassword}
                 onChange={(e) => setConfirmPassword(e.target.value)}

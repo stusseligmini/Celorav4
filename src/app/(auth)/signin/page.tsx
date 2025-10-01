@@ -292,8 +292,9 @@ export default function SignInPage() {
               </div>
               <div>
                 <label className="block text-sm font-mono text-cyan-400 mb-2 accent-text">PASSWORD</label>
-                <input
-                  type="password"
+                  <input
+                    type="password"
+                    autoComplete="current-password"
                   required
                   value={password}
                   onChange={e => setPassword(e.target.value)}

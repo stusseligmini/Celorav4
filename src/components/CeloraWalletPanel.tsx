@@ -355,8 +355,9 @@ export const CeloraWalletPanel: React.FC<CeloraWalletPanelProps> = ({ userId }) 
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">Private Key</label>
-                <input
-                  type="password"
+                  <input
+                    type="password"
+                    autoComplete="current-password"
                   value={walletForm.privateKey}
                   onChange={(e) => setWalletForm({ ...walletForm, privateKey: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2"
@@ -365,8 +366,9 @@ export const CeloraWalletPanel: React.FC<CeloraWalletPanelProps> = ({ userId }) 
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">PIN (4-6 digits)</label>
-                <input
-                  type="password"
+                  <input
+                    type="password"
+                    autoComplete="current-password"
                   value={walletForm.pin}
                   onChange={(e) => setWalletForm({ ...walletForm, pin: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2"
@@ -432,8 +434,9 @@ export const CeloraWalletPanel: React.FC<CeloraWalletPanelProps> = ({ userId }) 
               </div>
               <div>
                 <label className="block text-sm font-medium mb-1">PIN (4-6 digits)</label>
-                <input
-                  type="password"
+                  <input
+                    type="password"
+                    autoComplete="new-password"
                   value={cardForm.pin}
                   onChange={(e) => setCardForm({ ...cardForm, pin: e.target.value })}
                   className="w-full border rounded-lg px-3 py-2"
@@ -465,8 +468,9 @@ export const CeloraWalletPanel: React.FC<CeloraWalletPanelProps> = ({ userId }) 
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
             <h3 className="text-lg font-semibold mb-4">Enter PIN</h3>
             <p className="text-gray-600 mb-4">Please enter your PIN to view card details.</p>
-            <input
-              type="password"
+              <input
+                type="password"
+                autoComplete="current-password"
               value={pin}
               onChange={(e) => setPin(e.target.value)}
               className="w-full border rounded-lg px-3 py-2 mb-4"
