@@ -60,7 +60,7 @@ const MfaSetupMobile: React.FC<MfaSetupMobileProps> = ({
         if (factorsError) throw factorsError;
         
         // Check if MFA is already enrolled
-        const isEnrolled = factors.totp.some(factor => factor.status === 'verified');
+        const isEnrolled = factors.totp.some((factor: any) => factor.status === 'verified');
         
         if (isEnrolled) {
           setError('MFA is already enabled for this account.');
