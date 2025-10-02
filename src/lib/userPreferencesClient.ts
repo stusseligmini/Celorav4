@@ -27,7 +27,7 @@ export function useLanguagePreference(defaultLanguage: string = 'en'): [string, 
     
     // Check if user is logged in
     const supabase = getSupabaseClient() as any;
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(({ data }: any) => {
       if (data?.user) {
         setUserId(data.user.id);
         
