@@ -3,11 +3,18 @@
 import { createBrowserClient as originalCreateBrowserClient } from '@supabase/ssr';
 import { SupabaseClient, AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { parseCookieValue, cleanupProblemCookies } from './cookieHelper';
+import { cleanupSupabaseStorage } from './supabaseCleanup';
 
-// Singleton instance to prevent multiple GoTrueClient warnings
+// ==========================================
+// SINGLE SOURCE OF TRUTH FOR SUPABASE CLIENT
+// ==========================================
+// This module-level singleton ensures ONLY ONE Supabase client instance exists
+// across the entire application, preventing "Multiple GoTrueClient instances" warnings
+
 let singletonInstance: SupabaseClient | null = null;
 let singletonUrl: string | null = null;
 let singletonKey: string | null = null;
+let isInitializing: boolean = false;
 
 /**
  * Enhanced version of createBrowserClient with additional error handling for:
@@ -25,15 +32,37 @@ export function createEnhancedBrowserClient(
 ): SupabaseClient {
   // Return existing instance if we already have one with the same credentials
   if (singletonInstance && singletonUrl === supabaseUrl && singletonKey === supabaseKey) {
-    console.log('♻️ Returning existing Supabase client instance (singleton)');
+    console.log('♻️ [SINGLETON] Returning cached Supabase client instance');
     return singletonInstance;
   }
+
+  // Prevent concurrent initialization
+  if (isInitializing) {
+    console.warn('⚠️ [SINGLETON] Client is already initializing, waiting...');
+    // In a real scenario, you might want to return a promise or implement a queue
+    // For now, throw to prevent race conditions
+    throw new Error('Supabase client is already being initialized. Please wait.');
+  }
+
+  isInitializing = true;
+  console.log('🔄 [SINGLETON] Creating new Supabase client instance...');
   try {
-    // Try to clean up any problematic cookies before creating the client
+    // ========================================
+    // STEP 1: Aggressive Pre-Initialization Cleanup
+    // ========================================
     if (typeof document !== 'undefined') {
-      const removedCookies = cleanupProblemCookies();
+      try {
+        // Clean up all Supabase-related storage
+        cleanupSupabaseStorage();
+        console.log('🧹 [SINGLETON] Cleaned up localStorage/sessionStorage');
+      } catch (e) {
+        console.warn('⚠️ Storage cleanup warning:', e);
+      }
+
+      // Clean up problematic cookies
+      const removedCookies = cleanupProblemCookies(false);
       if (removedCookies.length > 0) {
-        console.log(`🧹 Cleaned up ${removedCookies.length} problematic cookies before Supabase initialization`);
+        console.log(`🧹 [SINGLETON] Removed ${removedCookies.length} problematic cookies`);
       }
       
       // Also add a fallback mechanism for Supabase cookies
@@ -194,15 +223,39 @@ export function createEnhancedBrowserClient(
     singletonInstance = client;
     singletonUrl = supabaseUrl;
     singletonKey = supabaseKey;
-    console.log('✅ Created new Supabase client singleton instance');
+    isInitializing = false;
+    console.log('✅ [SINGLETON] Successfully created and cached Supabase client instance');
 
     return client;
   } catch (error) {
-    console.error('Failed to create Supabase client:', error);
+    // Reset initialization flag on error
+    isInitializing = false;
+    console.error('❌ [SINGLETON] Failed to create Supabase client:', error);
     // In case of client creation failure, throw the error
     // This is better than returning a mock client that might hide problems
     throw new Error(`Failed to initialize Supabase client: ${error}`);
   }
+}
+
+/**
+ * Resets the singleton instance (for debugging/testing only)
+ * ⚠️ WARNING: This will break any active subscriptions and log out users!
+ */
+export function resetSupabaseSingleton() {
+  if (singletonInstance) {
+    console.warn('⚠️ [SINGLETON] Resetting Supabase client singleton...');
+    try {
+      // Try to clean up active subscriptions
+      singletonInstance.removeAllChannels?.();
+    } catch (e) {
+      console.warn('Error cleaning up channels:', e);
+    }
+  }
+  singletonInstance = null;
+  singletonUrl = null;
+  singletonKey = null;
+  isInitializing = false;
+  console.log('✅ [SINGLETON] Reset complete');
 }
 
 // For backwards compatibility

@@ -8,11 +8,15 @@ const maxConnectionAttempts = 5;
 
 /**
  * Gets a singleton instance of the Supabase client
- * This prevents multiple instances from being created which could cause issues with
- * real-time subscriptions and authentication state
+ * 
+ * This is an application-level wrapper that provides a consistent API.
+ * All singleton logic is handled by supabaseClient.ts (the single source of truth)
+ * 
+ * Use this function throughout your application for consistency.
  */
 export function getSupabaseClient(): SupabaseClient {
-  // Delegate to unified browser singleton to avoid multiple instances
+  console.log('📞 [APP] Getting Supabase client via application singleton wrapper');
+  // Delegate to browser client, which delegates to the main singleton
   return getBrowserClient() as unknown as SupabaseClient;
 }
 

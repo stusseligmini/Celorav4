@@ -2,8 +2,6 @@
 
 import { getSupabaseClient } from '@/lib/supabaseSingleton';
 import { resetBrowserClient } from '@/lib/supabase-browser';
-import { cleanupSupabaseStorage } from '@/lib/supabaseCleanup';
-import { cleanupProblemCookies } from '@/lib/cookieHelper';
 import { useEffect, useState } from 'react';
 import SecurityStatusPanel from './SecurityStatusPanel';
 
@@ -114,15 +112,14 @@ export function DebugPanel() {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleResetSupabase = () => {
-    if (confirm('⚠️ This will reset the Supabase client and clear all cookies/storage. You will be logged out. Continue?')) {
+    if (confirm('⚠️ This will reset the Supabase client singleton and clear all storage. You will be logged out. Continue?')) {
       try {
-        cleanupSupabaseStorage();
-        cleanupProblemCookies(false);
+        // Reset the singleton (includes cleanup of channels)
         resetBrowserClient();
-        alert('✅ Supabase client reset! Refreshing page...');
+        alert('✅ Supabase client singleton reset! Refreshing page...');
         window.location.reload();
       } catch (e) {
-        console.error('Error resetting Supabase:', e);
+        console.error('Error resetting Supabase singleton:', e);
         alert('❌ Error resetting Supabase. Check console for details.');
       }
     }
