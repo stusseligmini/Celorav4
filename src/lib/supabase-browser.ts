@@ -43,6 +43,8 @@ export function getBrowserClient() {
  * ⚠️ WARNING: This will break any active subscriptions and log out users!
  */
 export function resetBrowserClient() {
-  console.log('🔄 [BROWSER] Delegating reset to main singleton...');
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔄 [BROWSER] Delegating reset to main singleton...');
+  }
   resetSupabaseSingleton();
 }

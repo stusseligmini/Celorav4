@@ -2,8 +2,6 @@
 
 import React, { useState, useEffect } from 'react';
 import { useSupabase } from '../providers/SupabaseProvider';
-// Temporarily disabled for Vercel deployment - TODO: Replace with Supabase direct calls
-// import { SupabaseService } from '@celora/infrastructure/client';
 
 interface OnboardingWizardProps {
   isOpen: boolean;
@@ -128,7 +126,6 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
         throw new Error('Failed to create virtual card');
       }
 
-      // 4. Add some demo funds - TODO: Implement with Supabase direct calls
       // const card = await cardResponse.json();
       // if (card.id) {
       //   await supabaseService.addFunds({

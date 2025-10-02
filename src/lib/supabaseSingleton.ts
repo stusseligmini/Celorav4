@@ -15,7 +15,9 @@ const maxConnectionAttempts = 5;
  * Use this function throughout your application for consistency.
  */
 export function getSupabaseClient(): SupabaseClient {
-  console.log('📞 [APP] Getting Supabase client via application singleton wrapper');
+  if (process.env.NODE_ENV === 'development') {
+    console.log('📞 [APP] Getting Supabase client via application singleton wrapper');
+  }
   // Delegate to browser client, which delegates to the main singleton
   return getBrowserClient() as unknown as SupabaseClient;
 }

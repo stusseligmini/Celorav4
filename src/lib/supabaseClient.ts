@@ -32,20 +32,22 @@ export function createEnhancedBrowserClient(
 ): SupabaseClient {
   // Return existing instance if we already have one with the same credentials
   if (singletonInstance && singletonUrl === supabaseUrl && singletonKey === supabaseKey) {
-    console.log('♻️ [SINGLETON] Returning cached Supabase client instance');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('♻️ [SINGLETON] Returning cached Supabase client instance');
+    }
     return singletonInstance;
   }
 
   // Prevent concurrent initialization
   if (isInitializing) {
-    console.warn('⚠️ [SINGLETON] Client is already initializing, waiting...');
-    // In a real scenario, you might want to return a promise or implement a queue
-    // For now, throw to prevent race conditions
+    console.warn('⚠️ [SINGLETON] Client is already initializing');
     throw new Error('Supabase client is already being initialized. Please wait.');
   }
 
   isInitializing = true;
-  console.log('🔄 [SINGLETON] Creating new Supabase client instance...');
+  if (process.env.NODE_ENV === 'development') {
+    console.log('🔄 [SINGLETON] Creating new Supabase client instance...');
+  }
   try {
     // ========================================
     // STEP 1: Aggressive Pre-Initialization Cleanup
@@ -54,14 +56,16 @@ export function createEnhancedBrowserClient(
       try {
         // Clean up all Supabase-related storage
         cleanupSupabaseStorage();
-        console.log('🧹 [SINGLETON] Cleaned up localStorage/sessionStorage');
+        if (process.env.NODE_ENV === 'development') {
+          console.log('🧹 [SINGLETON] Cleaned up localStorage/sessionStorage');
+        }
       } catch (e) {
         console.warn('⚠️ Storage cleanup warning:', e);
       }
 
       // Clean up problematic cookies
       const removedCookies = cleanupProblemCookies(false);
-      if (removedCookies.length > 0) {
+      if (removedCookies.length > 0 && process.env.NODE_ENV === 'development') {
         console.log(`🧹 [SINGLETON] Removed ${removedCookies.length} problematic cookies`);
       }
       
@@ -188,11 +192,15 @@ export function createEnhancedBrowserClient(
           return originalSubscribe.call(this, (status) => {
             // Handle WebSocket closed errors
             if (status === 'CHANNEL_ERROR' || status === 'TIMED_OUT') {
-              console.warn(`WebSocket channel ${name} encountered an error: ${status}`);
+              if (process.env.NODE_ENV === 'development') {
+                console.warn(`WebSocket channel ${name} encountered an error: ${status}`);
+              }
               
               // Attempt to reconnect with backoff
               setTimeout(() => {
-                console.log(`Attempting to reconnect WebSocket channel ${name}`);
+                if (process.env.NODE_ENV === 'development') {
+                  console.log(`Attempting to reconnect WebSocket channel ${name}`);
+                }
                 try {
                   originalSubscribe.call(this, callback);
                 } catch (reconnectError) {
@@ -224,7 +232,9 @@ export function createEnhancedBrowserClient(
     singletonUrl = supabaseUrl;
     singletonKey = supabaseKey;
     isInitializing = false;
-    console.log('✅ [SINGLETON] Successfully created and cached Supabase client instance');
+    if (process.env.NODE_ENV === 'development') {
+      console.log('✅ [SINGLETON] Successfully created and cached Supabase client instance');
+    }
 
     return client;
   } catch (error) {
