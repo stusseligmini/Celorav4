@@ -4,8 +4,10 @@ import { createBrowserClient as originalCreateBrowserClient } from '@supabase/ss
 import { SupabaseClient, AuthChangeEvent, Session } from '@supabase/supabase-js';
 import { parseCookieValue, cleanupProblemCookies } from './cookieHelper';
 
-// Global instance counter for debugging
-let instanceCounter = 0;
+// Singleton instance to prevent multiple GoTrueClient warnings
+let singletonInstance: SupabaseClient | null = null;
+let singletonUrl: string | null = null;
+let singletonKey: string | null = null;
 
 /**
  * Enhanced version of createBrowserClient with additional error handling for:
@@ -13,12 +15,19 @@ let instanceCounter = 0;
  * - Undefined property access
  * - WebSocket connection issues
  * - Cookie parsing errors
+ * 
+ * NOW WITH SINGLETON PATTERN: Returns the same instance if called with same URL/key
  */
 export function createEnhancedBrowserClient(
   supabaseUrl: string, 
   supabaseKey: string,
   options?: any
 ): SupabaseClient {
+  // Return existing instance if we already have one with the same credentials
+  if (singletonInstance && singletonUrl === supabaseUrl && singletonKey === supabaseKey) {
+    console.log('♻️ Returning existing Supabase client instance (singleton)');
+    return singletonInstance;
+  }
   try {
     // Try to clean up any problematic cookies before creating the client
     if (typeof document !== 'undefined') {
@@ -57,11 +66,6 @@ export function createEnhancedBrowserClient(
       }
     }
     
-    instanceCounter++;
-    if (instanceCounter > 1) {
-      console.warn(`Multiple Supabase client instances detected (${instanceCounter}). Consider using the singleton pattern.`);
-    }
-
     // Set custom options to handle cookie issues
     const enhancedOptions = {
       ...(options || {}),
@@ -185,6 +189,12 @@ export function createEnhancedBrowserClient(
       
       return channel;
     };
+
+    // Store singleton instance
+    singletonInstance = client;
+    singletonUrl = supabaseUrl;
+    singletonKey = supabaseKey;
+    console.log('✅ Created new Supabase client singleton instance');
 
     return client;
   } catch (error) {

@@ -1,6 +1,9 @@
 'use client'
 
 import { getSupabaseClient } from '@/lib/supabaseSingleton';
+import { resetBrowserClient } from '@/lib/supabase-browser';
+import { cleanupSupabaseStorage } from '@/lib/supabaseCleanup';
+import { cleanupProblemCookies } from '@/lib/cookieHelper';
 import { useEffect, useState } from 'react';
 import SecurityStatusPanel from './SecurityStatusPanel';
 
@@ -110,6 +113,21 @@ export function DebugPanel() {
   const debugInfo = useDebugInfo();
   const [isOpen, setIsOpen] = useState(false);
 
+  const handleResetSupabase = () => {
+    if (confirm('⚠️ This will reset the Supabase client and clear all cookies/storage. You will be logged out. Continue?')) {
+      try {
+        cleanupSupabaseStorage();
+        cleanupProblemCookies(false);
+        resetBrowserClient();
+        alert('✅ Supabase client reset! Refreshing page...');
+        window.location.reload();
+      } catch (e) {
+        console.error('Error resetting Supabase:', e);
+        alert('❌ Error resetting Supabase. Check console for details.');
+      }
+    }
+  };
+
   if (process.env.NODE_ENV === 'production') return null;
 
   return (
@@ -204,6 +222,20 @@ export function DebugPanel() {
             {/* Security Status */}
             <div className="pt-3 border-t border-gray-200">
               <SecurityStatusPanel showDetails={true} />
+            </div>
+
+            {/* Developer Utilities */}
+            <div className="pt-3 border-t border-gray-200">
+              <h4 className="font-semibold mb-2">🛠️ Developer Tools</h4>
+              <button
+                onClick={handleResetSupabase}
+                className="w-full px-3 py-2 text-xs bg-red-50 hover:bg-red-100 border border-red-300 rounded transition-colors text-red-700 font-medium"
+              >
+                🔄 Reset Supabase Client & Clear Storage
+              </button>
+              <p className="mt-1 text-[10px] text-gray-500">
+                Use if you see "Multiple GoTrueClient instances" or cookie errors
+              </p>
             </div>
           </div>
         </div>

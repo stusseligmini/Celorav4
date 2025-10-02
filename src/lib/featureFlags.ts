@@ -12,7 +12,6 @@
  * and provides mechanisms for real-time updates.
  */
 
-import { createClient } from '@supabase/supabase-js';
 import { getSupabaseClient } from './supabaseSingleton';
 
 export interface FeatureFlag {
