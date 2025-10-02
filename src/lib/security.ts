@@ -1,5 +1,5 @@
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from './database.types';
+import { getSupabaseClient } from './supabaseSingleton';
 
 /**
  * Security event logging utility
@@ -25,7 +25,7 @@ export async function logSecurityEvent({
   userAgent = 'unknown'
 }: SecurityEventParams): Promise<void> {
   try {
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     
     await supabase
       .from('security_events')
@@ -109,7 +109,7 @@ export function isHighPrioritySecurityEvent(event: string): boolean {
  */
 export async function getUserSecurityEvents(userId: string, limit = 10) {
   try {
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     
     const { data, error } = await supabase
       .from('security_events')

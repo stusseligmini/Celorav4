@@ -9,13 +9,13 @@
 import React from 'react';
 import MfaStatsDashboard from '@/components/MfaStatsDashboard';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseClient } from '@/lib/supabaseSingleton';
 
 export default function AdminMfaMonitoringPage() {
   const [isAdmin, setIsAdmin] = React.useState<boolean | null>(null);
   const [loading, setLoading] = React.useState<boolean>(true);
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = getSupabaseClient();
   
   // Check if the current user has admin privileges
   React.useEffect(() => {

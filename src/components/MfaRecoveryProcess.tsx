@@ -9,7 +9,7 @@
 
 import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseClient } from '@/lib/supabaseSingleton';
 import { getMfaTranslator } from '@/lib/mfaTranslations';
 
 type RecoveryStep = 'email' | 'verification' | 'identity' | 'processing' | 'success';
@@ -38,7 +38,7 @@ const MfaRecoveryProcess: React.FC<MfaRecoveryProcessProps> = ({
   const [caseNumber, setCaseNumber] = useState('');
   
   const router = useRouter();
-  const supabase = createClientComponentClient();
+  const supabase = getSupabaseClient();
   
   // Step 1: Send recovery email
   const handleEmailSubmit = async (e: React.FormEvent) => {

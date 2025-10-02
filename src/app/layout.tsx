@@ -29,6 +29,7 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 5,
   userScalable: true,
+  viewportFit: 'cover',
 }
 
 export default async function RootLayout({
@@ -46,6 +47,7 @@ export default async function RootLayout({
         {/* Make nonce available to client components via meta tag */}
         <meta name="csp-nonce" content={nonce} />
         <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
       </head>
       <body className="min-h-screen bg-slate-900 antialiased">
         {/* Kjør Supabase-initialisering tidlig i livssyklusen */}

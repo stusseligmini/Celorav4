@@ -5,9 +5,9 @@
  * or has no access to recovery codes.
  */
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from './database.types';
 import { logSecurityEvent, SecurityEventTypes } from './security';
+import { getSupabaseClient } from './supabaseSingleton';
 import { nanoid } from 'nanoid';
 
 /**
@@ -266,7 +266,7 @@ export async function approveMfaRecoveryRequest(
   reviewNotes?: string
 ): Promise<{ success: boolean; error: string | null }> {
   try {
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     
     // Get current user to use as reviewer
     const { data: { user } } = await supabase.auth.getUser();
@@ -335,7 +335,7 @@ export async function rejectMfaRecoveryRequest(
   reviewNotes?: string
 ): Promise<{ success: boolean; error: string | null }> {
   try {
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     
     // Get current user to use as reviewer
     const { data: { user } } = await supabase.auth.getUser();
@@ -403,7 +403,7 @@ export async function completeMfaRecoveryProcess(
   caseNumber: string
 ): Promise<{ success: boolean; error: string | null }> {
   try {
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     
     // Get current user to use as admin
     const { data: { user } } = await supabase.auth.getUser();
@@ -472,7 +472,7 @@ export async function getMfaRecoveryStatistics(): Promise<{
   average_resolution_time_hours: number;
 } | null> {
   try {
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     
     const { data, error } = await supabase
       .rpc('get_mfa_recovery_statistics');

@@ -1,8 +1,9 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { createClientComponentClient, type Session, type User } from '@supabase/auth-helpers-nextjs';
+import type { Session, User } from '@supabase/supabase-js';
 import { useRouter } from 'next/navigation';
+import { getSupabaseClient } from '../lib/supabaseSingleton';
 
 interface AuthState {
   user: User | null;
@@ -23,7 +24,7 @@ interface UseAuthReturn extends AuthState {
  * Hook for authentication state and actions
  */
 export function useAuth(): UseAuthReturn {
-  const supabase = createClientComponentClient();
+  const supabase = getSupabaseClient();
   const router = useRouter();
   const [state, setState] = useState<AuthState>({
     user: null,

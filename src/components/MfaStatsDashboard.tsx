@@ -8,7 +8,7 @@
  */
 
 import React, { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseClient } from '../lib/supabaseSingleton';
 
 interface MfaStats {
   totalUsers: number;
@@ -39,7 +39,7 @@ const MfaStatsDashboard: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [timeframe, setTimeframe] = useState<'7days' | '30days' | '90days'>('30days');
   
-  const supabase = createClientComponentClient();
+  const supabase = getSupabaseClient();
   
   // Fetch MFA statistics
   useEffect(() => {

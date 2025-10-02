@@ -1,4 +1,4 @@
-﻿'use client';
+'use client';
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
@@ -184,7 +184,7 @@ export default function HomePage() {
                   WELCOME TO CELORA
                 </h2>
                 <Link href="/sidebar" className="bg-cyan-primary/20 border border-cyan-primary/30 text-cyan-primary text-xs font-mono px-3 py-1 rounded-full hover:bg-cyan-primary/30 hover:shadow-neon-xs transition-all duration-300">
-                  TRY NEW SIDEBAR DESIGN →
+                  TRY NEW SIDEBAR DESIGN ?
                 </Link>
               </div>
               <p className="text-gray-400">

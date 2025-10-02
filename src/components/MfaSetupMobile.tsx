@@ -9,7 +9,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseClient } from '@/lib/supabaseSingleton';
 import { Database } from '@/lib/database.types';
 import { getMfaTranslator } from '@/lib/mfaTranslations';
 import Image from 'next/image';
@@ -30,7 +30,7 @@ const MfaSetupMobile: React.FC<MfaSetupMobileProps> = ({
   const t = providedTranslator || getMfaTranslator(lang);
   
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+  const supabase = getSupabaseClient() as any;
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');

@@ -9,7 +9,7 @@
  */
 
 import React, { useEffect, useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { getSupabaseClient } from '@/lib/supabaseSingleton';
 import { Database } from '@/lib/database.types';
 
 // Type definitions
@@ -57,7 +57,7 @@ const MfaRecoveryAdminDashboard: React.FC = () => {
   const [reviewNotes, setReviewNotes] = useState('');
   const [actionInProgress, setActionInProgress] = useState(false);
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = getSupabaseClient() as any;
 
   // Fetch recovery requests
   useEffect(() => {

@@ -6,8 +6,8 @@
  */
 
 import { useState, useEffect } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { Database } from './database.types';
+import { getSupabaseClient } from './supabaseSingleton';
 
 /**
  * Hook to get and set user language preference
@@ -26,7 +26,7 @@ export function useLanguagePreference(defaultLanguage: string = 'en'): [string, 
     }
     
     // Check if user is logged in
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     supabase.auth.getUser().then(({ data }) => {
       if (data?.user) {
         setUserId(data.user.id);
@@ -57,7 +57,7 @@ export function useLanguagePreference(defaultLanguage: string = 'en'): [string, 
     
     // If logged in, update database
     if (userId) {
-      const supabase = createClientComponentClient<Database>();
+      const supabase = getSupabaseClient() as any;
       await supabase
         .from('user_preferences')
         .upsert({
@@ -89,7 +89,7 @@ export function useThemePreference(defaultTheme: string = 'system'): [string, (t
     }
     
     // Check if user is logged in
-    const supabase = createClientComponentClient<Database>();
+    const supabase = getSupabaseClient() as any;
     supabase.auth.getUser().then(({ data }) => {
       if (data?.user) {
         setUserId(data.user.id);
@@ -120,7 +120,7 @@ export function useThemePreference(defaultTheme: string = 'system'): [string, (t
     
     // If logged in, update database
     if (userId) {
-      const supabase = createClientComponentClient<Database>();
+      const supabase = getSupabaseClient() as any;
       await supabase
         .from('user_preferences')
         .upsert({
