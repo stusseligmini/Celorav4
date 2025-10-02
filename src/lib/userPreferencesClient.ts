@@ -37,7 +37,7 @@ export function useLanguagePreference(defaultLanguage: string = 'en'): [string, 
           .select('language')
           .eq('user_id', data.user.id)
           .single()
-          .then(({ data: prefs }) => {
+          .then(({ data: prefs }: any) => {
             if (prefs?.language) {
               setLanguageState(prefs.language);
             }
@@ -90,7 +90,7 @@ export function useThemePreference(defaultTheme: string = 'system'): [string, (t
     
     // Check if user is logged in
     const supabase = getSupabaseClient() as any;
-    supabase.auth.getUser().then(({ data }) => {
+    supabase.auth.getUser().then(({ data }: any) => {
       if (data?.user) {
         setUserId(data.user.id);
         
@@ -100,7 +100,7 @@ export function useThemePreference(defaultTheme: string = 'system'): [string, (t
           .select('theme')
           .eq('user_id', data.user.id)
           .single()
-          .then(({ data: prefs }) => {
+          .then(({ data: prefs }: any) => {
             if (prefs?.theme) {
               setThemeState(prefs.theme);
             }
