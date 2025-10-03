@@ -123,21 +123,24 @@ export function FeatureFlagProvider({ children, initialUserContext }: FeatureFla
   }, [initialUserContext]);
 
   if (error) {
-    // Render a fallback UI or error message
-    return (
-      <div className="bg-red-50 border border-red-200 rounded-md p-4 mt-4">
-        <div className="flex">
-          <div className="ml-3">
-            <h3 className="text-sm font-medium text-red-800">
-              Error initializing feature flags
-            </h3>
-            <div className="mt-2 text-sm text-red-700">
-              <p>{error.message}</p>
+    if (process.env.NODE_ENV !== 'production') {
+      return (
+        <div className="bg-red-50 border border-red-200 rounded-md p-4 mt-4">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-red-800">
+                Error initializing feature flags
+              </h3>
+              <div className="mt-2 text-sm text-red-700">
+                <p>{error.message}</p>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    );
+      );
+    } else {
+      console.warn('Feature flags initialization error (suppressed in production):', error);
+    }
   }
 
   // Render children even if not initialized yet

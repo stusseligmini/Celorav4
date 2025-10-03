@@ -98,15 +98,16 @@ class FeatureFlagManager {
       try {
         // Fetch flags from the database
         await this.fetchFlags();
-        
-        // Subscribe to real-time updates
-        this.subscribeToUpdates();
       } catch (error) {
-        console.error('Failed to initialize feature flags:', error);
-        // If we've loaded from localStorage, we can still function even if the fetch fails
-        if (this.flags.size === 0) {
-          throw error; // Re-throw if we have no flags at all
-        }
+        console.error('Failed to initialize feature flags (fetch):', error);
+        // Fallback: continue gracefully even if we couldn’t fetch (defaults/localStorage will apply)
+      }
+
+      // Subscribe to real-time updates (best-effort only)
+      try {
+        this.subscribeToUpdates();
+      } catch (subErr) {
+        console.warn('Feature flags realtime subscription unavailable:', subErr);
       }
     })();
 
@@ -277,7 +278,9 @@ class FeatureFlagManager {
         .select('*');
 
       if (error) {
-        throw error;
+        // Treat RLS/permission or missing table as soft failures; log and return
+        console.warn('Feature flags fetch error (soft-fail):', error);
+        return;
       }
 
       if (data) {
@@ -295,8 +298,9 @@ class FeatureFlagManager {
         }
       }
     } catch (error) {
-      console.error('Error fetching feature flags:', error);
-      throw error;
+      console.error('Error fetching feature flags (soft-fail):', error);
+      // Do not throw; keep defaults/local storage to avoid breaking UI
+      return;
     }
   }
 
@@ -305,22 +309,33 @@ class FeatureFlagManager {
    * @private
    */
   private subscribeToUpdates(): void {
-    if (this.realTimeSubscription) {
-      this.realTimeSubscription.unsubscribe();
-    }
+    if (typeof window === 'undefined') return; // only on client
+    try {
+      if (this.realTimeSubscription) {
+        this.realTimeSubscription.unsubscribe?.();
+      }
 
-    this.realTimeSubscription = getSupabaseClient()
-      .channel('feature_flags_changes')
-      .on(
-        'postgres_changes',
-        { event: '*', schema: 'public', table: 'feature_flags' },
-        (payload: any) => {
-          console.log('Feature flag update received:', payload);
-          // Refresh flags on any change
-          this.fetchFlags();
-        }
-      )
-      .subscribe();
+      const supabase = getSupabaseClient() as any;
+      if (!supabase || typeof supabase.channel !== 'function') {
+        console.warn('Supabase realtime not available, skipping feature flag subscription');
+        return;
+      }
+
+      this.realTimeSubscription = supabase
+        .channel('feature_flags_changes')
+        .on(
+          'postgres_changes',
+          { event: '*', schema: 'public', table: 'feature_flags' },
+          (payload: any) => {
+            console.log('Feature flag update received:', payload);
+            // Refresh flags on any change
+            this.fetchFlags();
+          }
+        )
+        .subscribe();
+    } catch (e) {
+      console.warn('Failed to subscribe to feature flag updates:', e);
+    }
   }
 
   /**
