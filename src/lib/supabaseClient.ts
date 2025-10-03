@@ -99,12 +99,21 @@ export function createEnhancedBrowserClient(
       }
     }
     
-    // Don't pass custom cookie options - let @supabase/ssr use document.cookie automatically
-    // This avoids the "requires configuring getAll and setAll" error
-    const enhancedOptions = options || {};
+    // For browser runtime, do NOT pass any options - let @supabase/ssr use document.cookie automatically
+    // Passing any options (even empty {}) can trigger the "requires configuring getAll and setAll" error
+    // Only pass options if they don't contain a cookies object
+    let clientOptions = undefined;
+    
+    if (options && Object.keys(options).length > 0) {
+      // If options are provided, make sure we don't pass through any cookies config
+      const { cookies, ...safeOptions } = options as any;
+      if (Object.keys(safeOptions).length > 0) {
+        clientOptions = safeOptions;
+      }
+    }
 
     // Original client creation - cookies will be handled automatically via document.cookie
-    const client = originalCreateBrowserClient(supabaseUrl, supabaseKey, enhancedOptions);
+    const client = originalCreateBrowserClient(supabaseUrl, supabaseKey, clientOptions);
     
     // Wrap auth methods with additional error handling
     const originalAuth = client.auth;
