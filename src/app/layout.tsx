@@ -48,6 +48,8 @@ export default async function RootLayout({
         <meta name="csp-nonce" content={nonce} />
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
+        {/* iOS: prevent phone/email auto-link styling */}
+        <meta name="format-detection" content="telephone=no, email=no, address=no" />
       </head>
       <body className="min-h-screen bg-slate-900 antialiased">
         {/* Kjør Supabase-initialisering tidlig i livssyklusen */}

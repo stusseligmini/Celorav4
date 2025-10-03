@@ -293,3 +293,25 @@ body {
     text-wrap: balance;
   }
 }
+
+/* --- Mobile/iOS polish --- */
+/* Prevent iOS from auto-scaling text and weird tap highlights */
+html, body {
+  -webkit-text-size-adjust: 100%;
+}
+
+/* Normalize input controls on iOS */
+input, textarea, select {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+/* Remove blue tap highlight on iOS */
+a, button {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Ensure buttons render with our styles consistently */
+.btn-primary, .btn-outline {
+  -webkit-tap-highlight-color: transparent;
+}
