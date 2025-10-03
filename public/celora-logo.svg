@@ -1,0 +1,88 @@
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Outer circle with gradient from purple to cyan -->
+  <defs>
+    <linearGradient id="outerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#e31aff;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#0af5d3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0af5d3;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="innerGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0af5d3;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#09e2c2;stop-opacity:1" />
+    </linearGradient>
+    
+    <!-- Glow filters -->
+    <filter id="glow-cyan" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    
+    <filter id="glow-purple" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="5" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Outer Circle (Purple glow on top) -->
+  <path 
+    d="M 100 20 
+       A 80 80 0 0 1 180 100
+       L 100 100 Z" 
+    fill="none" 
+    stroke="url(#outerGrad)" 
+    stroke-width="8" 
+    stroke-linecap="round"
+    filter="url(#glow-purple)"
+  />
+  
+  <!-- Inner Circle (Cyan glow) -->
+  <circle 
+    cx="100" 
+    cy="100" 
+    r="60" 
+    fill="none" 
+    stroke="url(#innerGrad)" 
+    stroke-width="6"
+    filter="url(#glow-cyan)"
+  />
+  
+  <!-- E symbol in center (stylized blocks) -->
+  <g transform="translate(100, 100)" filter="url(#glow-cyan)">
+    <!-- Top block -->
+    <rect 
+      x="-15" 
+      y="-25" 
+      width="30" 
+      height="15" 
+      fill="#0af5d3"
+      rx="2"
+    />
+    <!-- Bottom block -->
+    <rect 
+      x="-15" 
+      y="10" 
+      width="30" 
+      height="15" 
+      fill="#0af5d3"
+      rx="2"
+    />
+  </g>
+  
+  <!-- Bottom arc (Cyan) -->
+  <path 
+    d="M 180 100 
+       A 80 80 0 0 1 100 180
+       L 100 100 Z" 
+    fill="none" 
+    stroke="url(#innerGrad)" 
+    stroke-width="8" 
+    stroke-linecap="round"
+    filter="url(#glow-cyan)"
+  />
+</svg>

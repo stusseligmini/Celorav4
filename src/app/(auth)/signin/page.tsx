@@ -227,8 +227,21 @@ export default function SignInPage() {
           animate={{ opacity: 1, y: 0 }}
           className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/30 rounded-lg p-8 subtle-glow"
         >
-          {/* Header */}
+          {/* Header with Logo */}
           <div className="text-center mb-8">
+            <div className="mb-6 flex justify-center">
+              <div className="relative w-32 h-32">
+                {/* Animated glow effect */}
+                <div className="absolute inset-0 bg-gradient-to-br from-purple-500/40 to-cyan-400/40 rounded-full blur-2xl animate-pulse"></div>
+                <div className="absolute inset-0 bg-cyan-400/20 rounded-full blur-xl animate-ping" style={{ animationDuration: '3s' }}></div>
+                {/* Logo */}
+                <img 
+                  src="/celora-logo.svg" 
+                  alt="Celora Logo" 
+                  className="relative z-10 w-full h-full object-contain animate-neon-pulse"
+                />
+              </div>
+            </div>
             <h1 className="text-3xl font-mono font-bold text-cyan-400 mb-2 neon-text">CELORA</h1>
             <p className="text-gray-400">Access Your Wallet</p>
           </div>
@@ -304,7 +317,7 @@ export default function SignInPage() {
               </div>
               <button
                 disabled={loading}
-                className="w-full btn-primary bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50"
+                className="w-full btn-primary bg-gradient-to-r from-cyan-400 to-emerald-500 hover:from-cyan-300 hover:to-emerald-400 text-gray-900 font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50 shadow-[0_0_20px_rgba(10,245,211,0.4)] hover:shadow-[0_0_30px_rgba(10,245,211,0.6)]"
               >
                 {loading ? 'SIGNING IN...' : 'SIGN IN'}
               </button>
@@ -468,7 +481,7 @@ export default function SignInPage() {
               
               <button
                 disabled={loading || !validateSeedPhrase(seedPhrase)}
-                className="w-full btn-primary bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-400 hover:to-blue-500 disabled:from-gray-600 disabled:to-gray-700 text-white font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50"
+                className="w-full btn-primary bg-gradient-to-r from-cyan-400 to-emerald-500 hover:from-cyan-300 hover:to-emerald-400 disabled:from-gray-600 disabled:to-gray-700 text-gray-900 font-mono font-bold py-3 px-4 rounded-md transition-all disabled:opacity-50 shadow-[0_0_20px_rgba(10,245,211,0.4)] hover:shadow-[0_0_30px_rgba(10,245,211,0.6)]"
               >
                 {loading ? 'ACCESSING WALLET...' : 'ACCESS WALLET'}
               </button>
