@@ -99,35 +99,11 @@ export function createEnhancedBrowserClient(
       }
     }
     
-    // Set custom options to handle cookie issues
-    const enhancedOptions = {
-      ...(options || {}),
-      // Customize cookie options to avoid future parsing issues
-      cookies: {
-        ...(options?.cookies || {}),
-        // Set custom serialization/deserialization methods
-        serialize: (name: string, value: any) => {
-          try {
-            // Ensure the value is always a string
-            return typeof value === 'string' ? value : JSON.stringify(value);
-          } catch (e) {
-            console.warn('Error serializing cookie:', e);
-            return String(value);
-          }
-        },
-        parse: (cookieStr: string) => {
-          try {
-            // Use our custom safe parser
-            return parseCookieValue(cookieStr);
-          } catch (e) {
-            console.warn('Error parsing cookie:', e);
-            return null;
-          }
-        }
-      }
-    };
+    // Don't pass custom cookie options - let @supabase/ssr use document.cookie automatically
+    // This avoids the "requires configuring getAll and setAll" error
+    const enhancedOptions = options || {};
 
-    // Original client creation with enhanced options
+    // Original client creation - cookies will be handled automatically via document.cookie
     const client = originalCreateBrowserClient(supabaseUrl, supabaseKey, enhancedOptions);
     
     // Wrap auth methods with additional error handling
