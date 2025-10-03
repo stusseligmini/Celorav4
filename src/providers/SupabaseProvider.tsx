@@ -79,20 +79,27 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    // Rydd opp i eventuelle korrupte Supabase-data før initialisering
-    cleanupSupabaseStorage();
     // Initialize client lazily if env is ok
     if (envOk && !supabase) {
       try {
+        // Simplified client initialization without aggressive cleanup
         const client = getBrowserClient();
-        setSupabase(client as unknown as SupabaseClient);
+        if (client && typeof client === 'object' && client.auth) {
+          setSupabase(client as unknown as SupabaseClient);
+        } else {
+          console.error('Invalid Supabase client received');
+          setError(new Error('Failed to initialize Supabase client'));
+        }
       } catch (e) {
         console.error('Failed to create Supabase client in provider:', e);
+        setError(e instanceof Error ? e : new Error('Supabase initialization failed'));
       }
     }
 
-    // Get initial session (will no-op if supabase is null)
-    refreshSession();
+    // Get initial session only if we have a valid client
+    if (supabase) {
+      refreshSession();
+    }
 
     // Set up automatic recovery
     const healthCheckInterval = setInterval(async () => {

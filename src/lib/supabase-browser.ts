@@ -21,15 +21,12 @@ export function getBrowserClient() {
   }
   
   try {
-    // Delegate to the main singleton with consistent configuration
-    // The createBrowserClient function handles ALL singleton logic, cleanup, and caching
+    // Simplified configuration to avoid complex options that might cause issues
     return createBrowserClient(url, anon, {
       auth: {
-        storageKey: 'sb-zpcycakwdvymqhwvakrv-auth',
         persistSession: true,
         autoRefreshToken: true,
-      },
-      realtime: { params: { eventsPerSecond: 3 } },
+      }
     });
   } catch (error) {
     console.error('❌ [BROWSER] Failed to get Supabase client:', error);

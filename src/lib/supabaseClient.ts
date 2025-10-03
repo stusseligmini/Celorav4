@@ -115,6 +115,16 @@ export function createEnhancedBrowserClient(
     // Original client creation - cookies will be handled automatically via document.cookie
     const client = originalCreateBrowserClient(supabaseUrl, supabaseKey, clientOptions);
     
+    // Ensure client is properly initialized before adding wrappers
+    if (!client || typeof client !== 'object') {
+      throw new Error('Failed to create Supabase client - invalid client object');
+    }
+    
+    // Safely access auth with null check
+    if (!client.auth) {
+      throw new Error('Supabase client missing auth property');
+    }
+    
     // Wrap auth methods with additional error handling
     const originalAuth = client.auth;
     
