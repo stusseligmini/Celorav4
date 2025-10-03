@@ -64,7 +64,11 @@ export class WalletBackupService {
     options: BackupOptions = {}
   ): Promise<WalletBackup> {
     const supabase = getSupabaseClient();
-    const encryptionKey = options.encryptionKey || process.env.WALLET_ENCRYPTION_KEY || 'default-key';
+    const configuredKey = options.encryptionKey || process.env.WALLET_ENCRYPTION_KEY;
+    if (process.env.NODE_ENV === 'production' && !configuredKey) {
+      throw new Error('WALLET_ENCRYPTION_KEY is not set in production. Refusing to create insecure backups.');
+    }
+    const encryptionKey = configuredKey || 'default-key';
     
     try {
       // Get all user wallets or specified wallets
@@ -197,7 +201,11 @@ export class WalletBackupService {
     options: RestoreOptions = {}
   ): Promise<{ walletsRestored: number; transactionsRestored: number }> {
     const supabase = getSupabaseClient();
-    const encryptionKey = options.encryptionKey || process.env.WALLET_ENCRYPTION_KEY || 'default-key';
+    const configuredKey = options.encryptionKey || process.env.WALLET_ENCRYPTION_KEY;
+    if (process.env.NODE_ENV === 'production' && !configuredKey) {
+      throw new Error('WALLET_ENCRYPTION_KEY is not set in production. Refusing to restore with insecure key.');
+    }
+    const encryptionKey = configuredKey || 'default-key';
     
     try {
       // Get the backup

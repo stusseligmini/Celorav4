@@ -18,15 +18,16 @@ const nextConfig = {
   compress: true,
   poweredByHeader: false,
   
-  // Next.js 15 experimental features
+  // Next.js 15 configuration
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
-    turbo: {
-      rules: {
-        '*.svg': {
-          loaders: ['@svgr/webpack'],
-          as: '*.js',
-        },
+  },
+  // Migrate from deprecated experimental.turbo to turbopack
+  turbopack: {
+    rules: {
+      '*.svg': {
+        loaders: ['@svgr/webpack'],
+        as: '*.js',
       },
     },
   },
