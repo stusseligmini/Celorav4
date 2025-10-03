@@ -128,11 +128,12 @@ export function createEnhancedBrowserClient(
     // Wrap auth methods with additional error handling
     const originalAuth = client.auth;
     
-    // Wrap getSession with error handling
+    // Wrap getSession with error handling (bind to preserve `this`)
     const originalGetSession = originalAuth.getSession;
     originalAuth.getSession = async () => {
       try {
-        return await originalGetSession();
+        // Ensure correct `this` binding when calling the original method
+        return await (originalGetSession as any).call(originalAuth);
       } catch (error: any) {
         if (error && error.message && (
             error.message.includes('Failed to parse cookie') || 
@@ -155,13 +156,13 @@ export function createEnhancedBrowserClient(
       }
     };
     
-    // Add error handling for onAuthStateChange
+    // Add error handling for onAuthStateChange (bind to preserve `this`)
     const originalOnAuthStateChange = originalAuth.onAuthStateChange;
     // Don't override the method directly to avoid TypeScript errors
     // Instead, add a try-catch wrapper around the callback
     client.auth.onAuthStateChange = (callback) => {
       try {
-        return originalOnAuthStateChange((event, session) => {
+        return (originalOnAuthStateChange as any).call(originalAuth, (event: AuthChangeEvent, session: Session | null) => {
           try {
             return callback(event, session);
           } catch (callbackError) {
