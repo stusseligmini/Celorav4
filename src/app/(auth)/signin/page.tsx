@@ -206,14 +206,14 @@ export default function SignInPage() {
   };
 
   return (
-    <div className="min-h-screen bg-black text-white flex items-center justify-center px-4">
+  <div className="min-h-screen bg-black text-white flex items-center justify-center px-4 py-6 sm:py-10">
       <div className="absolute inset-0 bg-gradient-to-br from-cyan-950/20 to-blue-950/20 gradient-bg crt-overlay"></div>
-      <div className="relative z-10 w-full max-w-md">
+  <div className="relative z-10 w-full max-w-md sm:max-w-lg">
         {requiresMFA ? (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/30 rounded-lg p-8 subtle-glow"
+            className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6 sm:p-8 subtle-glow"
           >
             <MFAVerification 
               tempToken={tempToken} 
@@ -225,7 +225,7 @@ export default function SignInPage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/30 rounded-lg p-8 subtle-glow"
+          className="bg-card bg-dark-card/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6 sm:p-8 subtle-glow"
         >
           {/* Header with Logo */}
           <div className="text-center mb-8">

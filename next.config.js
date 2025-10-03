@@ -44,6 +44,26 @@ const nextConfig = {
   // Enhanced security headers
   async headers() {
     return [
+      // Ensure freshest HTML for key pages during domain cutover
+      {
+        source: '/',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
+        ],
+      },
+      {
+        source: '/signin',
+        headers: [
+          { key: 'Cache-Control', value: 'no-store, max-age=0' },
+        ],
+      },
+      // Make sure service worker is always revalidated
+      {
+        source: '/sw.js',
+        headers: [
+          { key: 'Cache-Control', value: 'no-cache' },
+        ],
+      },
       {
         source: '/(.*)',
         headers: [
@@ -79,6 +99,11 @@ const nextConfig = {
         ],
       },
     ];
+  },
+
+  // Optional: force-www redirect for canonical domain (adjust if you prefer apex)
+  async redirects() {
+    return [];
   },
 
   // Webpack configuration for better module resolution

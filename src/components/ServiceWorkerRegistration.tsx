@@ -49,7 +49,8 @@ export default function ServiceWorkerRegistration() {
   const registerServiceWorker = async () => {
     try {
       logger.info('Registering service worker');
-      const reg = await navigator.serviceWorker.register('/sw.js', {
+      // Cache-bust SW URL to ensure clients fetch latest on domain changes
+      const reg = await navigator.serviceWorker.register(`/sw.js?v=${Date.now()}`, {
         scope: '/',
         // Update service worker when page loads
         updateViaCache: 'none'

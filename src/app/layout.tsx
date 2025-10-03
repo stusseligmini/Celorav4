@@ -50,6 +50,13 @@ export default async function RootLayout({
         <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
         {/* iOS: prevent phone/email auto-link styling */}
         <meta name="format-detection" content="telephone=no, email=no, address=no" />
+        {/* Browser UI colors */}
+        <meta name="theme-color" content="#0a0e17" media="(prefers-color-scheme: dark)" />
+        <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: light)" />
+        {/* PWA icons for iOS/Android */}
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+        <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-128x128.png" />
+        <link rel="icon" type="image/png" sizes="16x16" href="/icons/icon-96x96.png" />
       </head>
       <body className="min-h-screen bg-slate-900 antialiased">
         {/* Kjør Supabase-initialisering tidlig i livssyklusen */}
