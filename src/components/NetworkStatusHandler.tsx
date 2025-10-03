@@ -9,10 +9,18 @@ const logger = createLogger('NetworkStatusHandler');
 export default function NetworkStatusHandler({ children }: { children: React.ReactNode }) {
   const [isOnline, setIsOnline] = useState(true);
   const [connectionQuality, setConnectionQuality] = useState<'good' | 'poor' | 'unknown'>('unknown');
+  const [poorStreak, setPoorStreak] = useState(0);
+  const [dismissedUntil, setDismissedUntil] = useState<number | null>(null);
   const lastPingTime = useRef<number | null>(null);
   const pingIntervalRef = useRef<NodeJS.Timeout | null>(null);
   const reconnectAttempts = useRef(0);
   const maxReconnectAttempts = 5;
+
+  // Tuning constants
+  const LATENCY_POOR_THRESHOLD = 800; // ms (was 300)
+  const PING_TIMEOUT_MS = 4500; // ms (was 3000)
+  const POOR_STREAK_REQUIRED = 2; // require 2 consecutive poor checks
+  const DISMISS_TTL_MS = 60 * 60 * 1000; // 1h
 
   // Function to check server connectivity by pinging the API
   const checkServerConnectivity = async () => {
@@ -23,7 +31,7 @@ export default function NetworkStatusHandler({ children }: { children: React.Rea
         method: 'GET',
         headers: { 'x-ping': 'true' },
         // Short timeout to detect poor connections quickly
-        signal: AbortSignal.timeout(3000)
+        signal: AbortSignal.timeout(PING_TIMEOUT_MS)
       });
       
       if (response.ok) {
@@ -31,10 +39,12 @@ export default function NetworkStatusHandler({ children }: { children: React.Rea
         const latency = endTime - startTime;
         
         // Determine connection quality based on latency
-        if (latency < 300) {
+        if (latency < LATENCY_POOR_THRESHOLD) {
           setConnectionQuality('good');
+          setPoorStreak(0);
         } else {
           setConnectionQuality('poor');
+          setPoorStreak((s) => Math.min(s + 1, POOR_STREAK_REQUIRED));
           logger.warn(`Slow network detected. Latency: ${latency.toFixed(2)}ms`);
         }
         
@@ -64,6 +74,15 @@ export default function NetworkStatusHandler({ children }: { children: React.Rea
       setConnectionQuality('unknown');
     };
 
+    // Load dismissal state
+    try {
+      const stored = localStorage.getItem('network_warning_dismissed_until');
+      if (stored) {
+        const until = Number(stored);
+        if (!Number.isNaN(until)) setDismissedUntil(until);
+      }
+    } catch {}
+
     // Add event listeners
     window.addEventListener('online', handleOnline);
     window.addEventListener('offline', handleOffline);
@@ -76,7 +95,7 @@ export default function NetworkStatusHandler({ children }: { children: React.Rea
       if (navigator.onLine) {
         await checkServerConnectivity();
       }
-    }, 30000); // Check every 30 seconds
+    }, 45000); // Check every 45 seconds
 
     // Initial connectivity check
     checkServerConnectivity();
@@ -146,8 +165,17 @@ export default function NetworkStatusHandler({ children }: { children: React.Rea
     );
   }
   
+  const bannerAllowed = !dismissedUntil || Date.now() >= dismissedUntil;
+  const showPoorBanner = connectionQuality === 'poor' && isOnline && poorStreak >= POOR_STREAK_REQUIRED && bannerAllowed;
+
+  const dismissWarning = () => {
+    const until = Date.now() + DISMISS_TTL_MS;
+    setDismissedUntil(until);
+    try { localStorage.setItem('network_warning_dismissed_until', String(until)); } catch {}
+  };
+
   // Poor connection warning
-  if (connectionQuality === 'poor' && isOnline) {
+  if (showPoorBanner) {
     return (
       <>
         <div className="fixed bottom-4 right-4 z-40 bg-yellow-600 text-white px-4 py-2 rounded shadow-lg max-w-xs">
@@ -156,6 +184,7 @@ export default function NetworkStatusHandler({ children }: { children: React.Rea
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
             </svg>
             <span>Poor connection detected. Some features may be slower.</span>
+            <button onClick={dismissWarning} className="ml-3 text-white/90 hover:text-white underline text-xs">Dismiss</button>
           </div>
         </div>
         {children}

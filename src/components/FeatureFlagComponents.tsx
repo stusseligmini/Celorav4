@@ -85,6 +85,8 @@ export function FeatureFlagProvider({ children, initialUserContext }: FeatureFla
       } catch (err) {
         console.error('Failed to initialize feature flags:', err);
         setError(err instanceof Error ? err : new Error('Unknown error initializing feature flags'));
+        // Do not block UI on failure
+        setInitialized(true);
       }
     }
 
@@ -121,26 +123,9 @@ export function FeatureFlagProvider({ children, initialUserContext }: FeatureFla
       featureFlags.cleanup();
     };
   }, [initialUserContext]);
-
-  if (error) {
-    if (process.env.NODE_ENV !== 'production') {
-      return (
-        <div className="bg-red-50 border border-red-200 rounded-md p-4 mt-4">
-          <div className="flex">
-            <div className="ml-3">
-              <h3 className="text-sm font-medium text-red-800">
-                Error initializing feature flags
-              </h3>
-              <div className="mt-2 text-sm text-red-700">
-                <p>{error.message}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      );
-    } else {
-      console.warn('Feature flags initialization error (suppressed in production):', error);
-    }
+  // Never block rendering due to feature flag init issues; log only in dev
+  if (error && process.env.NODE_ENV !== 'production') {
+    console.warn('Feature flags init error (dev):', error);
   }
 
   // Render children even if not initialized yet
