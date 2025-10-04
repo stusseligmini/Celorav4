@@ -47,12 +47,20 @@ export default async function RootLayout({
         {/* Make nonce available to client components via meta tag */}
         <meta name="csp-nonce" content={nonce} />
         <meta charSet="utf-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover" />
-        {/* iOS: prevent phone/email auto-link styling */}
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover, user-scalable=yes" />
+        {/* iOS: prevent phone/email auto-link styling and improve mobile experience */}
         <meta name="format-detection" content="telephone=no, email=no, address=no" />
+        <meta name="mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-touch-fullscreen" content="yes" />
         {/* Browser UI colors */}
         <meta name="theme-color" content="#0a0e17" media="(prefers-color-scheme: dark)" />
         <meta name="theme-color" content="#0f172a" media="(prefers-color-scheme: light)" />
+        {/* AGGRESSIVE mobile cache busting */}
+        <meta httpEquiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+        <meta httpEquiv="Pragma" content="no-cache" />
+        <meta httpEquiv="Expires" content="0" />
         {/* PWA icons for iOS/Android */}
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
         <link rel="icon" type="image/png" sizes="32x32" href="/icons/icon-128x128.png" />

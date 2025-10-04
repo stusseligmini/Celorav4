@@ -81,18 +81,18 @@ export async function middleware(request: NextRequest) {
   const isAuthRoute = path.startsWith('/signin') || path.startsWith('/signup') || path.startsWith('/api/auth');
   const isApiRoute = path.startsWith('/api/');
   
-  // Apply rate limiting
+  // Apply rate limiting (more lenient for testing and production use)
   if (isAuthRoute) {
-    // Strict rate limiting for auth routes (20 requests per minute)
-    if (!applyRateLimit(ip, 'auth', 20, 60000)) {
+    // Relaxed rate limiting for auth routes (100 requests per minute)
+    if (!applyRateLimit(ip, 'auth', 100, 60000)) {
       return new NextResponse(
         JSON.stringify({ error: 'Too many requests, please try again later' }),
         { status: 429, headers: { 'Content-Type': 'application/json' } }
       );
     }
   } else if (isApiRoute) {
-    // Standard rate limiting for API routes (60 requests per minute)
-    if (!applyRateLimit(ip, 'api', 60, 60000)) {
+    // Standard rate limiting for API routes (200 requests per minute)
+    if (!applyRateLimit(ip, 'api', 200, 60000)) {
       return new NextResponse(
         JSON.stringify({ error: 'API rate limit exceeded' }),
         { status: 429, headers: { 'Content-Type': 'application/json' } }

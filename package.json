@@ -5,8 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-  "predeploy:smoke": "node -e \"require('dotenv').config(); require('./scripts/smoke-check.ts')\"",
-  "deploy:smoke": "npm run predeploy:smoke && echo Smoke OK",
+    "predeploy:smoke": "node -e \"require('dotenv').config(); require('./scripts/smoke-check.ts')\"",
+    "deploy:smoke": "npm run predeploy:smoke && echo Smoke OK",
     "start": "next start",
     "lint": "eslint --ext .js,.jsx,.ts,.tsx .",
     "lint:fix": "eslint --ext .js,.jsx,.ts,.tsx . --fix",
@@ -22,6 +22,7 @@
     "@supabase/auth-helpers-nextjs": "^0.10.0",
     "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.57.4",
+    "@swc/helpers": "^0.5.17",
     "@types/bcryptjs": "^2.4.6",
     "@types/dompurify": "^3.0.5",
     "@types/qrcode": "^1.5.5",

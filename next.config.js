@@ -22,6 +22,16 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ['framer-motion', 'lucide-react'],
   },
+  
+  // Server external packages (moved from experimental in Next.js 15)
+  serverExternalPackages: ['@supabase/supabase-js'],
+  
+  // Compiler optimizations
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
   // Migrate from deprecated experimental.turbo to turbopack
   turbopack: {
     rules: {
@@ -44,24 +54,14 @@ const nextConfig = {
   // Enhanced security headers
   async headers() {
     return [
-      // Ensure freshest HTML for key pages during domain cutover
+      // AGGRESSIVE cache-busting for mobile browsers
       {
-        source: '/',
+        source: '/(.*)',
         headers: [
-          { key: 'Cache-Control', value: 'no-store, max-age=0' },
-        ],
-      },
-      {
-        source: '/signin',
-        headers: [
-          { key: 'Cache-Control', value: 'no-store, max-age=0' },
-        ],
-      },
-      // Make sure service worker is always revalidated
-      {
-        source: '/sw.js',
-        headers: [
-          { key: 'Cache-Control', value: 'no-cache' },
+          { key: 'Cache-Control', value: 'no-store, no-cache, must-revalidate, proxy-revalidate, max-age=0' },
+          { key: 'Pragma', value: 'no-cache' },
+          { key: 'Expires', value: '0' },
+          { key: 'X-Cache-Control', value: 'no-cache' },
         ],
       },
       {
@@ -106,14 +106,53 @@ const nextConfig = {
     return [];
   },
 
-  // Webpack configuration for better module resolution
-  webpack: (config, { isServer }) => {
+  // Webpack configuration for better module resolution and performance
+  webpack: (config, { isServer, dev }) => {
     // Optimize for client-side bundles
     if (!isServer) {
       config.resolve.fallback = {
         ...config.resolve.fallback,
         fs: false,
+        net: false,
+        tls: false,
       };
+    }
+    
+    // Optimize webpack cache to reduce serialization warnings
+    if (!dev) {
+      config.cache = {
+        type: 'filesystem',
+        buildDependencies: {
+          config: [__filename],
+        },
+        compression: 'gzip',
+      };
+      
+      // Optimize chunk splitting to reduce large strings in cache
+      config.optimization.splitChunks = {
+        ...config.optimization.splitChunks,
+        cacheGroups: {
+          ...config.optimization.splitChunks?.cacheGroups,
+          vendor: {
+            test: /[\\/]node_modules[\\/]/,
+            name: 'vendors',
+            chunks: 'all',
+            maxSize: 244000, // Keep chunks under 244KB to avoid serialization warnings
+          },
+          supabase: {
+            test: /[\\/]node_modules[\\/]@supabase[\\/]/,
+            name: 'supabase',
+            chunks: 'all',
+            priority: 10,
+            maxSize: 200000,
+          },
+        },
+      };
+    }
+    
+    // Add externals for Edge Runtime compatibility
+    if (isServer) {
+      config.externals = [...(config.externals || []), 'canvas', 'jsdom'];
     }
     
     return config;

@@ -15,6 +15,7 @@ export default function HomePage() {
   const [activeTab, setActiveTab] = useState<'overview' | 'cards' | 'wallet' | 'transactions'>('overview');
   const [notifications, setNotifications] = useState<any[]>([]);
   const [showWelcome, setShowWelcome] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const authFlow = useAuthFlow();
 
   // Redirect to signin if not authenticated
@@ -97,10 +98,12 @@ export default function HomePage() {
 
       {/* Top Navigation */}
       <nav className="bg-gray-900/50 backdrop-blur-sm border-b border-cyan-primary/20 sticky top-0 z-50">
-        <div className="max-w-7xl mx-auto px-6 py-4">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 py-4">
           <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-mono font-bold text-cyan-primary neon-text">CELORA</h1>
+            <div className="flex items-center space-x-4 sm:space-x-8">
+              <h1 className="text-xl sm:text-2xl font-mono font-bold text-cyan-primary neon-text">CELORA</h1>
+              
+              {/* Desktop Navigation */}
               <div className="hidden md:flex space-x-6">
                 <button
                   onClick={() => setActiveTab('overview')}
@@ -148,78 +151,144 @@ export default function HomePage() {
               </div>
             </div>
             
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3 sm:space-x-4">
+              {/* Mobile Menu Button */}
+              <button 
+                className="md:hidden text-gray-400 hover:text-cyan-primary transition-colors p-1 touch-target"
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                aria-label="Toggle mobile menu"
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d={mobileMenuOpen ? "M6 18L18 6M6 6l12 12" : "M4 6h16M4 12h16M4 18h16"} />
+                </svg>
+              </button>
+              
               {/* Notification Bell */}
               <div className="relative">
-                <button className="text-gray-400 hover:text-cyan-primary transition-colors">
-                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <button className="text-gray-400 hover:text-cyan-primary transition-colors p-1 touch-target">
+                  <svg className="w-5 h-5 sm:w-6 sm:h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                   </svg>
                 </button>
                 {Array.isArray(notifications) && notifications.length > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
+                  <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full h-4 w-4 sm:h-5 sm:w-5 flex items-center justify-center">
                     {notifications.length}
                   </span>
                 )}
               </div>
               
               {/* User Avatar */}
-              <div className="w-8 h-8 bg-cyan-primary/20 border border-cyan-primary/30 rounded-full flex items-center justify-center">
-                <span className="text-cyan-primary text-sm font-mono neon-text">U</span>
+              <div className="w-7 h-7 sm:w-8 sm:h-8 bg-cyan-primary/20 border border-cyan-primary/30 rounded-full flex items-center justify-center touch-target">
+                <span className="text-cyan-primary text-xs sm:text-sm font-mono neon-text">U</span>
               </div>
             </div>
           </div>
+          
+          {/* Mobile Navigation Menu */}
+          {mobileMenuOpen && (
+            <div className="md:hidden mt-4 pb-4 border-t border-cyan-primary/20">
+              <div className="flex flex-col space-y-2 pt-4">
+                <button
+                  onClick={() => {setActiveTab('overview'); setMobileMenuOpen(false);}}
+                  className={`px-4 py-3 text-left text-sm font-mono transition-colors rounded-md touch-target ${
+                    activeTab === 'overview' 
+                      ? 'text-cyan-400 bg-cyan-400/10' 
+                      : 'text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5'
+                  }`}
+                >
+                  OVERVIEW
+                </button>
+                <button
+                  onClick={() => {setActiveTab('cards'); setMobileMenuOpen(false);}}
+                  className={`px-4 py-3 text-left text-sm font-mono transition-colors rounded-md touch-target ${
+                    activeTab === 'cards' 
+                      ? 'text-cyan-400 bg-cyan-400/10' 
+                      : 'text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5'
+                  }`}
+                >
+                  CARDS
+                </button>
+                <button
+                  onClick={() => {setActiveTab('wallet'); setMobileMenuOpen(false);}}
+                  className={`px-4 py-3 text-left text-sm font-mono transition-colors rounded-md touch-target ${
+                    activeTab === 'wallet' 
+                      ? 'text-cyan-400 bg-cyan-400/10' 
+                      : 'text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5'
+                  }`}
+                >
+                  WALLET
+                </button>
+                <button
+                  onClick={() => {setActiveTab('transactions'); setMobileMenuOpen(false);}}
+                  className={`px-4 py-3 text-left text-sm font-mono transition-colors rounded-md touch-target ${
+                    activeTab === 'transactions' 
+                      ? 'text-cyan-400 bg-cyan-400/10' 
+                      : 'text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5'
+                  }`}
+                >
+                  TRANSACTIONS
+                </button>
+                <Link 
+                  href="/analytics" 
+                  className="px-4 py-3 text-left text-sm font-mono text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5 transition-colors rounded-md touch-target"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  ANALYTICS
+                </Link>
+              </div>
+            </div>
+          )}
         </div>
       </nav>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 py-4 sm:py-8">
         {/* Overview Tab */}
         {activeTab === 'overview' && (
-          <div className="space-y-8">
+          <div className="space-y-6 sm:space-y-8">
             {/* Welcome Section */}
-            <div className="bg-gradient-to-r from-cyan-primary/10 to-purple-glow/10 border border-cyan-primary/20 rounded-lg p-6 hover:shadow-neon-sm transition-all duration-300">
-              <div className="flex items-center justify-between mb-2">
-                <h2 className="text-2xl font-mono font-bold text-cyan-primary neon-text">
+            <div className="bg-gradient-to-r from-cyan-primary/10 to-purple-glow/10 border border-cyan-primary/20 rounded-lg p-4 sm:p-6 hover:shadow-neon-sm transition-all duration-300">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between mb-2 gap-3">
+                <h2 className="text-xl sm:text-2xl font-mono font-bold text-cyan-primary neon-text">
                   WELCOME TO CELORA
                 </h2>
-                <Link href="/sidebar" className="bg-cyan-primary/20 border border-cyan-primary/30 text-cyan-primary text-xs font-mono px-3 py-1 rounded-full hover:bg-cyan-primary/30 hover:shadow-neon-xs transition-all duration-300">
+                <Link href="/sidebar" className="bg-cyan-primary/20 border border-cyan-primary/30 text-cyan-primary text-xs font-mono px-3 py-2 rounded-full hover:bg-cyan-primary/30 hover:shadow-neon-xs transition-all duration-300 text-center sm:text-left touch-target">
                   TRY NEW SIDEBAR DESIGN ?
                 </Link>
               </div>
-              <p className="text-gray-400">
+              <p className="text-gray-400 text-sm sm:text-base">
                 Your complete financial technology platform for virtual cards, crypto management, and analytics.
               </p>
             </div>
 
             {/* Quick Stats */}
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
-                <div className="text-cyan-400 text-sm font-mono">TOTAL BALANCE</div>
-                <div className="text-2xl font-bold text-white mt-1">$12,450.00</div>
-                <div className="text-green-400 text-sm mt-1">+2.5% today</div>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-4 sm:p-6">
+                <div className="text-cyan-400 text-xs sm:text-sm font-mono">TOTAL BALANCE</div>
+                <div className="text-xl sm:text-2xl font-bold text-white mt-1">$12,450.00</div>
+                <div className="text-green-400 text-xs sm:text-sm mt-1">+2.5% today</div>
               </div>
-              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
-                <div className="text-cyan-400 text-sm font-mono">ACTIVE CARDS</div>
-                <div className="text-2xl font-bold text-white mt-1">3</div>
-                <div className="text-gray-400 text-sm mt-1">2 virtual, 1 physical</div>
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-4 sm:p-6">
+                <div className="text-cyan-400 text-xs sm:text-sm font-mono">ACTIVE CARDS</div>
+                <div className="text-xl sm:text-2xl font-bold text-white mt-1">3</div>
+                <div className="text-gray-400 text-xs sm:text-sm mt-1">2 virtual, 1 physical</div>
               </div>
-              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
-                <div className="text-cyan-400 text-sm font-mono">CRYPTO HOLDINGS</div>
-                <div className="text-2xl font-bold text-white mt-1">$8,920.00</div>
-                <div className="text-green-400 text-sm mt-1">+12.3% this week</div>
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-4 sm:p-6">
+                <div className="text-cyan-400 text-xs sm:text-sm font-mono">CRYPTO HOLDINGS</div>
+                <div className="text-xl sm:text-2xl font-bold text-white mt-1">$8,920.00</div>
+                <div className="text-green-400 text-xs sm:text-sm mt-1">+12.3% this week</div>
               </div>
-              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-6">
-                <div className="text-cyan-400 text-sm font-mono">MONTHLY SPENDING</div>
-                <div className="text-2xl font-bold text-white mt-1">$2,180.00</div>
-                <div className="text-yellow-400 text-sm mt-1">73% of budget</div>
+              <div className="bg-gray-900/50 backdrop-blur border border-cyan-400/20 rounded-lg p-4 sm:p-6">
+                <div className="text-cyan-400 text-xs sm:text-sm font-mono">MONTHLY SPENDING</div>
+                <div className="text-xl sm:text-2xl font-bold text-white mt-1">$2,180.00</div>
+                <div className="text-yellow-400 text-xs sm:text-sm mt-1">73% of budget</div>
               </div>
             </div>
 
             {/* Recent Activity */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div className="bg-gray-900/50 backdrop-blur-sm border border-cyan-primary/20 rounded-lg p-6 hover:shadow-neon-sm transition-all duration-300">
-                <h3 className="text-cyan-primary font-mono font-bold mb-4 neon-text">RECENT TRANSACTIONS</h3>
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 sm:gap-8">
+              <div className="bg-gray-900/50 backdrop-blur-sm border border-cyan-primary/20 rounded-lg p-4 sm:p-6 hover:shadow-neon-sm transition-all duration-300">
+                <h3 className="text-cyan-primary font-mono font-bold mb-4 neon-text text-sm sm:text-base">RECENT TRANSACTIONS</h3>
                 <div className="space-y-3">
                   {[
                     { desc: 'Amazon Purchase', amount: '-$129.99', time: '2 mins ago', type: 'card' },

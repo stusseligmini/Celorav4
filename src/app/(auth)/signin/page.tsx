@@ -9,6 +9,17 @@ import MFAVerification from '@/components/MFAVerification';
 
 export default function SignInPage() {
   const router = useRouter();
+
+  // Force page reload if cached version detected (for mobile browsers)
+  useEffect(() => {
+    const timestamp = new Date().getTime();
+    if (!window.location.search.includes('v=') && window.performance) {
+      const navigationEntry = window.performance.getEntriesByType('navigation')[0] as PerformanceNavigationTiming;
+      if (navigationEntry && navigationEntry.type === 'back_forward') {
+        window.location.href = '/signin?v=' + timestamp;
+      }
+    }
+  }, []);
   
   const [authMethod, setAuthMethod] = useState<'email' | 'seedphrase'>('email');
   const [email, setEmail] = useState('');

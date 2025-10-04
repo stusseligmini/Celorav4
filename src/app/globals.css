@@ -292,6 +292,48 @@ body {
   .text-balance {
     text-wrap: balance;
   }
+  
+  /* Responsive text utilities */
+  .responsive-text-lg {
+    font-size: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .responsive-text-lg {
+      font-size: 1.125rem;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .responsive-text-lg {
+      font-size: 1.25rem;
+    }
+  }
+  
+  .responsive-text-xl {
+    font-size: 1.125rem;
+  }
+  
+  @media (min-width: 640px) {
+    .responsive-text-xl {
+      font-size: 1.25rem;
+    }
+  }
+  
+  @media (min-width: 768px) {
+    .responsive-text-xl {
+      font-size: 1.5rem;
+    }
+  }
+  
+  /* Safe area for mobile devices with notches */
+  .safe-area-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
 }
 
 /* --- Mobile/iOS polish --- */
@@ -300,26 +342,89 @@ html, body {
   -webkit-text-size-adjust: 100%;
   color-scheme: dark;
   min-height: 100svh; /* Better mobile viewport height */
+  overscroll-behavior-y: none; /* Prevent iOS bounce scrolling */
 }
 
 /* Normalize input controls on iOS */
 input, textarea, select {
   -webkit-appearance: none;
   appearance: none;
+  font-size: 16px; /* Prevent zoom on iOS */
 }
 
 /* Remove blue tap highlight on iOS */
 a, button {
   -webkit-tap-highlight-color: transparent;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 
 /* Ensure buttons render with our styles consistently */
 .btn-primary, .btn-outline {
   -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
 }
 
 /* Improve tap targets on small screens */
 .touch-target {
   min-height: 44px;
   min-width: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Mobile-specific responsive utilities */
+@media (max-width: 640px) {
+  .mobile-stack {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .mobile-full {
+    width: 100%;
+  }
+  
+  .mobile-text-sm {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+  
+  .mobile-padding {
+    padding: 1rem;
+  }
+  
+  /* Ensure cards don't get too small on mobile */
+  .modern-card {
+    min-height: 120px;
+  }
+  
+  /* Better mobile spacing */
+  .mobile-space-y-4 > * + * {
+    margin-top: 1rem;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 641px) and (max-width: 1024px) {
+  .tablet-grid-2 {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+/* Prevent text selection on UI elements */
+.no-select {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Better scroll behavior */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
 }
