@@ -101,9 +101,17 @@ const nextConfig = {
     ];
   },
 
-  // Domain redirects: handled by Vercel domain configuration
+  // Domain redirects: www to non-www for canonical domain
   async redirects() {
-    return [];
+    return [
+      {
+        source: '/:path*',
+        has: [{ type: 'host', value: 'www.celora.net' }],
+        destination: 'https://celora.net/:path*',
+        permanent: true,
+        statusCode: 301,
+      },
+    ];
   },
 
   // Webpack configuration for better module resolution and performance
