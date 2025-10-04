@@ -3,6 +3,7 @@
   "framework": "nextjs",
   "public": true,
   "regions": ["fra1"],
+  "alias": ["celora.net", "www.celora.net"],
   "functions": {
     "src/app/api/**": {
       "maxDuration": 30
