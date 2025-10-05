@@ -1,6 +1,9 @@
-import { getSupabaseClient } from '../supabaseSingleton';
+import { supabaseServer } from '../supabase/server';
 import { WalletService, Wallet, WalletTransaction, TransactionHistoryParams } from './walletService';
 import { v4 as uuidv4 } from 'uuid';
+
+// Type assertion for Supabase to handle custom tables
+const supabase = supabaseServer as any;
 
 // Encryption utilities would normally be imported from a secure module
 // This is a simplified example - in a production environment, use a proper encryption library
@@ -63,7 +66,6 @@ export class WalletBackupService {
     userId: string,
     options: BackupOptions = {}
   ): Promise<WalletBackup> {
-    const supabase = getSupabaseClient();
     const configuredKey = options.encryptionKey || process.env.WALLET_ENCRYPTION_KEY;
     if (process.env.NODE_ENV === 'production' && !configuredKey) {
       throw new Error('WALLET_ENCRYPTION_KEY is not set in production. Refusing to create insecure backups.');
@@ -140,9 +142,9 @@ export class WalletBackupService {
       };
       
       // Store backup in the database
-      const { error } = await supabase
+      const { error } = await (supabase as any)
         .from('wallet_backups')
-        .insert(backup);
+        .insert(backup as any);
       
       if (error) {
         throw new Error(`Failed to store wallet backup: ${error.message}`);
@@ -159,8 +161,6 @@ export class WalletBackupService {
    * Get a list of backups for a user
    */
   static async getBackups(userId: string): Promise<WalletBackup[]> {
-    const supabase = getSupabaseClient();
-    
     const { data, error } = await supabase
       .from('wallet_backups')
       .select('*')
@@ -178,8 +178,6 @@ export class WalletBackupService {
    * Get a specific backup
    */
   static async getBackup(backupId: string): Promise<WalletBackup> {
-    const supabase = getSupabaseClient();
-    
     const { data, error } = await supabase
       .from('wallet_backups')
       .select('*')
@@ -200,7 +198,6 @@ export class WalletBackupService {
     backupId: string,
     options: RestoreOptions = {}
   ): Promise<{ walletsRestored: number; transactionsRestored: number }> {
-    const supabase = getSupabaseClient();
     const configuredKey = options.encryptionKey || process.env.WALLET_ENCRYPTION_KEY;
     if (process.env.NODE_ENV === 'production' && !configuredKey) {
       throw new Error('WALLET_ENCRYPTION_KEY is not set in production. Refusing to restore with insecure key.');
@@ -336,8 +333,6 @@ export class WalletBackupService {
     schedule: 'daily' | 'weekly' | 'monthly',
     options: BackupOptions = {}
   ): Promise<void> {
-    const supabase = getSupabaseClient();
-    
     // Create a schedule record
     const { error } = await supabase
       .from('wallet_backup_schedules')

@@ -1,28 +1,51 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { supabaseServer } from '@/lib/supabase/server';
+import { headers } from 'next/headers';
 
 export async function POST(request: NextRequest) {
   try {
-    const { name, currency, isPrimary } = await request.json();
+    const { wallet_name, wallet_type, network, currency } = await request.json();
     
-    const supabase = createRouteHandlerClient({ cookies });
+    // Get auth token from headers
+    const headersList = await headers();
+    const authorization = headersList.get('authorization');
     
-    // Verify the user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!authorization?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized - Missing token' }, { status: 401 });
+    }
+    
+    const token = authorization.split('Bearer ')[1];
+    const { data: { user }, error: authError } = await supabaseServer.auth.getUser(token);
+    
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized - Invalid token' }, { status: 401 });
     }
 
-    // Create wallet
-    const { data, error } = await supabase
+    // Validate required fields
+    if (!wallet_name || !wallet_type || !network) {
+      return NextResponse.json({ 
+        error: 'Missing required fields: wallet_name, wallet_type, network' 
+      }, { status: 400 });
+    }
+
+    // Generate public key (mock for now - will be real crypto generation later)
+    const public_key = `${wallet_type}_${user.id.slice(0, 8)}_${Date.now()}`;
+    
+    // Create wallet with unified schema fields
+    const { data, error } = await (supabaseServer as any)
       .from('wallets')
       .insert({
-        user_id: session.user.id,
-        address: `celora_${session.user.id.slice(0, 8)}_${Date.now()}`, // Generate a unique address
-        blockchain: 'solana', // Default to solana
-        balance: 0
-      })
+        user_id: user.id,
+        wallet_name,
+        wallet_type,
+        public_key,
+        network,
+        currency: currency || 'USD',
+        balance: 0,
+        usd_balance: 0,
+        is_primary: false,
+        is_active: true
+      } as any)
       .select()
       .single();
 
@@ -43,19 +66,27 @@ export async function POST(request: NextRequest) {
 
 export async function GET(request: NextRequest) {
   try {
-    const supabase = createRouteHandlerClient({ cookies });
+    // Get auth token from headers
+    const headersList = await headers();
+    const authorization = headersList.get('authorization');
     
-    // Verify the user is authenticated
-    const { data: { session } } = await supabase.auth.getSession();
-    if (!session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!authorization?.startsWith('Bearer ')) {
+      return NextResponse.json({ error: 'Unauthorized - Missing token' }, { status: 401 });
+    }
+    
+    const token = authorization.split('Bearer ')[1];
+    const { data: { user }, error: authError } = await supabaseServer.auth.getUser(token);
+    
+    if (authError || !user) {
+      return NextResponse.json({ error: 'Unauthorized - Invalid token' }, { status: 401 });
     }
 
-    // Get user's wallets
-    const { data, error } = await supabase
+    // Get user's wallets using unified schema
+    const { data, error } = await (supabaseServer as any)
       .from('wallets')
       .select('*')
-      .eq('user_id', session.user.id)
+      .eq('user_id', user.id)
+      .eq('is_active', true)
       .order('created_at', { ascending: false });
 
     if (error) {
@@ -63,7 +94,7 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch wallets' }, { status: 500 });
     }
 
-    return NextResponse.json({ wallets: data });
+    return NextResponse.json({ wallets: data || [] });
   } catch (error) {
     console.error('API error:', error);
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 });

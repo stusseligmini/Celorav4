@@ -1,7 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
-import { getSupabaseClient } from '@/lib/supabaseSingleton';
+import { supabaseServer } from '@/lib/supabase/server';
+import { headers } from 'next/headers';
+
+// Type assertion for Supabase to handle security_events table
+const supabase = supabaseServer as any;
 
 interface SecurityEvent {
   id: string;
@@ -29,25 +31,41 @@ interface SecurityEventFilters {
   user_id?: string;
 }
 
+async function validateAdminAuth() {
+  const headersList = await headers();
+  const authorization = headersList.get('authorization');
+  
+  if (!authorization?.startsWith('Bearer ')) {
+    return { error: 'Unauthorized - Missing token', status: 401 };
+  }
+  
+  const token = authorization.split('Bearer ')[1];
+  const { data: { user }, error: authError } = await supabase.auth.getUser(token);
+  
+  if (authError || !user) {
+    return { error: 'Unauthorized - Invalid token', status: 401 };
+  }
+
+  // Check user exists in user_profiles (unified schema)
+  const { data: userProfile, error: profileError } = await supabase
+    .from('user_profiles')
+    .select('id, email, full_name')
+    .eq('id', user.id)
+    .single();
+
+  if (profileError || !userProfile) {
+    return { error: 'Forbidden - User profile not found', status: 403 };
+  }
+  
+  return { user, userProfile };
+}
+
 export async function GET(request: NextRequest) {
   try {
-    const supabase = getSupabaseClient();
-    
-    // Check authentication
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    if (authError || !session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Check admin role
-    const { data: userProfile, error: profileError } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', session.user.id)
-      .single();
-
-    if (profileError || userProfile?.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
+    // Validate admin authentication
+    const authResult = await validateAdminAuth();
+    if ('error' in authResult) {
+      return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
     const { searchParams } = new URL(request.url);
@@ -71,13 +89,13 @@ export async function GET(request: NextRequest) {
     }
     if (user_id) filters.user_id = user_id;
 
-    // Build query
+    // Build query using server client and unified schema
     let query = supabase
       .from('security_events')
       .select(`
         *,
-        profiles:user_id(email, full_name),
-        resolver:resolved_by(email, full_name)
+        user_profile:user_id(id, email, full_name),
+        resolver:resolved_by(id, email, full_name)
       `)
       .order('created_at', { ascending: false })
       .range(offset, offset + limit - 1);
@@ -108,18 +126,26 @@ export async function GET(request: NextRequest) {
       return NextResponse.json({ error: 'Failed to fetch security events' }, { status: 500 });
     }
 
-    // Get summary statistics
-    const { data: stats, error: statsError } = await supabase
-      .rpc('get_security_event_stats');
+    // Get basic statistics (simplified)
+    const { count: totalEvents } = await supabase
+      .from('security_events')
+      .select('*', { count: 'exact', head: true });
+      
+    const { count: unresolvedEvents } = await supabase
+      .from('security_events')
+      .select('*', { count: 'exact', head: true })
+      .eq('resolved', false);
+      
+    const stats = {
+      total_events: totalEvents || 0,
+      unresolved_events: unresolvedEvents || 0,
+      critical_events: 0,
+      events_last_24h: 0
+    };
 
     return NextResponse.json({
       events: events || [],
-      stats: stats || {
-        total_events: 0,
-        unresolved_events: 0,
-        critical_events: 0,
-        events_last_24h: 0
-      },
+      stats,
       pagination: {
         limit,
         offset,
@@ -135,23 +161,10 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const supabase = getSupabaseClient();
-    
-    // Check authentication
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    if (authError || !session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Check admin role
-    const { data: userProfile, error: profileError } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', session.user.id)
-      .single();
-
-    if (profileError || userProfile?.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
+    // Validate admin authentication
+    const authResult = await validateAdminAuth();
+    if ('error' in authResult) {
+      return NextResponse.json({ error: authResult.error }, { status: authResult.status });
     }
 
     const body = await request.json();
@@ -175,10 +188,11 @@ export async function POST(request: NextRequest) {
     }
 
     // Get client IP and user agent
-    const ip_address = request.headers.get('x-forwarded-for') || 
-                      request.headers.get('x-real-ip') || 
+    const headersList = await headers();
+    const ip_address = headersList.get('x-forwarded-for') || 
+                      headersList.get('x-real-ip') || 
                       'unknown';
-    const user_agent = request.headers.get('user-agent') || 'unknown';
+    const user_agent = headersList.get('user-agent') || 'unknown';
 
     // Create security event
     const { data: event, error: createError } = await supabase
@@ -192,7 +206,7 @@ export async function POST(request: NextRequest) {
         user_agent,
         metadata: metadata || {},
         resolved: false
-      })
+      } as any)
       .select()
       .single();
 
@@ -214,24 +228,13 @@ export async function POST(request: NextRequest) {
 
 export async function PUT(request: NextRequest) {
   try {
-    const supabase = getSupabaseClient();
+    // Validate admin authentication
+    const authResult = await validateAdminAuth();
+    if ('error' in authResult) {
+      return NextResponse.json({ error: authResult.error }, { status: authResult.status });
+    }
     
-    // Check authentication
-    const { data: { session }, error: authError } = await supabase.auth.getSession();
-    if (authError || !session) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
-    }
-
-    // Check admin role
-    const { data: userProfile, error: profileError } = await supabase
-      .from('profiles')
-      .select('role')
-      .eq('id', session.user.id)
-      .single();
-
-    if (profileError || userProfile?.role !== 'admin') {
-      return NextResponse.json({ error: 'Forbidden - Admin access required' }, { status: 403 });
-    }
+    const { user } = authResult;
 
     const body = await request.json();
     const { event_ids, action } = body;
@@ -265,7 +268,7 @@ export async function PUT(request: NextRequest) {
       const update_data: any = {
         resolved,
         resolved_at: resolved ? new Date().toISOString() : null,
-        resolved_by: resolved ? session.user.id : null
+        resolved_by: resolved ? user.id : null
       };
 
       const { data: events, error: updateError } = await supabase

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { createRouteHandler, createAuthenticatedRouteHandler } from '@/lib/routeHandlerUtils';
 import { NextResponse } from 'next/server';
 import { featureFlags } from '@/lib/featureFlags';
-import { getSupabaseClient } from '@/lib/supabaseSingleton';
+import { supabaseServer } from '@/lib/supabase/server';
 
 // Schema for creating a wallet
 const createWalletSchema = z.object({
@@ -27,11 +27,9 @@ export const GET = createAuthenticatedRouteHandler(
         }, { status: 503 });
       }
       
-      // Get supabase client
-      const supabase = getSupabaseClient();
-      
+      // Use server supabase client
       // Get all wallets for the authenticated user
-      const { data: wallets, error } = await supabase
+      const { data: wallets, error } = await (supabaseServer as any)
         .from('wallets')
         .select('*')
         .eq('user_id', userId);
@@ -86,11 +84,9 @@ export const POST = createAuthenticatedRouteHandler(
       const body = await req.json();
       const walletData = createWalletSchema.parse(body);
       
-      // Get supabase client
-      const supabase = getSupabaseClient();
-      
+      // Use server supabase client
       // Create the wallet
-      const { data: wallet, error } = await supabase
+      const { data: wallet, error } = await (supabaseServer as any)
         .from('wallets')
         .insert({
           user_id: userId,
@@ -100,7 +96,7 @@ export const POST = createAuthenticatedRouteHandler(
           is_primary: walletData.is_primary,
           balance: 0,
           status: 'active'
-        })
+        } as any)
         .select()
         .single();
       
@@ -113,9 +109,9 @@ export const POST = createAuthenticatedRouteHandler(
       
       // If this wallet is marked as primary, update other wallets
       if (walletData.is_primary) {
-        await supabase
+        await (supabaseServer as any)
           .from('wallets')
-          .update({ is_primary: false })
+          .update({ is_primary: false } as any)
           .eq('user_id', userId)
           .neq('id', wallet.id);
       }

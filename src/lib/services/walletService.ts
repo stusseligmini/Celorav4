@@ -1,5 +1,8 @@
-import { getSupabaseClient } from '../supabaseSingleton';
+import { supabaseServer } from '../supabase/server';
 import { v4 as uuidv4 } from 'uuid';
+
+// Type assertion for Supabase to handle custom tables
+const supabase = supabaseServer as any;
 
 export interface Wallet {
   id: string;
@@ -96,7 +99,6 @@ export class WalletService {
    * Create a new wallet
    */
   static async createWallet(params: CreateWalletParams): Promise<Wallet> {
-    const supabase = getSupabaseClient();
     
     const { data, error } = await supabase
       .from('wallets')
@@ -134,8 +136,6 @@ export class WalletService {
    * Get wallet by ID
    */
   static async getWallet(id: string): Promise<Wallet | null> {
-    const supabase = getSupabaseClient();
-    
     const { data, error } = await supabase
       .from('wallets')
       .select('*')
@@ -154,8 +154,6 @@ export class WalletService {
    * Get all wallets for a user
    */
   static async getUserWallets(userId: string): Promise<Wallet[]> {
-    const supabase = getSupabaseClient();
-    
     const { data, error } = await supabase
       .from('wallets')
       .select('*')
@@ -173,7 +171,6 @@ export class WalletService {
    * Update a wallet
    */
   static async updateWallet(id: string, updates: Partial<Wallet>): Promise<Wallet> {
-    const supabase = getSupabaseClient();
     
     // Remove non-updatable fields
     delete updates.id;
@@ -211,7 +208,6 @@ export class WalletService {
    * Create a transaction
    */
   static async createTransaction(params: CreateTransactionParams): Promise<WalletTransaction> {
-    const supabase = getSupabaseClient();
     
     // Format transaction data
     const transactionData = {
@@ -251,8 +247,6 @@ export class WalletService {
    * Complete a transaction (update status to completed)
    */
   static async completeTransaction(id: string): Promise<WalletTransaction> {
-    const supabase = getSupabaseClient();
-    
     const { data, error } = await supabase
       .from('wallet_transactions')
       .update({ status: 'completed' })
@@ -272,7 +266,6 @@ export class WalletService {
    * Get transaction history for a wallet
    */
   static async getTransactionHistory(params: TransactionHistoryParams): Promise<TransactionHistoryResult> {
-    const supabase = getSupabaseClient();
     
     // Set default values
     const limit = params.limit || 20;
@@ -343,8 +336,6 @@ export class WalletService {
     currency: string,
     description?: string
   ): Promise<{ sourceTransaction: WalletTransaction; destinationTransaction: WalletTransaction }> {
-    const supabase = getSupabaseClient();
-    
     // Start a transaction
     const { error: txError } = await supabase.rpc('begin_transaction');
     if (txError) {
