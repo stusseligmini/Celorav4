@@ -12,7 +12,10 @@ tests/
 security/
 legacy-import/
 database/
-supabase/
+# Only ignore the root-level Supabase folder used by the CLI, not our app code under src/lib/supabase
+/supabase/
+# Explicitly include Supabase client code in src
+!src/lib/supabase/**
 .turbo/
 turbo.json
 tsconfig.base.json
