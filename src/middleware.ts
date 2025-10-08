@@ -54,26 +54,7 @@ function applyRateLimit(ip: string, path: string, limit = 60, windowMs = 60000):
 }
 
 export async function middleware(request: NextRequest) {
-  // Enforce single canonical domain in production: celora.net only
-  const url = request.nextUrl.clone();
-  const host = request.headers.get('host') || '';
-  const isProd = process.env.NODE_ENV === 'production';
-  if (isProd) {
-    const targetHost = 'celora.net';
-    if (host !== targetHost) {
-      // Redirect normal navigations to apex, but block other methods to avoid CSRF/open redirects
-      const isNavigation = request.headers.get('accept')?.includes('text/html');
-      const isSafeMethod = request.method === 'GET';
-      if (isNavigation && isSafeMethod) {
-        url.host = targetHost;
-        url.protocol = 'https';
-        return NextResponse.redirect(url, { status: 308 });
-      }
-      // For non-navigation or unsafe methods, block with 403
-      return new NextResponse('Forbidden host', { status: 403 });
-    }
-  }
-
+  // Host canonicalization is handled via Next.js redirects in next.config.js
   // Handle route conflicts with mfa mobile routes
   if (request.nextUrl.pathname === '/mfa-recovery-mobile') {
     return NextResponse.redirect(new URL('/(mfa-mobile)/mfa-recovery-mobile', request.url));
@@ -154,14 +135,20 @@ export async function middleware(request: NextRequest) {
   const sensitiveRoutes = ['/wallet/transfer', '/cards/create', '/settings/security']; // Routes that need extra security
   const currentPath = request.nextUrl.pathname;
 
-  // If user is authenticated and trying to access auth pages, redirect to dashboard
-  if (user && authRoutes.includes(currentPath)) {
-    return NextResponse.redirect(new URL('/', request.url));
-  }
+  // Skip auth checks for public routes and static assets
+  const publicPaths = ['/api/health', '/api/status', '/offline', '/fresh'];
+  const isPublicPath = publicPaths.some(p => currentPath.startsWith(p));
+  
+  if (!isPublicPath) {
+    // If user is authenticated and trying to access auth pages, redirect to dashboard
+    if (user && authRoutes.includes(currentPath)) {
+      return NextResponse.redirect(new URL('/', request.url));
+    }
 
-  // If user is not authenticated and trying to access protected routes, redirect to signin
-  if (!user && protectedRoutes.includes(currentPath)) {
-    return NextResponse.redirect(new URL('/signin', request.url));
+    // If user is not authenticated and trying to access protected routes, redirect to signin
+    if (!user && protectedRoutes.includes(currentPath)) {
+      return NextResponse.redirect(new URL('/signin', request.url));
+    }
   }
   
   // Session expiry check - if JWT is about to expire, redirect to refresh token
@@ -215,5 +202,9 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!_next/static|_next/image|favicon.ico|api).*)']
+  // Only run middleware on HTML pages, not API routes or static files
+  matcher: [
+    '/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js)).*)',
+    '/(api|trpc)(.*)'
+  ]
 };
