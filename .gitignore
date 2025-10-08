@@ -46,3 +46,13 @@ yarn.lock
 .cache/
 .parcel-cache/
 .vercel
+
+# Deployment documentation (local only)
+VERCEL_DEPLOYMENT_GUIDE.md
+QUICK_DEPLOY_CHECKLIST.md
+ENV_CONFIGURATION_SUMMARY.md
+PRODUCTION_DEPLOYMENT_GUIDE.md
+PRODUCTION_READY_NO_DEMO.md
+DEPLOY_TO_PRODUCTION.md
+PRODUCTION_READINESS_STATUS.md
+production-keys.txt
