@@ -130,23 +130,28 @@ export async function middleware(request: NextRequest) {
   const { data: { session } } = await supabase.auth.getSession();
   
   // Protected routes that require authentication
-  const protectedRoutes = ['/', '/analytics', '/wallet', '/cards', '/transactions'];
+  const protectedRoutes = ['/analytics', '/wallet', '/wallets', '/cards', '/transactions', '/settings', '/account', '/admin'];
   const authRoutes = ['/signin', '/signup', '/reset-password', '/update-password'];
   const sensitiveRoutes = ['/wallet/transfer', '/cards/create', '/settings/security']; // Routes that need extra security
   const currentPath = request.nextUrl.pathname;
 
   // Skip auth checks for public routes and static assets
-  const publicPaths = ['/api/health', '/api/status', '/offline', '/fresh'];
+  const publicPaths = ['/api/', '/offline', '/fresh', '/_next/', '/favicon.ico'];
   const isPublicPath = publicPaths.some(p => currentPath.startsWith(p));
   
   if (!isPublicPath) {
+    // Check if current path is a protected route that requires auth
+    const isProtectedRoute = protectedRoutes.some(route => currentPath.startsWith(route));
+    const isAuthRoute = authRoutes.includes(currentPath);
+    
     // If user is authenticated and trying to access auth pages, redirect to dashboard
-    if (user && authRoutes.includes(currentPath)) {
+    if (user && isAuthRoute) {
       return NextResponse.redirect(new URL('/', request.url));
     }
 
     // If user is not authenticated and trying to access protected routes, redirect to signin
-    if (!user && protectedRoutes.includes(currentPath)) {
+    // But allow root path to pass through to let Next.js handle it
+    if (!user && isProtectedRoute && currentPath !== '/') {
       return NextResponse.redirect(new URL('/signin', request.url));
     }
   }
