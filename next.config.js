@@ -80,6 +80,10 @@ const nextConfig = {
             value: '1; mode=block',
           },
           {
+            key: 'Strict-Transport-Security',
+            value: 'max-age=31536000; includeSubDomains; preload',
+          },
+          {
             key: 'Referrer-Policy',
             value: 'strict-origin-when-cross-origin',
           },

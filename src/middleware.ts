@@ -61,9 +61,16 @@ export async function middleware(request: NextRequest) {
   if (isProd) {
     const targetHost = 'celora.net';
     if (host !== targetHost) {
-      url.host = targetHost;
-      url.protocol = 'https';
-      return NextResponse.redirect(url, { status: 308 });
+      // Redirect normal navigations to apex, but block other methods to avoid CSRF/open redirects
+      const isNavigation = request.headers.get('accept')?.includes('text/html');
+      const isSafeMethod = request.method === 'GET';
+      if (isNavigation && isSafeMethod) {
+        url.host = targetHost;
+        url.protocol = 'https';
+        return NextResponse.redirect(url, { status: 308 });
+      }
+      // For non-navigation or unsafe methods, block with 403
+      return new NextResponse('Forbidden host', { status: 403 });
     }
   }
 
