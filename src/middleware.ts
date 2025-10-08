@@ -54,13 +54,17 @@ function applyRateLimit(ip: string, path: string, limit = 60, windowMs = 60000):
 }
 
 export async function middleware(request: NextRequest) {
-  // Redirect any *.vercel.app host to canonical domain to avoid exposing Vercel URLs
+  // Enforce single canonical domain in production: celora.net only
   const url = request.nextUrl.clone();
   const host = request.headers.get('host') || '';
-  if (host.endsWith('.vercel.app')) {
-    url.host = 'www.celora.net';
-    url.protocol = 'https';
-    return NextResponse.redirect(url, { status: 308 });
+  const isProd = process.env.NODE_ENV === 'production';
+  if (isProd) {
+    const targetHost = 'celora.net';
+    if (host !== targetHost) {
+      url.host = targetHost;
+      url.protocol = 'https';
+      return NextResponse.redirect(url, { status: 308 });
+    }
   }
 
   // Handle route conflicts with mfa mobile routes
