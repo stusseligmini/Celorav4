@@ -61,7 +61,7 @@ export async function POST(request: Request) {
 
         // Update user profile with 2FA settings
         const { error: updateError } = await supabase
-          .from('profiles')
+          .from('user_profiles')
           .update({
             two_factor_secret: secret,
             two_factor_backup_codes: backupCodes,
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
 
         // Get user's 2FA secret
         const { data: profile } = await supabase
-          .from('profiles')
+          .from('user_profiles')
           .select('two_factor_secret, two_factor_backup_codes')
           .eq('id', user.id)
           .single();
@@ -120,7 +120,7 @@ export async function POST(request: Request) {
             backupCodes.splice(codeIndex, 1);
             
             await supabase
-              .from('profiles')
+              .from('user_profiles')
               .update({ two_factor_backup_codes: backupCodes })
               .eq('id', user.id);
           }
@@ -129,7 +129,7 @@ export async function POST(request: Request) {
         if (isValid) {
           // Enable 2FA
           await supabase
-            .from('profiles')
+            .from('user_profiles')
             .update({ two_factor_enabled: true })
             .eq('id', user.id);
 
@@ -173,7 +173,7 @@ export async function POST(request: Request) {
 
         // Get user's 2FA secret
         const { data: disableProfile } = await supabase
-          .from('profiles')
+          .from('user_profiles')
           .select('two_factor_secret, two_factor_enabled')
           .eq('id', user.id)
           .single();
@@ -190,7 +190,7 @@ export async function POST(request: Request) {
 
         // Disable 2FA
         await supabase
-          .from('profiles')
+          .from('user_profiles')
           .update({
             two_factor_enabled: false,
             two_factor_secret: null,
@@ -239,7 +239,7 @@ export async function GET() {
 
     // Get user's 2FA status
     const { data: profile, error } = await supabase
-      .from('profiles')
+      .from('user_profiles')
       .select('two_factor_enabled, two_factor_backup_codes')
       .eq('id', user.id)
       .single();

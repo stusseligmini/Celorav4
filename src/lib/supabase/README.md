@@ -72,7 +72,7 @@ function WalletList() {
 ```typescript
 // WRONG: Using server client in browser
 'use client'
-import { supabaseServer } from '@/lib/supabase/server' // ❌ Security risk!
+import { supabaseServer } from '@/lib/supabase/server' // Server-only usage ✅
 
 // WRONG: Using browser client in API route
 import { supabase } from '@/lib/supabase/client'

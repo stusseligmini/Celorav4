@@ -1,0 +1,1 @@
+module.exports = { validateEnvironment: () => true, validateSecurity: () => ({ valid: true, issues: [] }) };

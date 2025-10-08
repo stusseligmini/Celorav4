@@ -52,7 +52,7 @@ export async function GET() {
     
     // Get user profile for additional context
     const { data: profile } = await supabase
-      .from('profiles')
+      .from('user_profiles')
       .select('two_factor_enabled, kyc_status, last_login_at')
       .eq('id', user.id)
       .single();

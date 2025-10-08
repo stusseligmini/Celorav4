@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import { z } from 'zod';
 import { WalletBackupService } from '@/lib/services/walletBackupService';
 import { createAuthenticatedRouteHandler, AuthenticatedContext } from '@/lib/routeHandlerUtils';
-import { getSupabaseClient } from '@/lib/supabaseSingleton';
+import { supabaseServer } from '@/lib/supabase/server';
 
 // Schema for creating a backup schedule
 const scheduleSchema = z.object({
@@ -17,8 +17,8 @@ export const GET = createAuthenticatedRouteHandler(
     try {
       const userId = context.userId;
       
-      // This would need to be implemented in the WalletBackupService
-      const supabase = getSupabaseClient();
+  // Use server-side Supabase client (service role) in API routes
+  const supabase = supabaseServer;
       const { data, error } = await supabase
         .from('wallet_backup_schedules')
         .select('*')

@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { createRouteHandler, createAuthenticatedRouteHandler } from '@/lib/routeHandlerUtils';
 import { NextResponse } from 'next/server';
 import { featureFlags } from '@/lib/featureFlags';
-import { supabaseServer } from '@/lib/supabase/server';
+import { supabaseServer } from '../../../lib/supabase/server';
 
 // Schema for creating a wallet
 const createWalletSchema = z.object({

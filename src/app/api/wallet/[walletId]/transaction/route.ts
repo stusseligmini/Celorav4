@@ -1,7 +1,7 @@
 'use server';
 
 import { NextRequest, NextResponse } from 'next/server';
-import { WalletService, WalletTransaction } from '@/lib/walletService';
+import { WalletService } from '@/lib/services/walletService';
 import { featureFlags } from '@/lib/featureFlags';
 
 export async function POST(
@@ -42,16 +42,14 @@ export async function POST(
     }
     
     // Create transaction
-    const transactionParams: WalletTransaction = {
+    const result = await WalletService.processTransaction(walletId, {
       amount: parseFloat(body.amount),
       currency: body.currency,
       transaction_type: body.transaction_type,
       description: body.description,
       reference_id: body.reference_id,
       metadata: body.metadata
-    };
-    
-    const result = await WalletService.processTransaction(walletId, transactionParams);
+    });
     
     return NextResponse.json({ 
       success: true, 

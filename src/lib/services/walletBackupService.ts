@@ -74,7 +74,7 @@ export class WalletBackupService {
     
     try {
       // Get all user wallets or specified wallets
-      let wallets: Wallet[];
+  let wallets: Wallet[];
       if (options.walletIds && options.walletIds.length > 0) {
         wallets = [];
         for (const id of options.walletIds) {
@@ -161,10 +161,10 @@ export class WalletBackupService {
    * Get a list of backups for a user
    */
   static async getBackups(userId: string): Promise<WalletBackup[]> {
-    const { data, error } = await supabase
-      .from('wallet_backups')
+  const { data, error } = await supabase
+  .from('wallet_backups')
       .select('*')
-      .eq('userId', userId)
+  .eq('userId', userId)
       .order('timestamp', { ascending: false });
     
     if (error) {
@@ -244,12 +244,12 @@ export class WalletBackupService {
             .upsert({
               id: wallet.id,
               user_id: wallet.user_id,
-              name: wallet.name,
-              type: wallet.type,
+              wallet_name: (wallet as any).wallet_name ?? (wallet as any).name ?? 'Wallet',
+              wallet_type: (wallet as any).wallet_type ?? (wallet as any).type ?? 'fiat',
               currency: wallet.currency,
               balance: wallet.balance,
               is_primary: wallet.is_primary,
-              status: wallet.status,
+              is_active: (wallet as any).is_active ?? true,
               created_at: wallet.created_at,
               updated_at: new Date().toISOString(),
             });
@@ -273,29 +273,26 @@ export class WalletBackupService {
             
             // Insert the transaction
             const { error } = await supabase
-              .from('wallet_transactions')
+              .from('transactions')
               .insert({
-                id: transaction.id,
-                wallet_id: transaction.wallet_id,
-                amount: transaction.amount,
-                currency: transaction.currency,
-                type: transaction.type,
-                status: transaction.status,
-                description: transaction.description,
-                metadata: transaction.metadata,
-                reference_id: transaction.reference_id,
-                external_id: transaction.external_id,
-                merchant_name: transaction.merchant_name,
-                merchant_category: transaction.merchant_category,
-                merchant_location: transaction.merchant_location,
-                conversion_rate: transaction.conversion_rate,
-                fee_amount: transaction.fee_amount,
-                fee_currency: transaction.fee_currency,
-                related_transaction_id: transaction.related_transaction_id,
-                source_wallet_id: transaction.source_wallet_id,
-                destination_wallet_id: transaction.destination_wallet_id,
-                created_at: transaction.created_at,
-                updated_at: transaction.updated_at,
+                id: (transaction as any).id,
+                user_id: (transaction as any).user_id ?? (walletsToRestore.find(w=>w.id===transaction.wallet_id)?.user_id),
+                wallet_id: (transaction as any).wallet_id,
+                transaction_type: (transaction as any).type ?? (transaction as any).transaction_type ?? 'transfer',
+                amount: (transaction as any).amount,
+                currency: (transaction as any).currency,
+                status: (transaction as any).status ?? 'completed',
+                description: (transaction as any).description,
+                metadata: (transaction as any).metadata ?? {},
+                reference_id: (transaction as any).reference_id,
+                external_id: (transaction as any).external_id,
+                merchant_name: (transaction as any).merchant_name,
+                merchant_category: (transaction as any).merchant_category,
+                exchange_rate: (transaction as any).conversion_rate,
+                fee_amount: (transaction as any).fee_amount ?? 0,
+                related_transaction_id: (transaction as any).related_transaction_id,
+                created_at: (transaction as any).created_at,
+                updated_at: (transaction as any).updated_at,
               });
             
             if (error) {

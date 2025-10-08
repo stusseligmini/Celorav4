@@ -1,0 +1,94 @@
+ROLLBACK CHANGESET (Local) - 2025-10-07
+=====================================
+
+This text file lists all files that were updated or added in this workspace so you can roll back locally if needed.
+
+HOW TO ROLLBACK LOCALLY (no git)
+- Before changing anything further, copy any file you want to revert from your own backups/snapshots back into the paths listed below.
+- If you used the suggested local backup folder (local-backups\rollback-YYYY-MM-DD_HH-mm-ss), copy the backed-up files back to the same path shown here.
+
+-------------------------------------
+UPDATED FILES (Application Code)
+-------------------------------------
+1) src\app\api\wallet\[walletId]\route.ts
+   - Switched to server-side wallet service ("@/lib/services/walletService").
+   - Enabled DELETE with server-side safety checks.
+   - Rollback: restore the prior version of this file.
+
+2) src\app\api\wallet\[walletId]\transaction\route.ts
+   - Switched to server-side wallet service for processing transactions.
+   - Rollback: restore the prior version of this file.
+
+3) src\server\walletCache.ts
+   - Now imports "@/lib/services/walletService" and calls getTransactionHistory({ walletId, limit, offset }).
+   - Returns the transactions array only.
+   - Rollback: restore the prior version of this file.
+
+4) src\app\api\security\events\route.ts
+   - Table name aligned to unified schema: profiles -> user_profiles.
+   - Rollback: change table back to "profiles" or restore the prior file.
+
+5) src\app\api\security\2fa\route.ts
+   - Multiple updates from profiles -> user_profiles in 2FA setup/verify/disable and GET.
+   - Rollback: change table(s) back to "profiles" or restore the prior file.
+
+6) src\app\api\wallet\backup\schedule\route.ts (previously aligned)
+   - Uses server-side Supabase (supabaseServer) in API route.
+   - Rollback: restore prior version if you had an older client-side usage.
+
+-------------------------------------
+UPDATED FILES (Server Services)
+-------------------------------------
+7) src\lib\services\walletService.ts
+   - Earlier: unified to use the transactions table and server-side processing.
+   - Now: added deleteWallet(id) with safety checks (not primary, zero balance).
+   - Rollback: restore the prior version of this file or remove deleteWallet if undesired.
+
+8) src\lib\services\walletBackupService.ts (previously aligned)
+   - Uses unified field mappings and the transactions table for restore.
+   - Rollback: restore the prior version that used legacy schema, if applicable.
+
+-------------------------------------
+ADDED FILES (Database / Migrations)
+-------------------------------------
+9) database\unified-schema-v2.sql
+   - Unified schema (user_profiles, wallets, transactions, audit_log, RLS, triggers, indexes).
+   - Rollback: do not run it; if applied, use scripts\rollback-phase1.ps1 or your DB snapshot.
+
+-------------------------------------
+ADDED FILES (Scripts)
+-------------------------------------
+10) scripts\migrate-database-phase1.ps1
+11) scripts\migrate-phase1-clean.ps1
+12) scripts\migrate-phase1-simple.ps1
+13) scripts\rollback-phase1.ps1
+14) scripts\phase5-environment-setup.ps1
+15) scripts\system-validation.js
+16) scripts\validate-environment.js
+   - Purpose: apply/rollback schema, environment setup/validation, and system checks.
+   - Rollback: simply delete these if not needed.
+
+17) scripts\setup-production-environment.ps1
+18) scripts\apply-migration.ps1
+   - Purpose: complete production environment setup and simplified database migration.
+   - Rollback: delete these files if not needed.
+
+-------------------------------------
+ADDED FILES (Backups/Reference SQL - backup\20251005)
+-------------------------------------
+17) backup\20251005\optimize-db.js
+18) backup\20251005\optimize-rls.sql
+19) backup\20251005\schema.sql
+20) backup\20251005\supabase-schema.sql
+21) backup\20251005\user-notification-preferences.sql
+22) backup\20251005\wallet-backup-schema.sql
+23) backup\20251005\wallet-schema.sql
+   - Purpose: reference/backup artifacts. Safe to keep or delete locally.
+
+-------------------------------------
+SECURITY NOTE (Manual)
+-------------------------------------
+- production-keys.txt (if present)
+  Contains sensitive secrets. Delete locally and rotate any keys if they were ever used.
+
+END OF LIST

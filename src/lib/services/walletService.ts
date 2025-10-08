@@ -7,12 +7,12 @@ const supabase = supabaseServer as any;
 export interface Wallet {
   id: string;
   user_id: string;
-  name: string;
-  type: 'personal' | 'business' | 'savings';
+  wallet_name: string;
+  wallet_type: string;
   currency: string;
   balance: number;
   is_primary: boolean;
-  status: 'active' | 'inactive' | 'frozen';
+  is_active?: boolean;
   created_at: string;
   updated_at: string;
 }
@@ -43,8 +43,8 @@ export interface WalletTransaction {
 
 export interface CreateWalletParams {
   userId: string;
-  name: string;
-  type: 'personal' | 'business' | 'savings';
+  name: string; // mapped to wallet_name
+  type: string; // mapped to wallet_type
   currency: string;
   isPrimary?: boolean;
 }
@@ -105,12 +105,12 @@ export class WalletService {
       .insert({
         id: uuidv4(),
         user_id: params.userId,
-        name: params.name,
-        type: params.type,
+        wallet_name: params.name,
+        wallet_type: params.type,
         currency: params.currency,
         balance: 0,
         is_primary: params.isPrimary || false,
-        status: 'active',
+        is_active: true,
       })
       .select()
       .single();
@@ -179,9 +179,17 @@ export class WalletService {
     delete updates.updated_at;
     delete updates.balance; // Balance should only be updated through transactions
     
+    // Map incoming field names safely
+    const mapped: any = {};
+    if (updates.wallet_name !== undefined) mapped.wallet_name = updates.wallet_name;
+    if (updates.wallet_type !== undefined) mapped.wallet_type = updates.wallet_type;
+    if (updates.currency !== undefined) mapped.currency = updates.currency;
+    if (updates.is_primary !== undefined) mapped.is_primary = updates.is_primary;
+    if (updates.is_active !== undefined) mapped.is_active = updates.is_active;
+
     const { data, error } = await supabase
       .from('wallets')
-      .update(updates)
+      .update(mapped)
       .eq('id', id)
       .select()
       .single();
@@ -202,6 +210,86 @@ export class WalletService {
     }
     
     return data as Wallet;
+  }
+
+  /**
+   * Delete a wallet by id with safety checks
+   * - Must exist
+   * - Must not be primary
+   * - Must have zero balance
+   */
+  static async deleteWallet(id: string): Promise<boolean> {
+    // Fetch wallet
+    const { data: wallet, error: werr } = await supabase
+      .from('wallets')
+      .select('*')
+      .eq('id', id)
+      .single();
+    if (werr || !wallet) {
+      throw new Error('Wallet not found');
+    }
+
+    if ((wallet as Wallet).is_primary) {
+      throw new Error('Cannot delete primary wallet');
+    }
+    if ((wallet as Wallet).balance && Number((wallet as Wallet).balance) > 0) {
+      throw new Error('Cannot delete a wallet with a non-zero balance');
+    }
+
+    const { error: derr } = await supabase
+      .from('wallets')
+      .delete()
+      .eq('id', id);
+    if (derr) {
+      throw new Error(`Failed to delete wallet: ${derr.message}`);
+    }
+    return true;
+  }
+
+  /**
+   * Process a transaction for a wallet (server-side, atomic via triggers)
+   */
+  static async processTransaction(
+    walletId: string,
+    transaction: { amount: number; currency: string; transaction_type: 'deposit'|'withdrawal'|'transfer'|'payment'|'refund'; description?: string; reference_id?: string; metadata?: Record<string, any> }
+  ): Promise<{ wallet: Wallet, transactionId: string }>{
+    // Fetch wallet to get user_id
+    const { data: wallet, error: werr } = await supabase
+      .from('wallets')
+      .select('*')
+      .eq('id', walletId)
+      .single();
+    if (werr || !wallet) {
+      throw new Error('Wallet not found');
+    }
+
+    // Insert transaction; balance will be recomputed by trigger
+    const { data: tx, error: terr } = await supabase
+      .from('transactions')
+      .insert({
+        user_id: (wallet as Wallet).user_id,
+        wallet_id: walletId,
+        transaction_type: transaction.transaction_type,
+        amount: transaction.amount,
+        currency: transaction.currency,
+        description: transaction.description,
+        reference_id: transaction.reference_id,
+        status: 'completed',
+        metadata: transaction.metadata || {}
+      })
+      .select()
+      .single();
+    if (terr) throw new Error(`Failed to create transaction: ${terr.message}`);
+
+    // Return latest wallet state
+    const { data: updated, error: uerr } = await supabase
+      .from('wallets')
+      .select('*')
+      .eq('id', walletId)
+      .single();
+    if (uerr) throw new Error(`Failed to fetch updated wallet: ${uerr.message}`);
+
+    return { wallet: updated as Wallet, transactionId: tx.id };
   }
   
   /**
@@ -230,7 +318,7 @@ export class WalletService {
     };
     
     const { data, error } = await supabase
-      .from('wallet_transactions')
+      .from('transactions')
       .insert(transactionData)
       .select()
       .single();
@@ -248,7 +336,7 @@ export class WalletService {
    */
   static async completeTransaction(id: string): Promise<WalletTransaction> {
     const { data, error } = await supabase
-      .from('wallet_transactions')
+      .from('transactions')
       .update({ status: 'completed' })
       .eq('id', id)
       .select()
@@ -275,7 +363,7 @@ export class WalletService {
     
     // Build query
     let query = supabase
-      .from('wallet_transactions')
+      .from('transactions')
       .select('*', { count: 'exact' })
       .eq('wallet_id', params.walletId)
       .order(sort, { ascending: order === 'asc' })
@@ -337,11 +425,6 @@ export class WalletService {
     description?: string
   ): Promise<{ sourceTransaction: WalletTransaction; destinationTransaction: WalletTransaction }> {
     // Start a transaction
-    const { error: txError } = await supabase.rpc('begin_transaction');
-    if (txError) {
-      throw new Error(`Failed to start transaction: ${txError.message}`);
-    }
-    
     try {
       // Create withdrawal from source wallet
       const sourceParams: CreateTransactionParams = {
@@ -370,7 +453,7 @@ export class WalletService {
       
       // Update the source transaction with the related transaction ID
       await supabase
-        .from('wallet_transactions')
+        .from('transactions')
         .update({ related_transaction_id: destinationTransaction.id })
         .eq('id', sourceTransaction.id);
       
@@ -378,20 +461,37 @@ export class WalletService {
       await this.completeTransaction(sourceTransaction.id);
       await this.completeTransaction(destinationTransaction.id);
       
-      // Commit the transaction
-      const { error: commitError } = await supabase.rpc('commit_transaction');
-      if (commitError) {
-        throw new Error(`Failed to commit transaction: ${commitError.message}`);
-      }
       
       return {
         sourceTransaction,
         destinationTransaction
       };
     } catch (error) {
-      // Rollback the transaction on error
-      await supabase.rpc('rollback_transaction');
-      throw error;
+      // Try server-side atomic function if available
+      try {
+        const { data, error: rpcErr } = await supabase.rpc('wallet_transfer', {
+          p_source_wallet: sourceWalletId,
+          p_destination_wallet: destinationWalletId,
+          p_user_id: null, // provide when available in calling context
+          p_amount: amount,
+          p_currency: currency,
+          p_description: description || null
+        });
+        if (rpcErr) throw rpcErr;
+        // If RPC succeeded, fetch the created transactions
+        const srcId = data?.[0]?.source_tx;
+        const dstId = data?.[0]?.destination_tx;
+        if (srcId && dstId) {
+          const { data: src } = await supabase.from('transactions').select('*').eq('id', srcId).single();
+          const { data: dst } = await supabase.from('transactions').select('*').eq('id', dstId).single();
+          if (src && dst) {
+            return { sourceTransaction: src as WalletTransaction, destinationTransaction: dst as WalletTransaction };
+          }
+        }
+        throw error;
+      } catch (fallbackErr) {
+        throw error;
+      }
     }
   }
 }
