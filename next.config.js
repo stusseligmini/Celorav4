@@ -101,17 +101,9 @@ const nextConfig = {
     ];
   },
 
-  // Domain redirects: www to non-www for canonical domain
+  // Domain redirects disabled to prevent redirect loops
   async redirects() {
-    return [
-      {
-        source: '/:path*',
-        has: [{ type: 'host', value: 'www.celora.net' }],
-        destination: 'https://celora.net/:path*',
-        permanent: true,
-        statusCode: 301,
-      },
-    ];
+    return [];
   },
 
   // Webpack configuration for better module resolution and performance
