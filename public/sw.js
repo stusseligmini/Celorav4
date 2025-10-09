@@ -218,9 +218,16 @@ self.addEventListener('install', (event) => {
       })
     ])
     .then(() => {
-      // Do not skipWaiting automatically to prevent reload loops
-      // Wait for explicit user action ("Update now") which sends SKIP_WAITING
-      console.log('[Service Worker] Installation complete, waiting to activate');
+      // Skip waiting to activate the service worker immediately
+      self.skipWaiting();
+      console.log('[Service Worker] Installation complete');
+      
+      // Notify clients that offline mode is ready
+      self.clients.matchAll().then(clients => {
+        clients.forEach(client => {
+          client.postMessage({ type: 'OFFLINE_READY' });
+        });
+      });
     })
   );
 });
@@ -246,7 +253,10 @@ self.addEventListener('activate', (event) => {
         })
       );
     })
-    .then(() => self.clients.claim())
+    .then(() => {
+      // Take control of all clients
+      return self.clients.claim();
+    })
     .then(() => {
       console.log('[Service Worker] Activation complete');
       

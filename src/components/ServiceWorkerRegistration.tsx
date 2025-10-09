@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { createLogger } from '../lib/logger';
 
 // Create component-specific logger
@@ -23,16 +23,10 @@ export default function ServiceWorkerRegistration() {
     }
     
     // Listen for controlling service worker changes
-    // Reload exactly once to activate the new SW, avoid reload loops
-    const refreshingRef = { current: false } as { current: boolean };
-    const onControllerChange = () => {
-      if (refreshingRef.current) return;
-      refreshingRef.current = true;
-      logger.info('Service Worker controller changed - reloading once');
-      // Use location.reload(true) semantics via cache-busting to ensure fresh assets
-      window.location.replace(window.location.href);
-    };
-    navigator.serviceWorker?.addEventListener('controllerchange', onControllerChange);
+    navigator.serviceWorker?.addEventListener('controllerchange', () => {
+      logger.info('Service Worker controller changed - page will reload');
+      window.location.reload();
+    });
     
     // Listen for custom messages from service worker
     navigator.serviceWorker?.addEventListener('message', (event) => {
@@ -48,15 +42,15 @@ export default function ServiceWorkerRegistration() {
     });
     
     return () => {
-      navigator.serviceWorker?.removeEventListener('controllerchange', onControllerChange);
+      // Clean up event listeners if needed
     };
   }, []);
   
   const registerServiceWorker = async () => {
     try {
       logger.info('Registering service worker');
-      // Register a stable SW URL; updates are detected when the file changes
-      const reg = await navigator.serviceWorker.register(`/sw.js`, {
+      // Cache-bust SW URL to ensure clients fetch latest on domain changes
+      const reg = await navigator.serviceWorker.register(`/sw.js?v=${Date.now()}`, {
         scope: '/',
         // Update service worker when page loads
         updateViaCache: 'none'
