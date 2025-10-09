@@ -78,11 +78,10 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
     }
   };
 
+  // Initialize Supabase client once
   useEffect(() => {
-    // Initialize client lazily if env is ok
     if (envOk && !supabase) {
       try {
-        // Simplified client initialization without aggressive cleanup
         const client = getBrowserClient();
         if (client && typeof client === 'object' && client.auth) {
           setSupabase(client as unknown as SupabaseClient);
@@ -95,56 +94,40 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
         setError(e instanceof Error ? e : new Error('Supabase initialization failed'));
       }
     }
+  }, [envOk]); // Only run when envOk changes
 
-    // Get initial session only if we have a valid client
-    if (supabase) {
+  // Get initial session once client is ready
+  useEffect(() => {
+    if (supabase && loading) {
       refreshSession();
     }
+  }, [supabase]); // Only run when supabase client is initialized
 
-    // Set up automatic recovery
-    const healthCheckInterval = setInterval(async () => {
-      try {
-        if (!supabase) return;
-        // Simple health check
-        const isValid = await validateSupabaseClient(supabase);
-        if (!isValid && !reconnecting) {
-          console.log('Detected Supabase client issue, attempting refresh');
-          refreshSession();
-        }
-      } catch (err) {
-        console.warn('Error during health check:', err);
-      }
-    }, 60000); // Check every minute
+  // Set up auth state listener separately
+  useEffect(() => {
+    if (!supabase) return;
 
-    // Listen for auth changes with error handling
     let subscription: { unsubscribe: () => void } | null = null;
     
     try {
-      if (supabase) {
-        const authStateChange = supabase.auth.onAuthStateChange(
-        async (event: AuthChangeEvent, newSession: Session | null) => {
-          try {
+      const authStateChange = supabase.auth.onAuthStateChange(
+        (event: AuthChangeEvent, newSession: Session | null) => {
+          // Only update state if session actually changed
+          if (event === 'SIGNED_IN' || event === 'SIGNED_OUT' || event === 'TOKEN_REFRESHED') {
             setSession(newSession);
             setUser(newSession?.user ?? null);
             setLoading(false);
-          } catch (err) {
-            console.error('Error handling auth state change:', err);
           }
         }
-        );
-        
-        subscription = authStateChange.data.subscription;
-      }
+      );
+      
+      subscription = authStateChange.data.subscription;
     } catch (err) {
       console.error('Error setting up auth state change listener:', err);
     }
 
-    // Clean up
+    // Clean up subscription
     return () => {
-      clearInterval(healthCheckInterval);
-      if (reconnectTimeoutRef.current) {
-        clearTimeout(reconnectTimeoutRef.current);
-      }
       if (subscription) {
         try {
           subscription.unsubscribe();
@@ -153,7 +136,7 @@ export function SupabaseProvider({ children }: { children: React.ReactNode }) {
         }
       }
     };
-  }, [envOk, supabase]);
+  }, [supabase]); // Only re-setup if supabase client changes
 
   const signOut = async () => {
     try {
