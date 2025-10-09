@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { logSecurity } from '@/lib/logger';
+import { logSecurityEvent } from '@/lib/logger';
 
 /**
  * API endpoint for receiving Content Security Policy violation reports
@@ -27,21 +27,25 @@ export async function POST(req: NextRequest): Promise<NextResponse> {
     const correlationId = req.headers.get('x-correlation-id') || 'unknown';
     
     // Log the CSP violation for security monitoring
-    logSecurity('Content Security Policy violation', {
-      correlationId,
-      action: 'csp_violation_report',
-      componentName: 'CSP',
-    }, {
-      documentUri,
-      violatedDirective,
-      blockedUri,
-      sourceFile,
-      lineNumber,
-      columnNumber,
-      scriptSample,
-      userAgent: req.headers.get('user-agent'),
-      ipAddress: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown',
-    });
+    logSecurityEvent(
+      'csp_violation',
+      'Content Security Policy violation detected',
+      {
+        correlationId,
+        componentName: 'CSP',
+      },
+      {
+        documentUri,
+        violatedDirective,
+        blockedUri,
+        sourceFile,
+        lineNumber,
+        columnNumber,
+        scriptSample,
+        userAgent: req.headers.get('user-agent'),
+        ipAddress: req.headers.get('x-forwarded-for') || req.headers.get('x-real-ip') || 'unknown',
+      }
+    );
     
     // Return empty 204 response (no content)
     return new NextResponse(null, { status: 204 });
