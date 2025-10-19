@@ -1,0 +1,65 @@
+{
+  "action": "subscribe",
+  "data": {
+    "wallet_address": "11111111111111111111111111111112",
+    "subscription_type": "account",
+    "user_id": "test-user-id",
+    "auto_link_enabled": true
+  }
+}
+
+Test Cases for WebSocket Edge Function:
+=======================================
+
+1. SUBSCRIBE TO WALLET:
+POST /functions/v1/solana-websocket-stream
+{
+  "action": "subscribe",
+  "data": {
+    "wallet_address": "11111111111111111111111111111112",
+    "subscription_type": "account",
+    "user_id": "test-user-id",
+    "auto_link_enabled": true
+  }
+}
+
+2. UNSUBSCRIBE FROM WALLET:
+POST /functions/v1/solana-websocket-stream
+{
+  "action": "unsubscribe",
+  "data": {
+    "wallet_address": "11111111111111111111111111111112",
+    "user_id": "test-user-id"
+  }
+}
+
+3. GET SUBSCRIPTION STATUS:
+POST /functions/v1/solana-websocket-stream
+{
+  "action": "get_subscriptions",
+  "data": {
+    "user_id": "test-user-id"
+  }
+}
+
+4. PROCESS TRANSACTION (Simulated):
+POST /functions/v1/solana-websocket-stream
+{
+  "action": "process_transaction",
+  "data": {
+    "signature": "test-signature-123",
+    "wallet_address": "11111111111111111111111111111112",
+    "amount": 1.5,
+    "transaction_type": "incoming",
+    "block_time": 1698501600
+  }
+}
+
+Expected Responses:
+==================
+
+✅ SUCCESS: {"success": true, "message": "Subscription created", "subscription_id": "uuid"}
+❌ ERROR: {"success": false, "error": "Invalid wallet address"}
+
+🔍 Test these in Supabase Dashboard:
+https://supabase.com/dashboard/project/zpcycakwdvymqhwvakrv/functions

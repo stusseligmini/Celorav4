@@ -6,6 +6,9 @@
       "maxDuration": 30
     }
   },
+  "ignores": [
+    "src/app/api/admin/**"
+  ],
   "headers": [
     {
       "source": "/(.*)",

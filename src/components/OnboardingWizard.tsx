@@ -96,13 +96,13 @@ export function OnboardingWizard({ isOpen, onComplete }: OnboardingWizardProps) 
       }
 
       // 2. Create initial wallet
-      const walletResponse = await fetch('/api/wallets', {
+      const walletResponse = await fetch('/api/wallet', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
-          name: walletName,
+          wallet_name: walletName,
           currency: 'USD',
-          isPrimary: true
+          is_primary: true
         })
       });
 

@@ -22,7 +22,7 @@ import { supabaseServer } from '@/lib/supabase/server';
 
 // const walletService = new RealBlockchainWalletService();
 
-export async function POST(request: NextRequest) {
+async function createWalletDisabled(request: NextRequest) {
   try {
     const { action, ...params } = await request.json();
 

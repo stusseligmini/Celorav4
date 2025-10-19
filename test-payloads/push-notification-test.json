@@ -1,0 +1,89 @@
+{
+  "action": "send_solana_transaction",
+  "data": {
+    "user_id": "test-user-id",
+    "transaction_data": {
+      "signature": "3tLo7KhRwjEMzrPJrCsWQ2K9eBqwTjKtMdKZ9oRnNxGkZj1KCb8rQpXjFqVkLm9R",
+      "amount": "1.5",
+      "token": "SOL",
+      "from_address": "sender123...",
+      "to_address": "11111111111111111111111111111112",
+      "transaction_type": "incoming",
+      "network": "mainnet"
+    }
+  }
+}
+
+Test Cases for Push Notification Edge Function:
+================================================
+
+1. SOLANA TRANSACTION NOTIFICATION:
+POST /functions/v1/solana-push-notifications
+{
+  "action": "send_solana_transaction",
+  "data": {
+    "user_id": "test-user-id",
+    "transaction_data": {
+      "signature": "3tLo7KhRwjEMzrPJrCsWQ2K9eBqwTjKtMdKZ9oRnNxGkZj1KCb8rQpXjFqVkLm9R",
+      "amount": "1.5",
+      "token": "SOL",
+      "transaction_type": "incoming",
+      "network": "mainnet"
+    }
+  }
+}
+
+2. AUTO-LINK SUCCESS NOTIFICATION:
+POST /functions/v1/solana-push-notifications
+{
+  "action": "send_auto_link",
+  "data": {
+    "user_id": "test-user-id",
+    "auto_link_data": {
+      "signature": "test-signature-123",
+      "confidence_score": 0.95,
+      "matched_wallet": "wallet123",
+      "amount": "2.0",
+      "status": "success"
+    }
+  }
+}
+
+3. PRICE ALERT NOTIFICATION:
+POST /functions/v1/solana-push-notifications
+{
+  "action": "send_price_alert",
+  "data": {
+    "user_id": "test-user-id",
+    "price_data": {
+      "token": "SOL",
+      "price": 150.25,
+      "change": 5.2,
+      "threshold": 150.0,
+      "direction": "up"
+    }
+  }
+}
+
+4. SECURITY ALERT NOTIFICATION:
+POST /functions/v1/solana-push-notifications
+{
+  "action": "send_security_alert",
+  "data": {
+    "user_id": "test-user-id",
+    "security_data": {
+      "type": "suspicious",
+      "wallet_name": "Main Wallet",
+      "details": "Unusual transaction pattern detected"
+    }
+  }
+}
+
+Expected Responses:
+==================
+
+✅ SUCCESS: {"success": true, "message": "Notification sent successfully"}
+❌ ERROR: {"success": false, "error": "User not found"}
+
+🔍 Test these in Supabase Dashboard:
+https://supabase.com/dashboard/project/zpcycakwdvymqhwvakrv/functions

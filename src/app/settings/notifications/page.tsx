@@ -1,23 +1,31 @@
 import { Metadata } from 'next';
+import NotificationSettings from '@/components/solana/NotificationSettings';
 import UserNotificationPreferences from '@/components/UserNotificationPreferences';
 
 export const metadata: Metadata = {
-  title: 'Notification Preferences | Celora',
-  description: 'Customize how you receive notifications from the Celora platform',
+  title: 'Notification Settings | Celora',
+  description: 'Configure your Solana transaction and push notification preferences',
 };
 
 export default function NotificationPreferencesPage() {
   return (
-    <div className="container mx-auto px-4 py-8 max-w-4xl">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Notification Preferences</h1>
-        <p className="text-gray-600">
-          Customize how you receive notifications from Celora. You can enable or disable different notification
-          types for each communication channel.
-        </p>
-      </div>
+    <div className="min-h-screen bg-gray-50">
+      {/* Solana Notification Settings */}
+      <NotificationSettings />
       
-      <UserNotificationPreferences />
+      {/* Legacy Notification Preferences */}
+      <div className="max-w-4xl mx-auto p-6 mt-6">
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="mb-6">
+            <h2 className="text-xl font-semibold text-gray-900 mb-2">Legacy Notification Preferences</h2>
+            <p className="text-gray-600">
+              Additional notification settings for the Celora platform.
+            </p>
+          </div>
+          
+          <UserNotificationPreferences />
+        </div>
+      </div>
     </div>
   );
 }

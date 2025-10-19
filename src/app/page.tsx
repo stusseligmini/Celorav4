@@ -8,11 +8,12 @@ import { VirtualCardOverview } from '../components/VirtualCardOverview';
 import { TransactionHistory } from '../components/TransactionHistory';
 import NotificationCenter from '../components/NotificationCenter';
 import WelcomeScreen from '../components/WelcomeScreen';
+import AutoLinkDashboard from '../components/solana/AutoLinkDashboard-clean';
 import { useAuthFlow } from '../hooks/useAuthFlow';
 
 export default function HomePage() {
   const router = useRouter();
-  const [activeTab, setActiveTab] = useState<'overview' | 'cards' | 'wallet' | 'transactions'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'cards' | 'wallet' | 'transactions' | 'autolink'>('overview');
   const [notifications, setNotifications] = useState<any[]>([]);
   const [showWelcome, setShowWelcome] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -145,8 +146,21 @@ export default function HomePage() {
                 >
                   TRANSACTIONS
                 </button>
+                <button
+                  onClick={() => setActiveTab('autolink')}
+                  className={`px-4 py-2 text-sm font-mono transition-colors ${
+                    activeTab === 'autolink' 
+                      ? 'text-cyan-400 bg-cyan-400/10 rounded-md' 
+                      : 'text-gray-400 hover:text-cyan-400'
+                  }`}
+                >
+                  AUTO-LINK
+                </button>
                 <Link href="/analytics" className="px-4 py-2 text-sm font-mono text-gray-400 hover:text-cyan-400 transition-colors">
                   ANALYTICS
+                </Link>
+                <Link href="/settings/notifications" className="px-4 py-2 text-sm font-mono text-gray-400 hover:text-cyan-400 transition-colors">
+                  NOTIFICATIONS
                 </Link>
               </div>
             </div>
@@ -228,12 +242,29 @@ export default function HomePage() {
                 >
                   TRANSACTIONS
                 </button>
+                <button
+                  onClick={() => {setActiveTab('autolink'); setMobileMenuOpen(false);}}
+                  className={`px-4 py-3 text-left text-sm font-mono transition-colors rounded-md touch-target ${
+                    activeTab === 'autolink' 
+                      ? 'text-cyan-400 bg-cyan-400/10' 
+                      : 'text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5'
+                  }`}
+                >
+                  AUTO-LINK
+                </button>
                 <Link 
                   href="/analytics" 
                   className="px-4 py-3 text-left text-sm font-mono text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5 transition-colors rounded-md touch-target"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   ANALYTICS
+                </Link>
+                <Link 
+                  href="/settings/notifications" 
+                  className="px-4 py-3 text-left text-sm font-mono text-gray-400 hover:text-cyan-400 hover:bg-cyan-400/5 transition-colors rounded-md touch-target"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  NOTIFICATIONS
                 </Link>
               </div>
             </div>
@@ -322,6 +353,13 @@ export default function HomePage() {
 
         {/* Transactions Tab */}
         {activeTab === 'transactions' && <TransactionHistory />}
+
+        {/* Auto-Link Tab */}
+        {activeTab === 'autolink' && (
+          <div className="bg-gray-900/30 backdrop-blur border border-cyan-primary/20 rounded-lg p-6 hover:shadow-neon-sm transition-all duration-300">
+            <AutoLinkDashboard />
+          </div>
+        )}
       </main>
     </div>
   );
