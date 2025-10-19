@@ -7,10 +7,10 @@
 
 import { createClient } from '@supabase/supabase-js'
 import { Database } from './types'
+import { getSupabaseConfig } from '../supabase-config'
 
-// Environment validation
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY!
+// Environment validation with build-time fallbacks
+const { supabaseUrl, supabaseServiceKey } = getSupabaseConfig()
 
 if (!supabaseUrl) {
   throw new Error('Missing environment variable: NEXT_PUBLIC_SUPABASE_URL')

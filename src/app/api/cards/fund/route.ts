@@ -1,9 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { createClient } from '@supabase/supabase-js';
+import { getSupabaseConfig } from '@/lib/supabase-config';
 
 // Only available server-side: ensure SERVICE_ROLE_KEY never reaches client
-const SUPABASE_URL = process.env.SUPABASE_URL || process.env.NEXT_PUBLIC_SUPABASE_URL;
-const SERVICE_ROLE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY; // must be set in Vercel/Supabase local env
+const { supabaseUrl: SUPABASE_URL, supabaseServiceKey: SERVICE_ROLE_KEY } = getSupabaseConfig();
 
 if (!SUPABASE_URL) {
   console.warn('Missing SUPABASE_URL for funding API route');
