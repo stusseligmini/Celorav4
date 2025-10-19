@@ -1,3 +1,6 @@
+# Ignore problematic admin directories that cause Windows permission issues
+src/app/api/admin/**
+
 # Ignore development and build artifacts
 packages/
 secure/
